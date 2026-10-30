@@ -1,0 +1,180 @@
+<%- include('partials/head', { judul }) %>
+
+<body class="bg-netral text-gelap font-sans antialiased">
+
+  <!-- ═══ NAVBAR ═══ -->
+  <header class="bg-primer shadow-md sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="text-white text-xl font-extrabold tracking-tight flex items-center gap-2">
+        🔧 <%= appName %>
+      </a>
+      <nav class="flex gap-5 text-sm font-semibold">
+        <a href="#layanan"    class="text-white/80 hover:text-white transition">Layanan</a>
+        <a href="#api-demo"   class="text-white/80 hover:text-white transition">API Demo</a>
+        <a href="/api/produk" class="text-white/80 hover:text-white transition" target="_blank">JSON Produk</a>
+        <a href="/api/status" class="text-white/80 hover:text-white transition" target="_blank">JSON Status</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ═══ HERO ═══ -->
+    <section class="bg-primer text-white py-20 px-6">
+      <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <span class="inline-block bg-aksen text-white text-xs font-bold uppercase px-3 py-1 rounded-full mb-4">
+            Bengkel Cerdas berbasis AI
+          </span>
+          <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight">
+            Servis Motor Jadi <span class="text-aksen">Lebih Mudah</span> &amp; Teratur
+          </h1>
+          <p class="mt-5 text-white/75 text-lg max-w-md">
+            Booking online, antrian digital, estimasi awal via AI —
+            semua dalam satu platform untuk bengkel Anda.
+          </p>
+          <div class="flex gap-4 mt-8">
+            <a href="#layanan"
+               class="bg-aksen hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-lg transition">
+              Lihat Layanan
+            </a>
+            <a href="#api-demo"
+               class="border border-white/40 hover:border-white text-white font-semibold px-6 py-3 rounded-lg transition">
+              Coba API
+            </a>
+          </div>
+        </div>
+
+        <!-- API Status Demo Card -->
+        <div class="bg-gelap rounded-xl p-6 font-mono text-sm shadow-2xl" id="api-demo">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-aksen font-bold">GET /api/status</span>
+            <span class="flex items-center gap-2 text-white/60 text-xs">
+              <span id="status-dot" class="h-2.5 w-2.5 rounded-full bg-white/30"></span>
+              <span id="status-label">Menghubungi server…</span>
+            </span>
+          </div>
+          <pre id="status-output"
+               class="whitespace-pre-wrap break-words text-green-400 min-h-[9rem] leading-relaxed">…</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ STATS STRIP ═══ -->
+    <section class="bg-white border-y border-gray-200">
+      <div class="max-w-5xl mx-auto px-6 py-8 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+        <div>
+          <p class="text-3xl font-extrabold text-primer"><%= layanan.length %></p>
+          <p class="text-sm text-gray-500 mt-1">Jenis Layanan</p>
+        </div>
+        <div>
+          <p class="text-3xl font-extrabold text-primer">&lt;&nbsp;3&nbsp;mnt</p>
+          <p class="text-sm text-gray-500 mt-1">Waktu Booking</p>
+        </div>
+        <div>
+          <p class="text-3xl font-extrabold text-primer">&lt;&nbsp;1&nbsp;mnt</p>
+          <p class="text-sm text-gray-500 mt-1">Update Antrian</p>
+        </div>
+        <div>
+          <p class="text-3xl font-extrabold text-primer">&lt;&nbsp;30&nbsp;dtk</p>
+          <p class="text-sm text-gray-500 mt-1">Respons AI</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ DAFTAR LAYANAN ═══ -->
+    <section id="layanan" class="max-w-5xl mx-auto px-6 py-16 scroll-mt-20">
+      <div class="flex items-end justify-between mb-8">
+        <div>
+          <h2 class="text-3xl font-extrabold tracking-tight">Layanan Kami</h2>
+          <p class="text-gray-500 mt-1">
+            Data dari <code class="text-xs bg-gray-100 px-1.5 py-0.5 rounded">models/layananModel.js</code>
+            &middot; <%= layanan.length %> layanan tersedia
+          </p>
+        </div>
+        <a href="/api/produk" target="_blank"
+           class="text-sm font-semibold text-aksen hover:underline">
+          Lihat JSON →
+        </a>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% layanan.forEach(function(l) { %>
+          <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition p-5 flex flex-col">
+            <!-- Kategori badge -->
+            <span class="self-start text-xs font-semibold bg-primer/10 text-primer px-2 py-1 rounded-full mb-3">
+              <%= l.kategori %>
+            </span>
+
+            <h3 class="text-base font-bold text-gelap"><%= l.nama %></h3>
+            <p class="text-sm text-gray-500 mt-2 flex-1"><%= l.deskripsi %></p>
+
+            <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+              <div>
+                <p class="text-xs text-gray-400">Mulai dari</p>
+                <p class="font-extrabold text-aksen">
+                  <% if (l.hargaMulaiDari === 0) { %>
+                    Gratis
+                  <% } else { %>
+                    <%= formatRupiah(l.hargaMulaiDari) %>
+                  <% } %>
+                </p>
+              </div>
+              <span class="text-xs text-gray-400">⏱ <%= l.estimasiMenit %> mnt</span>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </section>
+
+    <!-- ═══ FITUR UNGGULAN ═══ -->
+    <section class="bg-primer/5 border-y border-primer/10 py-16 px-6">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="text-3xl font-extrabold text-center mb-10">Fitur Unggulan BengkelAI</h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-white rounded-xl p-6 shadow-sm text-center">
+            <div class="text-4xl mb-3">📋</div>
+            <h3 class="font-bold mb-1">Dasbor Pesanan</h3>
+            <p class="text-sm text-gray-500">Pantau semua pesanan masuk dari satu halaman admin.</p>
+          </div>
+          <div class="bg-white rounded-xl p-6 shadow-sm text-center">
+            <div class="text-4xl mb-3">📌</div>
+            <h3 class="font-bold mb-1">Kanban Antrean</h3>
+            <p class="text-sm text-gray-500">Pindahkan kartu antrean dari Pit ke Selesai dengan mudah.</p>
+          </div>
+          <div class="bg-white rounded-xl p-6 shadow-sm text-center">
+            <div class="text-4xl mb-3">📱</div>
+            <h3 class="font-bold mb-1">Booking Online</h3>
+            <p class="text-sm text-gray-500">Pelanggan booking lewat form, admin terima notifikasi instan.</p>
+          </div>
+          <div class="bg-white rounded-xl p-6 shadow-sm text-center">
+            <div class="text-4xl mb-3">🤖</div>
+            <h3 class="font-bold mb-1">Asisten AI</h3>
+            <p class="text-sm text-gray-500">Estimasi awal kerusakan motor sebelum pelanggan datang.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Script: fetch /api/status dan tampilkan di card -->
+  <script>
+    (async () => {
+      const output = document.getElementById('status-output');
+      const label  = document.getElementById('status-label');
+      const dot    = document.getElementById('status-dot');
+      try {
+        const res  = await fetch('/api/status');
+        const data = await res.json();
+        output.textContent = JSON.stringify(data, null, 2);
+        label.textContent  = 'Server berjalan';
+        dot.className = 'h-2.5 w-2.5 rounded-full bg-green-400 animate-pulse';
+      } catch {
+        output.textContent = 'Gagal menghubungi /api/status.\nPastikan server masih berjalan.';
+        label.textContent  = 'Tidak terhubung';
+        dot.className = 'h-2.5 w-2.5 rounded-full bg-red-400';
+      }
+    })();
+  </script>
+
+<%- include('partials/footer', { tahun, appName }) %>
+

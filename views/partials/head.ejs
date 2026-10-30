@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= judul %></title>
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primer  : '#1E3A5F',   /* biru tua — identitas bengkel */
+            aksen   : '#F97316',   /* oranye — CTA & highlight */
+            netral  : '#F1F5F9',   /* abu terang — background */
+            gelap   : '#0F172A',   /* hampir hitam — teks utama */
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* smooth scroll */
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+
