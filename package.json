@@ -1,0 +1,16 @@
+{
+  "name": "shift-garage",
+  "version": "1.0.0",
+  "description": "Shift Garage - Sistem Manajemen Bengkel Motor berbasis Express.js MVC",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js"
+  },
+  "author": "Muhammad Ghatan Hardanni - 202140182",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  }
+}
+

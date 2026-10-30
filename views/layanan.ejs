@@ -1,0 +1,58 @@
+<%- include('partials/head', { judul }) %>
+
+<body class="bg-netral text-gelap font-sans antialiased">
+
+  <!-- ═══ NAVBAR ═══ -->
+  <header class="bg-primer shadow-md sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="text-white text-xl font-extrabold tracking-tight flex items-center gap-2">
+        🏍️ <%= appName %>
+      </a>
+      <nav class="flex gap-5 text-sm font-semibold">
+        <a href="/"           class="text-white/80 hover:text-white transition">Beranda</a>
+        <a href="/api/produk" class="text-white/80 hover:text-white transition" target="_blank">API Produk</a>
+        <a href="/api/status" class="text-white/80 hover:text-white transition" target="_blank">API Status</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-6 py-14">
+    <div class="mb-10">
+      <h1 class="text-4xl font-extrabold">Semua Layanan</h1>
+      <p class="text-gray-500 mt-2">
+        Total <strong><%= layanan.length %></strong> layanan tersedia —
+        data dari <code class="text-xs bg-gray-100 px-1.5 py-0.5 rounded">models/layananModel.js</code>
+      </p>
+    </div>
+
+    <div class="divide-y divide-gray-200 border-y border-gray-200">
+      <% layanan.forEach(function(l) { %>
+        <div class="py-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+          <div class="flex-1">
+            <span class="inline-block text-xs font-semibold bg-primer/10 text-primer px-2 py-0.5 rounded-full mb-1">
+              <%= l.kategori %>
+            </span>
+            <h2 class="text-lg font-bold"><%= l.id %> — <%= l.nama %></h2>
+            <p class="text-gray-500 mt-1 max-w-xl"><%= l.deskripsi %></p>
+          </div>
+          <div class="text-right shrink-0">
+            <p class="text-xl font-extrabold text-aksen">
+              <% if (l.hargaMulaiDari === 0) { %>
+                Gratis
+              <% } else { %>
+                <%= formatRupiah(l.hargaMulaiDari) %>
+              <% } %>
+            </p>
+            <p class="text-sm text-gray-400 mt-0.5">⏱ <%= l.estimasiMenit %> menit</p>
+            <span class="inline-block mt-2 text-xs px-2 py-0.5 rounded-full
+              <%= l.tersedia ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600' %>">
+              <%= l.tersedia ? 'Tersedia' : 'Tidak tersedia' %>
+            </span>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </main>
+
+<%- include('partials/footer', { tahun, appName }) %>
+
