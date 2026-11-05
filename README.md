@@ -1,4 +1,4 @@
-# BengkelAI — Sistem Manajemen Bengkel Motor
+# Shift Garage — Sistem Manajemen Bengkel Motor
 
 **Tugas PAW Week 7** | Muhammad Ghatan Hardanni — 202140182
 
@@ -49,6 +49,7 @@ Server akan berjalan di **http://localhost:3000**
 | GET | `/api/produk` | Data layanan bengkel (JSON) |
 
 ## Middleware Logger
+
 
 Setiap request dicatat di:
 - **Terminal** — dengan kode warna (hijau = sukses, kuning = 4xx, merah = 5xx)
