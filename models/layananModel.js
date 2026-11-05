@@ -1,7 +1,7 @@
 /**
  * models/layananModel.js
  * Data layanan servis bengkel (statis — tanpa database).
- * Sesuai PRD BengkelAI: mengelola jadwal servis dan informasi layanan.
+ * Sesuai PRD Shift Garage: mengelola jadwal servis dan informasi layanan.
  */
 
 const daftarLayanan = [

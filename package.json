@@ -1,7 +1,7 @@
 {
-  "name": "bengkelai-mvc",
+  "name": "shift-garage",
   "version": "1.0.0",
-  "description": "BengkelAI - Sistem Manajemen Bengkel Motor berbasis Express.js MVC",
+  "description": "Shift Garage - Sistem Manajemen Bengkel Motor berbasis Express.js MVC",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",

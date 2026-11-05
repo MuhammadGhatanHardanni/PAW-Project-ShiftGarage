@@ -23,7 +23,7 @@ fs.mkdirSync(logDir, { recursive: true });
 // Tulis header Markdown hanya jika file belum ada
 if (!fs.existsSync(logPath)) {
   const header =
-    '# Log Akses — BengkelAI\n\n' +
+    '# Log Akses — Shift Garage\n\n' +
     '| Waktu | Method | URL | Status | Durasi | IP |\n' +
     '|---|---|---|---|---|---|\n';
   fs.writeFileSync(logPath, header);

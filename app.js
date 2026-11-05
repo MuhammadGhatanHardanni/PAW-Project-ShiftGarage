@@ -1,5 +1,5 @@
 /**
- * app.js — Entry point BengkelAI
+ * app.js — Entry point Shift Garage
  *
  * Inisialisasi Express.js, pasang middleware, atur view engine,
  * daftarkan routes, dan jalankan server.
@@ -50,7 +50,7 @@ app.use((req, res) => {
 app.listen(config.port, () => {
   console.log('');
   console.log('\x1b[36m╔══════════════════════════════════════╗\x1b[0m');
-  console.log(`\x1b[36m║  🔧  ${config.appName} — Server Berjalan       ║\x1b[0m`);
+  console.log(`\x1b[36m║  🔧  Shift Garage — Server Berjalan    ║\x1b[0m`);
   console.log('\x1b[36m╠══════════════════════════════════════╣\x1b[0m');
   console.log(`\x1b[36m║\x1b[0m  URL   : \x1b[32mhttp://localhost:${config.port}\x1b[0m`);
   console.log(`\x1b[36m║\x1b[0m  Status: \x1b[32mhttp://localhost:${config.port}/api/status\x1b[0m`);

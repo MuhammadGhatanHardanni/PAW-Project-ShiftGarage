@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  appName: 'BengkelAI',
+  appName: 'Shift Garage',
   port: process.env.PORT || 3000,
   logDir: path.join(__dirname, '..', 'logs'),
   logFile: 'access.log',
