@@ -50,7 +50,10 @@ Server akan berjalan di **http://localhost:3000**
 
 ## Middleware Logger
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d7666ebc0bdcf79e2ad369fa0729f07f035d7863
 Setiap request dicatat di:
 - **Terminal** — dengan kode warna (hijau = sukses, kuning = 4xx, merah = 5xx)
 - **File** — `logs/access.log` dalam format Markdown table
