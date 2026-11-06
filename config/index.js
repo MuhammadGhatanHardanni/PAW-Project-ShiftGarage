@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require('path');
 
 module.exports = {
@@ -5,7 +6,12 @@ module.exports = {
   port: process.env.PORT || 3000,
   logDir: path.join(__dirname, '..', 'logs'),
   logFile: 'access.log',
-  version: '1.0.0 / 15 Oktober 2026',
-  author: 'Muhammad Ghatan Hardanni & 202140182',
+  version: '2.0.0 / Pertemuan 7 (Database & CRUD)',
+  author: 'Muhammad Ghatan Hardanni - 202140182',
+  db: {
+    host: process.env.DB_HOST || 'localhost',
+    port: parseInt(process.env.DB_PORT, 10) || 5432,
+    user: process.env.DB_USER || 'postgres',
+    database: process.env.DB_NAME || 'shift_garage',
+  },
 };
-
