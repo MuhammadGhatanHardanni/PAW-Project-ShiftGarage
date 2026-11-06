@@ -1,84 +1,160 @@
 /**
  * models/layananModel.js
- * Data layanan servis bengkel (statis — tanpa database).
- * Sesuai PRD Shift Garage: mengelola jadwal servis dan informasi layanan.
+ * Model data layanan servis bengkel terhubung langsung ke PostgreSQL.
+ * Seluruh query database dikelola di sini agar Controller tetap bersih (MVC).
  */
 
-const daftarLayanan = [
-  {
-    id: 'L-01',
-    nama: 'Servis Rutin',
-    kategori: 'Perawatan',
-    deskripsi: 'Ganti oli, cek rantai, bersihkan filter udara, setel karburator.',
-    hargaMulaiDari: 75000,
-    estimasiMenit: 60,
-    tersedia: true,
-  },
-  {
-    id: 'L-02',
-    nama: 'Tune-Up Injeksi',
-    kategori: 'Perawatan',
-    deskripsi: 'Reset ECU, injector cleaning, throttle body service, scan diagnosis.',
-    hargaMulaiDari: 150000,
-    estimasiMenit: 90,
-    tersedia: true,
-  },
-  {
-    id: 'L-03',
-    nama: 'Ganti Ban',
-    kategori: 'Penggantian Suku Cadang',
-    deskripsi: 'Bongkar pelek, pasang ban baru (ban tidak termasuk), balancing.',
-    hargaMulaiDari: 50000,
-    estimasiMenit: 45,
-    tersedia: true,
-  },
-  {
-    id: 'L-04',
-    nama: 'Servis Rem',
-    kategori: 'Keselamatan',
-    deskripsi: 'Cek kanvas rem, setel jarak bebas, bersihkan kaliper (disc brake).',
-    hargaMulaiDari: 85000,
-    estimasiMenit: 60,
-    tersedia: true,
-  },
-  {
-    id: 'L-05',
-    nama: 'Overhaul Mesin Ringan',
-    kategori: 'Perbaikan Besar',
-    deskripsi: 'Bongkar kepala silinder, ganti seal klep, skur klep, gasket.',
-    hargaMulaiDari: 450000,
-    estimasiMenit: 240,
-    tersedia: true,
-  },
-  {
-    id: 'L-06',
-    nama: 'Diagnosa Awal (AI)',
-    kategori: 'Diagnosis',
-    deskripsi: 'Estimasi awal penyebab kerusakan melalui Asisten AI sebelum datang ke bengkel.',
-    hargaMulaiDari: 0,
-    estimasiMenit: 5,
-    tersedia: true,
-  },
-];
+const db = require('../config/database');
+
+/**
+ * Normalisasi data baris dari PostgreSQL ke format seragam
+ * Menyediakan baik properti camelCase maupun snake_case agar kompatibel
+ */
+function formatLayanan(row) {
+  if (!row) return null;
+  const harga = Number(row.harga_mulai_dari) || 0;
+  const estimasi = Number(row.estimasi_menit) || 0;
+  const tersedia = row.tersedia === true || row.tersedia === 'true' || row.tersedia === 1 || row.tersedia === 't';
+
+  return {
+    id: row.id,
+    nama: row.nama,
+    kategori: row.kategori,
+    deskripsi: row.deskripsi || '',
+    hargaMulaiDari: harga,
+    harga_mulai_dari: harga,
+    estimasiMenit: estimasi,
+    estimasi_menit: estimasi,
+    tersedia,
+    created_at: row.created_at,
+    updated_at: row.updated_at,
+  };
+}
+
+/**
+ * Buat ID baru otomatis jika tidak disediakan (format: L-01, L-02, dst)
+ */
+async function generateId() {
+  const result = await db.query(
+    "SELECT id FROM layanan WHERE id LIKE 'L-%' ORDER BY id DESC LIMIT 1"
+  );
+  if (result.rows.length === 0) {
+    return 'L-01';
+  }
+  const lastId = result.rows[0].id; // misal "L-06"
+  const numberPart = parseInt(lastId.replace(/\D/g, ''), 10);
+  if (isNaN(numberPart)) {
+    return `L-${Date.now().toString().slice(-4)}`;
+  }
+  const nextNum = String(numberPart + 1).padStart(2, '0');
+  return `L-${nextNum}`;
+}
 
 const LayananModel = {
-  /** Kembalikan semua layanan */
-  getAll() {
-    return daftarLayanan;
-  },
-
-  /** Cari layanan berdasarkan id */
-  getById(id) {
-    return daftarLayanan.find((l) => l.id === id) || null;
-  },
-
-  /** Filter layanan berdasarkan kategori */
-  getByKategori(kategori) {
-    return daftarLayanan.filter(
-      (l) => l.kategori.toLowerCase() === kategori.toLowerCase()
+  /**
+   * Mengambil semua data layanan dari database
+   */
+  async getAll() {
+    const result = await db.query(
+      'SELECT * FROM layanan ORDER BY id ASC'
     );
+    return result.rows.map(formatLayanan);
+  },
+
+  /**
+   * Mencari layanan berdasarkan ID
+   */
+  async getById(id) {
+    const result = await db.query(
+      'SELECT * FROM layanan WHERE id = $1 LIMIT 1',
+      [id]
+    );
+    if (result.rows.length === 0) return null;
+    return formatLayanan(result.rows[0]);
+  },
+
+  /**
+   * Filter layanan berdasarkan kategori
+   */
+  async getByKategori(kategori) {
+    const result = await db.query(
+      'SELECT * FROM layanan WHERE LOWER(kategori) = LOWER($1) ORDER BY id ASC',
+      [kategori]
+    );
+    return result.rows.map(formatLayanan);
+  },
+
+  /**
+   * Menambahkan data layanan baru
+   */
+  async create(data) {
+    let id = data.id && String(data.id).trim() !== '' ? String(data.id).trim() : await generateId();
+    const nama = data.nama;
+    const kategori = data.kategori || 'Umum';
+    const deskripsi = data.deskripsi || '';
+    const hargaMulaiDari = parseInt(data.hargaMulaiDari ?? data.harga_mulai_dari, 10) || 0;
+    const estimasiMenit = parseInt(data.estimasiMenit ?? data.estimasi_menit, 10) || 0;
+    const tersedia = data.tersedia === undefined ? true : Boolean(data.tersedia && data.tersedia !== 'false');
+
+    const result = await db.query(
+      `INSERT INTO layanan (id, nama, kategori, deskripsi, harga_mulai_dari, estimasi_menit, tersedia)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
+       RETURNING *`,
+      [id, nama, kategori, deskripsi, hargaMulaiDari, estimasiMenit, tersedia]
+    );
+
+    return formatLayanan(result.rows[0]);
+  },
+
+  /**
+   * Memperbarui data layanan berdasarkan ID
+   */
+  async update(id, data) {
+    // Ambil data lama terlebih dahulu
+    const existing = await this.getById(id);
+    if (!existing) return null;
+
+    const nama = data.nama !== undefined ? data.nama : existing.nama;
+    const kategori = data.kategori !== undefined ? data.kategori : existing.kategori;
+    const deskripsi = data.deskripsi !== undefined ? data.deskripsi : existing.deskripsi;
+    const hargaMulaiDari = data.hargaMulaiDari !== undefined || data.harga_mulai_dari !== undefined
+      ? parseInt(data.hargaMulaiDari ?? data.harga_mulai_dari, 10)
+      : existing.hargaMulaiDari;
+    const estimasiMenit = data.estimasiMenit !== undefined || data.estimasi_menit !== undefined
+      ? parseInt(data.estimasiMenit ?? data.estimasi_menit, 10)
+      : existing.estimasiMenit;
+    const tersedia = data.tersedia !== undefined
+      ? Boolean(data.tersedia === true || data.tersedia === 'true' || data.tersedia === 1)
+      : existing.tersedia;
+
+    const result = await db.query(
+      `UPDATE layanan
+       SET nama = $1,
+           kategori = $2,
+           deskripsi = $3,
+           harga_mulai_dari = $4,
+           estimasi_menit = $5,
+           tersedia = $6,
+           updated_at = CURRENT_TIMESTAMP
+       WHERE id = $7
+       RETURNING *`,
+      [nama, kategori, deskripsi, hargaMulaiDari, estimasiMenit, tersedia, id]
+    );
+
+    return formatLayanan(result.rows[0]);
+  },
+
+  /**
+   * Menghapus data layanan berdasarkan ID
+   */
+  async delete(id) {
+    const result = await db.query(
+      'DELETE FROM layanan WHERE id = $1 RETURNING *',
+      [id]
+    );
+    if (result.rows.length === 0) return null;
+    return formatLayanan(result.rows[0]);
   },
 };
 
 module.exports = LayananModel;
-
