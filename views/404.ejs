@@ -1,0 +1,46 @@
+<%- include('partials/head', { judul }) %>
+
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans text-sm antialiased selection:bg-pro-600 selection:text-white">
+  <div class="h-1 bg-gradient-to-r from-pro-700 via-pro-600 to-cyan-500"></div>
+
+  <header class="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="/" class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-pro-700 to-blue-500 text-white flex items-center justify-center font-black text-sm shadow-pro-sm">
+            BP
+          </div>
+          <div>
+            <span class="text-base font-extrabold tracking-tight text-slate-900"><%= appName %></span>
+            <p class="text-[10px] text-slate-500 font-semibold">BengkelPro Workshop OS</p>
+          </div>
+        </a>
+        <nav class="flex items-center gap-2 text-xs font-bold text-slate-700">
+          <a href="/" class="px-3 py-2 rounded-xl hover:text-pro-600 hover:bg-slate-100 transition">Beranda</a>
+          <a href="/layanan" class="px-3 py-2 rounded-xl text-white bg-pro-600 shadow-pro-sm transition">Katalog CRUD</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 flex items-center justify-center px-4 py-20 text-center">
+    <div class="max-w-md bg-white p-8 sm:p-10 rounded-3xl shadow-sm border border-slate-200">
+      <div class="w-16 h-16 rounded-2xl bg-pro-50 text-pro-600 mx-auto flex items-center justify-center text-2xl font-black mb-5 border-2 border-pro-100">
+        404
+      </div>
+      <h1 class="text-xl font-extrabold text-slate-900 mb-2">Halaman Tidak Ditemukan</h1>
+      <p class="text-slate-500 mb-6 text-xs leading-relaxed">
+        Endpoint atau halaman sistem bengkel yang Anda tuju tidak tersedia atau telah dipindahkan.
+      </p>
+      <div class="flex justify-center gap-3">
+        <a href="/" class="px-5 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition shadow-sm">
+          Kembali ke Beranda
+        </a>
+        <a href="/layanan" class="px-5 py-2.5 rounded-xl bg-pro-600 text-white text-xs font-bold hover:bg-pro-700 transition shadow-pro-sm">
+          Buka Katalog CRUD
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <%- include('partials/footer', { tahun, appName }) %>
