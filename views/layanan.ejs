@@ -1,58 +1,958 @@
 <%- include('partials/head', { judul }) %>
 
-<body class="bg-netral text-gelap font-sans antialiased">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans text-sm selection:bg-buku-600 selection:text-white">
 
-  <!-- ═══ NAVBAR ═══ -->
-  <header class="bg-primer shadow-md sticky top-0 z-50">
-    <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="/" class="text-white text-xl font-extrabold tracking-tight flex items-center gap-2">
-        🏍️ <%= appName %>
-      </a>
-      <nav class="flex gap-5 text-sm font-semibold">
-        <a href="/"           class="text-white/80 hover:text-white transition">Beranda</a>
-        <a href="/api/produk" class="text-white/80 hover:text-white transition" target="_blank">API Produk</a>
-        <a href="/api/status" class="text-white/80 hover:text-white transition" target="_blank">API Status</a>
-      </nav>
+  <!-- ═══ NAVBAR (STYLE DASHBOARD SAAS BUKU BENGKEL) ═══ -->
+  <header class="sticky top-0 z-40 bg-white border-b border-slate-200/80 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-18 py-3">
+        <!-- Logo & Context -->
+        <div class="flex items-center gap-4">
+          <a href="/" class="flex items-center gap-3 group transition">
+            <div class="w-10 h-10 rounded-2xl bg-buku-600 text-white flex items-center justify-center font-extrabold text-base shadow-buku-sm group-hover:scale-105 transition">
+              <i class="fa-solid fa-wrench"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-base font-extrabold tracking-tight text-slate-900"><%= appName %></span>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-buku-50 text-buku-700 border border-buku-200">Dasbor CRUD</span>
+              </div>
+              <p class="text-[11px] text-slate-500 font-medium">Manajemen Katalog Layanan &amp; Tarif</p>
+            </div>
+          </a>
+
+          <div class="h-5 w-px bg-slate-200 hidden md:block"></div>
+
+          <!-- Status Database Pill -->
+          <div class="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200 shadow-xs">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="font-mono text-[11px]">PostgreSQL: Terhubung</span>
+          </div>
+        </div>
+
+        <!-- Navigation Links & Quick Action -->
+        <nav class="flex items-center gap-2 sm:gap-3 text-xs font-bold text-slate-600">
+          <a href="/" class="px-3.5 py-2 rounded-full hover:text-slate-900 hover:bg-slate-100 transition">
+            Beranda
+          </a>
+          <a href="/layanan" class="px-3.5 py-2 rounded-full text-buku-700 bg-buku-50 border border-buku-200 transition">
+            Katalog Layanan
+          </a>
+          <a href="/api/produk" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
+            <span class="font-mono text-[11px]">JSON API</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-slate-400"></i>
+          </a>
+
+          <div class="h-5 w-px bg-slate-200 hidden sm:block mx-1"></div>
+
+          <!-- Add Button -->
+          <button onclick="bukaModalTambah()"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-buku-600 hover:bg-buku-700 text-white text-xs font-bold shadow-buku-sm transition active:scale-95">
+            <i class="fa-solid fa-plus text-xs"></i>
+            <span>Tambah Layanan</span>
+          </button>
+        </nav>
+      </div>
     </div>
   </header>
 
-  <main class="max-w-5xl mx-auto px-6 py-14">
-    <div class="mb-10">
-      <h1 class="text-4xl font-extrabold">Semua Layanan</h1>
-      <p class="text-gray-500 mt-2">
-        Total <strong><%= layanan.length %></strong> layanan tersedia —
-        data dari <code class="text-xs bg-gray-100 px-1.5 py-0.5 rounded">models/layananModel.js</code>
-      </p>
+  <!-- ═══ MAIN CONTENT CONTAINER ═══ -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+
+    <!-- Flash Alert Notification -->
+    <% if (typeof notif !== 'undefined' && notif) { %>
+      <div class="mb-6 p-4 rounded-2xl flex items-center justify-between gap-3 text-xs font-bold shadow-xs
+        <%= (typeof tipeNotif !== 'undefined' && tipeNotif === 'error') ? 'bg-rose-50 text-rose-800 border-2 border-rose-200' : 'bg-emerald-50 text-emerald-900 border-2 border-emerald-200' %>">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl <%= (typeof tipeNotif !== 'undefined' && tipeNotif === 'error') ? 'bg-rose-100 text-rose-600' : 'bg-emerald-100 text-emerald-600' %> flex items-center justify-center text-sm shrink-0">
+            <i class="fa-solid <%= (typeof tipeNotif !== 'undefined' && tipeNotif === 'error') ? 'fa-circle-exclamation' : 'fa-circle-check' %>"></i>
+          </div>
+          <span><%= notif %></span>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-700 p-1">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+    <% } %>
+
+    <!-- Page Header (Clean White Card) -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-card mb-8">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-buku-50 text-buku-700 font-bold text-[10px] uppercase tracking-wider border border-buku-200">
+              <i class="fa-solid fa-database text-[9px]"></i> PostgreSQL Persistence
+            </span>
+            <span class="text-slate-400 text-xs font-semibold">&bull; Model-View-Controller</span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+            Manajemen Katalog Layanan &amp; Operasi CRUD
+          </h1>
+          <p class="text-slate-500 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
+            Kelola paket servis motor, tarif harga mulai dari, estimasi menit pengerjaan pit, dan ketersediaan booking. Seluruh aksi terhubung langsung ke database PostgreSQL.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3 shrink-0">
+          <a href="/api/produk" target="_blank"
+            class="px-4 py-2.5 rounded-full border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition flex items-center gap-2 shadow-xs">
+            <i class="fa-solid fa-code text-buku-600 text-xs"></i>
+            <span>REST API JSON</span>
+          </a>
+          <button onclick="bukaModalTambah()"
+            class="px-5 py-2.5 rounded-full bg-buku-600 hover:bg-buku-700 text-white text-xs font-bold shadow-buku-sm transition flex items-center gap-2 active:scale-95">
+            <i class="fa-solid fa-plus text-xs"></i>
+            <span>Tambah Layanan Baru</span>
+          </button>
+        </div>
+      </div>
     </div>
 
-    <div class="divide-y divide-gray-200 border-y border-gray-200">
-      <% layanan.forEach(function(l) { %>
-        <div class="py-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-          <div class="flex-1">
-            <span class="inline-block text-xs font-semibold bg-primer/10 text-primer px-2 py-0.5 rounded-full mb-1">
-              <%= l.kategori %>
-            </span>
-            <h2 class="text-lg font-bold"><%= l.id %> — <%= l.nama %></h2>
-            <p class="text-gray-500 mt-1 max-w-xl"><%= l.deskripsi %></p>
-          </div>
-          <div class="text-right shrink-0">
-            <p class="text-xl font-extrabold text-aksen">
-              <% if (l.hargaMulaiDari === 0) { %>
-                Gratis
-              <% } else { %>
-                <%= formatRupiah(l.hargaMulaiDari) %>
-              <% } %>
-            </p>
-            <p class="text-sm text-gray-400 mt-0.5">⏱ <%= l.estimasiMenit %> menit</p>
-            <span class="inline-block mt-2 text-xs px-2 py-0.5 rounded-full
-              <%= l.tersedia ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600' %>">
-              <%= l.tersedia ? 'Tersedia' : 'Tidak tersedia' %>
-            </span>
+    <!-- ═══ 4 KPI CARDS (STYLE BUKU BENGKEL DASHBOARD) ═══ -->
+    <%
+      const totalItems = layanan.length;
+      const activeItems = layanan.filter(l => l.tersedia).length;
+      const categories = [...new Set(layanan.map(l => l.kategori))];
+      const sumRates = layanan.reduce((acc, curr) => acc + (curr.hargaMulaiDari || 0), 0);
+      const avgRate = totalItems > 0 ? Math.round(sumRates / totalItems) : 0;
+      const avgDuration = totalItems > 0 ? Math.round(layanan.reduce((acc, curr) => acc + (curr.estimasiMenit || 0), 0) / totalItems) : 0;
+    %>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <!-- Card 1: Total Layanan -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-card hover:shadow-card-hover transition">
+        <div class="flex items-center justify-between text-slate-400 text-xs font-bold uppercase tracking-wider">
+          <span>Katalog Layanan</span>
+          <div class="w-9 h-9 rounded-xl bg-buku-50 text-buku-600 flex items-center justify-center text-sm font-bold shadow-xs">
+            <i class="fa-solid fa-boxes-stacked"></i>
           </div>
         </div>
-      <% }); %>
+        <div class="mt-3 flex items-baseline gap-2">
+          <span class="text-3xl font-black text-slate-900" id="stat-total"><%= totalItems %></span>
+          <span class="text-xs text-slate-500 font-semibold">paket terdaftar</span>
+        </div>
+        <p class="mt-2.5 text-[11px] text-buku-700 font-bold flex items-center gap-1.5 bg-buku-50/70 px-2 py-1 rounded-lg">
+          <i class="fa-solid fa-database text-[10px]"></i>
+          <span>Tabel PostgreSQL: <code class="font-mono">layanan</code></span>
+        </p>
+      </div>
+
+      <!-- Card 2: Siap Booking Online -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-card hover:shadow-card-hover transition">
+        <div class="flex items-center justify-between text-slate-400 text-xs font-bold uppercase tracking-wider">
+          <span>Siap Booking</span>
+          <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold shadow-xs">
+            <i class="fa-solid fa-calendar-check"></i>
+          </div>
+        </div>
+        <div class="mt-3 flex items-baseline gap-2">
+          <span class="text-3xl font-black text-emerald-600" id="stat-active"><%= activeItems %></span>
+          <span class="text-xs text-slate-500 font-semibold">layanan aktif</span>
+        </div>
+        <p class="mt-2.5 text-[11px] text-emerald-800 font-bold flex items-center gap-1.5 bg-emerald-50/70 px-2 py-1 rounded-lg">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span><%= Math.round((activeItems / (totalItems || 1)) * 100) %>% unit siap dipesan</span>
+        </p>
+      </div>
+
+      <!-- Card 3: Kategori Layanan -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-card hover:shadow-card-hover transition">
+        <div class="flex items-center justify-between text-slate-400 text-xs font-bold uppercase tracking-wider">
+          <span>Kategori Spesialis</span>
+          <div class="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-sm font-bold shadow-xs">
+            <i class="fa-solid fa-tags"></i>
+          </div>
+        </div>
+        <div class="mt-3 flex items-baseline gap-2">
+          <span class="text-3xl font-black text-purple-700"><%= categories.length %></span>
+          <span class="text-xs text-slate-500 font-semibold">klasifikasi</span>
+        </div>
+        <p class="mt-2.5 text-[11px] text-purple-800 font-bold flex items-center gap-1.5 bg-purple-50/70 px-2 py-1 rounded-lg truncate">
+          <i class="fa-solid fa-layer-group text-[10px]"></i>
+          <span>Perawatan &bull; Suku Cadang</span>
+        </p>
+      </div>
+
+      <!-- Card 4: Estimasi Ongkos Kerja -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-card hover:shadow-card-hover transition">
+        <div class="flex items-center justify-between text-slate-400 text-xs font-bold uppercase tracking-wider">
+          <span>Rata-Rata Tarif</span>
+          <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-bold shadow-xs">
+            <i class="fa-solid fa-coins"></i>
+          </div>
+        </div>
+        <div class="mt-3 flex items-baseline gap-1.5">
+          <span class="text-2xl sm:text-3xl font-black text-slate-900"><%= formatRupiah(avgRate) %></span>
+        </div>
+        <p class="mt-2.5 text-[11px] text-amber-800 font-bold flex items-center gap-1.5 bg-amber-50/70 px-2 py-1 rounded-lg">
+          <i class="fa-regular fa-clock text-amber-600"></i>
+          <span>Durasi kerja: <strong><%= avgDuration %> menit</strong></span>
+        </p>
+      </div>
+    </div>
+
+    <!-- ═══ TOOLBAR: SEARCH & FILTERS ═══ -->
+    <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs mb-6 flex flex-col sm:flex-row items-center justify-between gap-3.5">
+      <!-- Search Input -->
+      <div class="relative w-full sm:w-96">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+        <input type="text" id="searchInput" placeholder="Cari nama layanan, kode, rincian..."
+          class="w-full pl-9 pr-9 py-2.5 bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-200 rounded-full text-xs font-semibold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-buku-500/20 focus:border-buku-600 transition">
+        <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-[10px] text-slate-400 font-mono hidden sm:inline bg-slate-200/70 px-1.5 py-0.5 rounded font-bold">⌘K</span>
+      </div>
+
+      <!-- Filters & Refresh -->
+      <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+        <!-- Category Filter -->
+        <select id="kategoriFilter"
+          class="px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-buku-500/20 focus:border-buku-600 transition">
+          <option value="ALL">Semua Kategori (<%= totalItems %>)</option>
+          <% categories.forEach(function(cat) { %>
+            <option value="<%= cat %>"><%= cat %></option>
+          <% }); %>
+        </select>
+
+        <!-- Availability Filter -->
+        <select id="statusFilter"
+          class="px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-buku-500/20 focus:border-buku-600 transition">
+          <option value="ALL">Semua Status</option>
+          <option value="active">Siap Dipesan Saja</option>
+          <option value="inactive">Nonaktif Saja</option>
+        </select>
+
+        <!-- Reload Button -->
+        <button onclick="refreshData()" title="Muat ulang tabel"
+          class="p-2.5 rounded-full border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 hover:text-buku-600 transition shadow-xs">
+          <i class="fa-solid fa-rotate text-xs"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ ENTERPRISE DATA TABLE (STYLE BUKU BENGKEL) ═══ -->
+    <div class="bg-white rounded-3xl border border-slate-200/80 shadow-card overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse" id="layananTable">
+          <thead>
+            <tr class="bg-slate-50/80 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500 font-mono">
+              <th class="py-4 px-6 w-28">Kode ID</th>
+              <th class="py-4 px-6">Nama Paket Servis &amp; Rincian Pekerjaan</th>
+              <th class="py-4 px-6">Kategori</th>
+              <th class="py-4 px-6 text-right">Tarif Mulai</th>
+              <th class="py-4 px-6 text-right">Estimasi Pit</th>
+              <th class="py-4 px-6 text-center">Status</th>
+              <th class="py-4 px-6 text-right">Aksi (CRUD)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-xs font-medium" id="tableBody">
+            <% if (layanan.length === 0) { %>
+              <tr id="emptyRow">
+                <td colspan="7" class="py-16 text-center">
+                  <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-buku-50 text-buku-600 flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-box-open"></i>
+                  </div>
+                  <h3 class="text-base font-extrabold text-slate-900">Belum Ada Layanan di Database</h3>
+                  <p class="text-slate-500 text-xs mt-1">Data pada tabel PostgreSQL masih kosong.</p>
+                  <button onclick="bukaModalTambah()" class="mt-4 px-5 py-2.5 rounded-full bg-buku-600 hover:bg-buku-700 text-white text-xs font-bold shadow-buku-sm transition">
+                    + Tambah Layanan Pertama
+                  </button>
+                </td>
+              </tr>
+            <% } else { %>
+              <% layanan.forEach(function(l) { %>
+                <tr class="hover:bg-slate-50/80 transition-colors group"
+                    data-id="<%= l.id %>"
+                    data-nama="<%= l.nama.toLowerCase() %>"
+                    data-kategori="<%= l.kategori.toLowerCase() %>"
+                    data-deskripsi="<%= (l.deskripsi || '').toLowerCase() %>"
+                    data-status="<%= l.tersedia ? 'active' : 'inactive' %>">
+
+                  <!-- Service ID / Code -->
+                  <td class="py-4 px-6 whitespace-nowrap font-mono">
+                    <span class="inline-block px-2.5 py-1 rounded-lg bg-slate-100 text-slate-800 text-[11px] font-bold border border-slate-200">
+                      <%= l.id %>
+                    </span>
+                  </td>
+
+                  <!-- Name & Description -->
+                  <td class="py-4 px-6 max-w-sm">
+                    <div class="font-extrabold text-slate-900 group-hover:text-buku-600 transition-colors text-sm">
+                      <%= l.nama %>
+                    </div>
+                    <p class="text-slate-500 text-[11px] line-clamp-1 mt-0.5 leading-relaxed">
+                      <%= l.deskripsi || 'Paket perawatan dan perbaikan berkala mekanik.' %>
+                    </p>
+                  </td>
+
+                  <!-- Category Badge -->
+                  <td class="py-4 px-6 whitespace-nowrap">
+                    <%
+                      let catBadge = 'bg-slate-100 text-slate-700 border-slate-200';
+                      let catDot = 'bg-slate-400';
+                      if (l.kategori === 'Perawatan') {
+                        catBadge = 'bg-blue-50 text-blue-700 border-blue-200';
+                        catDot = 'bg-blue-500';
+                      } else if (l.kategori === 'Penggantian Suku Cadang') {
+                        catBadge = 'bg-purple-50 text-purple-700 border-purple-200';
+                        catDot = 'bg-purple-500';
+                      } else if (l.kategori === 'Keselamatan') {
+                        catBadge = 'bg-amber-50 text-amber-800 border-amber-200';
+                        catDot = 'bg-amber-500';
+                      } else if (l.kategori === 'Perbaikan Besar') {
+                        catBadge = 'bg-rose-50 text-rose-700 border-rose-200';
+                        catDot = 'bg-rose-500';
+                      } else if (l.kategori === 'Diagnosis') {
+                        catBadge = 'bg-emerald-50 text-emerald-700 border-emerald-200';
+                        catDot = 'bg-emerald-500';
+                      }
+                    %>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold border <%= catBadge %> shadow-xs">
+                      <span class="w-1.5 h-1.5 rounded-full <%= catDot %>"></span>
+                      <span><%= l.kategori %></span>
+                    </span>
+                  </td>
+
+                  <!-- Base Price -->
+                  <td class="py-4 px-6 whitespace-nowrap text-right font-mono font-black text-slate-900 text-sm">
+                    <% if (l.hargaMulaiDari === 0) { %>
+                      <span class="text-emerald-600 font-sans font-bold">Gratis</span>
+                    <% } else { %>
+                      <%= formatRupiah(l.hargaMulaiDari) %>
+                    <% } %>
+                  </td>
+
+                  <!-- Bay Duration -->
+                  <td class="py-4 px-6 whitespace-nowrap text-right font-mono text-slate-600">
+                    <span class="inline-flex items-center gap-1 font-semibold">
+                      <i class="fa-regular fa-clock text-buku-600 text-[11px]"></i>
+                      <span><%= l.estimasiMenit %> mnt</span>
+                    </span>
+                  </td>
+
+                  <!-- Status -->
+                  <td class="py-4 px-6 whitespace-nowrap text-center">
+                    <% if (l.tersedia) { %>
+                      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-xs">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Siap Dipesan
+                      </span>
+                    <% } else { %>
+                      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-100 text-slate-500 border border-slate-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Nonaktif
+                      </span>
+                    <% } %>
+                  </td>
+
+                  <!-- Action Buttons (CRUD) -->
+                  <td class="py-4 px-6 whitespace-nowrap text-right">
+                    <div class="inline-flex items-center gap-1.5">
+                      <!-- Inspect Detail -->
+                      <button onclick="lihatDetail('<%= l.id %>')" title="Lihat Detail Layanan"
+                        class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition shadow-xs">
+                        <i class="fa-regular fa-eye text-xs"></i>
+                      </button>
+
+                      <!-- Edit Button -->
+                      <button onclick="bukaModalEdit('<%= l.id %>')" title="Ubah Data Layanan"
+                        class="w-8 h-8 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-600 flex items-center justify-center transition shadow-xs">
+                        <i class="fa-solid fa-pen text-xs"></i>
+                      </button>
+
+                      <!-- Delete Button -->
+                      <button onclick="konfirmasiHapus('<%= l.id %>', '<%= l.nama %>')" title="Hapus Data Layanan"
+                        class="w-8 h-8 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 flex items-center justify-center transition shadow-xs">
+                        <i class="fa-regular fa-trash-can text-xs"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Table Footer Summary -->
+      <div class="px-6 py-4 bg-slate-50/80 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
+        <p>Menampilkan <span id="visibleCount" class="font-bold text-slate-800"><%= layanan.length %></span> dari total <span class="font-bold text-slate-800"><%= layanan.length %></span> paket layanan</p>
+        <div class="flex items-center gap-2 font-mono text-[11px] text-slate-400">
+          <span>REST API Endpoint:</span>
+          <code class="px-2 py-0.5 rounded-md bg-white border border-slate-200 text-buku-700 font-bold">GET /api/produk</code>
+        </div>
+      </div>
     </div>
   </main>
 
-<%- include('partials/footer', { tahun, appName }) %>
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- MODAL: TAMBAH LAYANAN BARU (ROYAL BLUE BUKU BENGKEL THEME)              -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="modalTambah" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="min-h-screen px-4 flex items-center justify-center">
+      <div class="fixed inset-0 modal-backdrop-blur transition-opacity" onclick="tutupModalTambah()"></div>
 
+      <div class="relative bg-white rounded-3xl max-w-lg w-full shadow-dropdown border border-slate-200 my-8 z-10 overflow-hidden">
+        <!-- Colored Header -->
+        <div class="px-6 py-5 bg-gradient-to-r from-buku-700 to-buku-600 text-white flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-white/20 text-white flex items-center justify-center text-sm shadow-xs backdrop-blur-sm">
+              <i class="fa-solid fa-plus"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-extrabold text-white">Tambah Paket Layanan Baru</h3>
+              <p class="text-xs text-buku-100">Operasi Create ke database PostgreSQL</p>
+            </div>
+          </div>
+          <button onclick="tutupModalTambah()" class="w-8 h-8 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+
+        <form id="formTambah" onsubmit="handleTambah(event)" class="p-6 space-y-4">
+          <!-- Code & Category -->
+          <div class="grid grid-cols-2 gap-3.5">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Kode ID (Opsional)</label>
+              <input type="text" name="id" placeholder="Otomatis (L-xx)"
+                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-bold focus:bg-white focus:outline-none focus:ring-2 focus:ring-buku-500/20 focus:border-buku-600 transition">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Kategori *</label>
+              <select name="kategori" required
+                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-buku-500/20 focus:border-buku-600 transition">
+                <option value="Perawatan">Perawatan</option>
+                <option value="Penggantian Suku Cadang">Penggantian Suku Cadang</option>
+                <option value="Keselamatan">Keselamatan</option>
+                <option value="Perbaikan Besar">Perbaikan Besar</option>
+                <option value="Diagnosis">Diagnosis</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Service Title -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Nama Layanan *</label>
+            <input type="text" name="nama" required placeholder="Contoh: Tune-Up Injeksi &amp; Carbon Cleaning"
+              class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-buku-500/20 focus:border-buku-600 transition">
+          </div>
+
+          <!-- Base Rate & Duration -->
+          <div class="grid grid-cols-2 gap-3.5">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Tarif Mulai (Rp) *</label>
+              <div class="relative">
+                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-mono font-bold">Rp</span>
+                <input type="number" name="hargaMulaiDari" min="0" step="5000" value="85000" required
+                  class="w-full pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-black focus:bg-white focus:outline-none focus:ring-2 focus:ring-buku-500/20 focus:border-buku-600 transition">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Estimasi Pengerjaan *</label>
+              <div class="relative">
+                <input type="number" name="estimasiMenit" min="5" step="5" value="60" required
+                  class="w-full px-3.5 pr-12 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-black focus:bg-white focus:outline-none focus:ring-2 focus:ring-buku-500/20 focus:border-buku-600 transition">
+                <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[11px] font-bold">mnt</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Rincian Prosedur Pekerjaan</label>
+            <textarea name="deskripsi" rows="3" placeholder="Pembersihan throttle body, injector cleaner, pengecekan sensor ECU..."
+              class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-buku-500/20 focus:border-buku-600 transition"></textarea>
+          </div>
+
+          <!-- Availability Switch -->
+          <div class="flex items-center gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+            <input type="checkbox" id="tersediaTambah" name="tersedia" value="true" checked
+              class="w-4 h-4 rounded border-slate-300 text-buku-600 focus:ring-buku-500 cursor-pointer">
+            <label for="tersediaTambah" class="text-xs font-bold text-slate-800 cursor-pointer select-none">
+              Layanan aktif dan siap menerima booking pelanggan
+            </label>
+          </div>
+
+          <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+            <button type="button" onclick="tutupModalTambah()"
+              class="px-5 py-2.5 rounded-full border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-bold transition">
+              Batal
+            </button>
+            <button type="submit" id="btnSubmitTambah"
+              class="px-6 py-2.5 rounded-full bg-buku-600 hover:bg-buku-700 text-white text-xs font-bold shadow-buku-sm transition">
+              Simpan ke Database
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- MODAL: EDIT SERVICE                                                     -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="modalEdit" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="min-h-screen px-4 flex items-center justify-center">
+      <div class="fixed inset-0 modal-backdrop-blur transition-opacity" onclick="tutupModalEdit()"></div>
+
+      <div class="relative bg-white rounded-3xl max-w-lg w-full shadow-dropdown border border-slate-200 my-8 z-10 overflow-hidden">
+        <div class="px-6 py-5 bg-gradient-to-r from-blue-700 to-buku-600 text-white flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-white/20 text-white flex items-center justify-center text-sm shadow-xs backdrop-blur-sm">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-extrabold text-white">Ubah Data Layanan</h3>
+              <p class="text-xs text-buku-100">Update data di PostgreSQL &middot; <span id="editIdLabel" class="font-mono text-white font-bold"></span></p>
+            </div>
+          </div>
+          <button onclick="tutupModalEdit()" class="w-8 h-8 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+
+        <form id="formEdit" onsubmit="handleEdit(event)" class="p-6 space-y-4">
+          <input type="hidden" id="editId" name="id">
+
+          <div class="grid grid-cols-2 gap-3.5">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Kode ID</label>
+              <input type="text" id="editDisplayId" disabled
+                class="w-full px-3.5 py-2.5 bg-slate-100 border border-slate-200 rounded-xl text-xs font-mono font-bold text-slate-500 cursor-not-allowed">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Kategori *</label>
+              <select id="editKategori" name="kategori" required
+                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-buku-500/20 focus:border-buku-600 transition">
+                <option value="Perawatan">Perawatan</option>
+                <option value="Penggantian Suku Cadang">Penggantian Suku Cadang</option>
+                <option value="Keselamatan">Keselamatan</option>
+                <option value="Perbaikan Besar">Perbaikan Besar</option>
+                <option value="Diagnosis">Diagnosis</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Nama Layanan *</label>
+            <input type="text" id="editNama" name="nama" required
+              class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:bg-white focus:outline-none focus:ring-2 focus:ring-buku-500/20 focus:border-buku-600 transition">
+          </div>
+
+          <div class="grid grid-cols-2 gap-3.5">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Tarif Mulai (Rp) *</label>
+              <div class="relative">
+                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-mono font-bold">Rp</span>
+                <input type="number" id="editHarga" name="hargaMulaiDari" min="0" step="5000" required
+                  class="w-full pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-black focus:bg-white focus:outline-none focus:ring-2 focus:ring-buku-500/20 focus:border-buku-600 transition">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Estimasi Pengerjaan *</label>
+              <div class="relative">
+                <input type="number" id="editEstimasi" name="estimasiMenit" min="5" step="5" required
+                  class="w-full px-3.5 pr-12 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-black focus:bg-white focus:outline-none focus:ring-2 focus:ring-buku-500/20 focus:border-buku-600 transition">
+                <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[11px] font-bold">mnt</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Rincian Prosedur</label>
+            <textarea id="editDeskripsi" name="deskripsi" rows="3"
+              class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-buku-500/20 focus:border-buku-600 transition"></textarea>
+          </div>
+
+          <div class="flex items-center gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+            <input type="checkbox" id="editTersedia" name="tersedia" value="true"
+              class="w-4 h-4 rounded border-slate-300 text-buku-600 focus:ring-buku-500 cursor-pointer">
+            <label for="editTersedia" class="text-xs font-bold text-slate-800 cursor-pointer select-none">
+              Layanan aktif dan siap menerima booking pelanggan
+            </label>
+          </div>
+
+          <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+            <button type="button" onclick="tutupModalEdit()"
+              class="px-5 py-2.5 rounded-full border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-bold transition">
+              Batal
+            </button>
+            <button type="submit" id="btnSubmitEdit"
+              class="px-6 py-2.5 rounded-full bg-buku-600 hover:bg-buku-700 text-white text-xs font-bold shadow-buku-sm transition">
+              Simpan Perubahan
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- MODAL: DETAIL LAYANAN (INSPECT VIEW)                                    -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="modalDetail" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="min-h-screen px-4 flex items-center justify-center">
+      <div class="fixed inset-0 modal-backdrop-blur transition-opacity" onclick="tutupModalDetail()"></div>
+
+      <div class="relative bg-white rounded-3xl max-w-md w-full shadow-dropdown border border-slate-200 my-8 z-10 overflow-hidden">
+        <div class="p-6 pb-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
+          <div class="flex items-center gap-2">
+            <span id="detailBadgeId" class="px-2.5 py-1 rounded-lg text-xs font-mono font-black bg-buku-700 text-white shadow-xs"></span>
+            <span id="detailKategori" class="text-[11px] font-bold px-3 py-0.5 rounded-full border"></span>
+          </div>
+          <button onclick="tutupModalDetail()" class="w-8 h-8 rounded-full bg-white border border-slate-200 hover:bg-slate-100 text-slate-500 flex items-center justify-center transition">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+
+        <div class="p-6 space-y-4">
+          <div>
+            <h4 id="detailNama" class="text-lg font-black text-slate-900 leading-snug"></h4>
+            <p id="detailDeskripsi" class="text-xs text-slate-600 mt-2.5 bg-slate-50 p-4 rounded-2xl border border-slate-200 leading-relaxed"></p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div class="p-3.5 rounded-2xl bg-buku-50 border border-buku-100">
+              <span class="text-[10px] uppercase font-bold text-buku-700 block font-mono">Tarif Mulai</span>
+              <span id="detailHarga" class="text-base font-black text-buku-800 font-mono"></span>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+              <span class="text-[10px] uppercase font-bold text-slate-500 block font-mono">Estimasi Waktu</span>
+              <span id="detailEstimasi" class="text-base font-black text-slate-900 font-mono"></span>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
+            <span class="text-slate-500 font-semibold">Status Operasional:</span>
+            <span id="detailStatus"></span>
+          </div>
+
+          <div class="pt-2 text-[11px] text-slate-400 font-mono flex items-center justify-between">
+            <span>Endpoint REST API:</span>
+            <code id="detailEndpoint" class="bg-buku-50 text-buku-700 px-2 py-0.5 rounded-md font-bold border border-buku-100"></code>
+          </div>
+        </div>
+
+        <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end">
+          <button onclick="tutupModalDetail()" class="px-5 py-2 rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold transition shadow-xs">
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- MODAL: KONFIRMASI HAPUS                                                 -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="modalHapus" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="min-h-screen px-4 flex items-center justify-center">
+      <div class="fixed inset-0 modal-backdrop-blur transition-opacity" onclick="tutupModalHapus()"></div>
+
+      <div class="relative bg-white rounded-3xl max-w-sm w-full p-6 shadow-dropdown border border-slate-200 my-8 z-10 text-center">
+        <div class="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl mx-auto mb-3.5 border-2 border-rose-100">
+          <i class="fa-solid fa-trash-can"></i>
+        </div>
+        <h3 class="text-base font-black text-slate-900">Hapus Layanan dari Database?</h3>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+          Apakah Anda yakin ingin menghapus <span id="hapusItemNama" class="font-bold text-slate-900"></span>? Data akan dihapus secara permanen dari tabel PostgreSQL.
+        </p>
+
+        <div class="flex items-center justify-center gap-2.5 mt-5 pt-4 border-t border-slate-100">
+          <button onclick="tutupModalHapus()" class="px-5 py-2.5 rounded-full border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-bold transition flex-1">
+            Batal
+          </button>
+          <button id="btnConfirmHapus" onclick="eksekusiHapus()" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white text-xs font-bold shadow-md shadow-rose-500/25 transition flex-1">
+            Hapus Data
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- TOAST NOTIFICATION CONTAINER                                            -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- JAVASCRIPT LOGIC UNTUK CRUD                                             -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <script>
+    let hapusTargetId = null;
+
+    // Toast Generator
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      const isError = type === 'error';
+      toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-2xl shadow-dropdown border text-xs font-bold transition-all duration-300 transform translate-y-2 opacity-0 ${
+        isError ? 'bg-slate-900 text-white border-rose-500/50' : 'bg-slate-900 text-white border-emerald-500/50'
+      }`;
+      toast.innerHTML = `
+        <span class="w-6 h-6 rounded-lg ${isError ? 'bg-rose-500/20 text-rose-400' : 'bg-emerald-500/20 text-emerald-400'} flex items-center justify-center">
+          <i class="fa-solid ${isError ? 'fa-circle-xmark' : 'fa-circle-check'} text-xs"></i>
+        </span>
+        <span class="text-white">${message}</span>
+      `;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 250);
+      }, 3200);
+    }
+
+    // Modal Control Tambah
+    function bukaModalTambah() {
+      document.getElementById('modalTambah').classList.remove('hidden');
+    }
+    function tutupModalTambah() {
+      document.getElementById('modalTambah').classList.add('hidden');
+      document.getElementById('formTambah').reset();
+    }
+
+    // Modal Control Edit
+    async function bukaModalEdit(id) {
+      try {
+        const res = await fetch(`/api/produk/${id}`);
+        const result = await res.json();
+        if (!result.sukses || !result.data) {
+          showToast(result.pesan || 'Gagal memuat rincian data', 'error');
+          return;
+        }
+
+        const item = result.data;
+        document.getElementById('editId').value = item.id;
+        document.getElementById('editIdLabel').textContent = item.id;
+        document.getElementById('editDisplayId').value = item.id;
+        document.getElementById('editNama').value = item.nama;
+        document.getElementById('editKategori').value = item.kategori;
+        document.getElementById('editHarga').value = item.hargaMulaiDari;
+        document.getElementById('editEstimasi').value = item.estimasiMenit;
+        document.getElementById('editDeskripsi').value = item.deskripsi || '';
+        document.getElementById('editTersedia').checked = Boolean(item.tersedia);
+
+        document.getElementById('modalEdit').classList.remove('hidden');
+      } catch (err) {
+        showToast('Kesalahan jaringan: ' + err.message, 'error');
+      }
+    }
+    function tutupModalEdit() {
+      document.getElementById('modalEdit').classList.add('hidden');
+    }
+
+    // Modal Detail
+    async function lihatDetail(id) {
+      try {
+        const res = await fetch(`/api/produk/${id}`);
+        const result = await res.json();
+        if (!result.sukses || !result.data) {
+          showToast(result.pesan || 'Data tidak ditemukan', 'error');
+          return;
+        }
+        const item = result.data;
+        document.getElementById('detailBadgeId').textContent = item.id;
+
+        const katBadge = document.getElementById('detailKategori');
+        katBadge.textContent = item.kategori;
+        if (item.kategori === 'Perawatan') katBadge.className = 'text-[11px] font-bold px-3 py-0.5 rounded-full border bg-blue-50 text-blue-700 border-blue-200';
+        else if (item.kategori === 'Penggantian Suku Cadang') katBadge.className = 'text-[11px] font-bold px-3 py-0.5 rounded-full border bg-purple-50 text-purple-700 border-purple-200';
+        else if (item.kategori === 'Keselamatan') katBadge.className = 'text-[11px] font-bold px-3 py-0.5 rounded-full border bg-amber-50 text-amber-800 border-amber-200';
+        else if (item.kategori === 'Perbaikan Besar') katBadge.className = 'text-[11px] font-bold px-3 py-0.5 rounded-full border bg-rose-50 text-rose-700 border-rose-200';
+        else katBadge.className = 'text-[11px] font-bold px-3 py-0.5 rounded-full border bg-emerald-50 text-emerald-700 border-emerald-200';
+
+        document.getElementById('detailNama').textContent = item.nama;
+        document.getElementById('detailDeskripsi').textContent = item.deskripsi || 'Tidak ada catatan pengerjaan khusus.';
+        document.getElementById('detailHarga').textContent = item.hargaMulaiDari === 0 ? 'Gratis' : 'Rp ' + Number(item.hargaMulaiDari).toLocaleString('id-ID');
+        document.getElementById('detailEstimasi').textContent = item.estimasiMenit + ' Menit';
+        document.getElementById('detailEndpoint').textContent = `/api/produk/${item.id}`;
+
+        const statusEl = document.getElementById('detailStatus');
+        if (item.tersedia) {
+          statusEl.className = 'font-bold text-emerald-700 flex items-center gap-1.5';
+          statusEl.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Siap Dipesan';
+        } else {
+          statusEl.className = 'font-bold text-slate-500 flex items-center gap-1.5';
+          statusEl.innerHTML = '<span class="w-2 h-2 rounded-full bg-slate-400"></span> Nonaktif / Penuh';
+        }
+
+        document.getElementById('modalDetail').classList.remove('hidden');
+      } catch (err) {
+        showToast('Kesalahan memuat rincian: ' + err.message, 'error');
+      }
+    }
+    function tutupModalDetail() {
+      document.getElementById('modalDetail').classList.add('hidden');
+    }
+
+    // Modal Hapus
+    function konfirmasiHapus(id, nama) {
+      hapusTargetId = id;
+      document.getElementById('hapusItemNama').textContent = `"${nama}" (${id})`;
+      document.getElementById('modalHapus').classList.remove('hidden');
+    }
+    function tutupModalHapus() {
+      document.getElementById('modalHapus').classList.add('hidden');
+      hapusTargetId = null;
+    }
+
+    // CRUD: POST /api/produk
+    async function handleTambah(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      const payload = {
+        id: formData.get('id'),
+        nama: formData.get('nama'),
+        kategori: formData.get('kategori'),
+        deskripsi: formData.get('deskripsi'),
+        hargaMulaiDari: formData.get('hargaMulaiDari'),
+        estimasiMenit: formData.get('estimasiMenit'),
+        tersedia: form.querySelector('#tersediaTambah').checked,
+      };
+
+      const btn = document.getElementById('btnSubmitTambah');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+
+      try {
+        const res = await fetch('/api/produk', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+        if (res.ok && result.sukses) {
+          showToast('Paket layanan berhasil ditambahkan ke database!');
+          tutupModalTambah();
+          setTimeout(() => location.reload(), 450);
+        } else {
+          showToast(result.pesan || 'Gagal menyimpan data', 'error');
+        }
+      } catch (err) {
+        showToast('Kesalahan jaringan: ' + err.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Simpan ke Database';
+      }
+    }
+
+    // CRUD: PUT /api/produk/:id
+    async function handleEdit(e) {
+      e.preventDefault();
+      const id = document.getElementById('editId').value;
+      const payload = {
+        nama: document.getElementById('editNama').value,
+        kategori: document.getElementById('editKategori').value,
+        deskripsi: document.getElementById('editDeskripsi').value,
+        hargaMulaiDari: document.getElementById('editHarga').value,
+        estimasiMenit: document.getElementById('editEstimasi').value,
+        tersedia: document.getElementById('editTersedia').checked,
+      };
+
+      const btn = document.getElementById('btnSubmitEdit');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memperbarui...';
+
+      try {
+        const res = await fetch(`/api/produk/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+        if (res.ok && result.sukses) {
+          showToast('Paket layanan berhasil diperbarui!');
+          tutupModalEdit();
+          setTimeout(() => location.reload(), 450);
+        } else {
+          showToast(result.pesan || 'Gagal memperbarui data', 'error');
+        }
+      } catch (err) {
+        showToast('Kesalahan jaringan: ' + err.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Simpan Perubahan';
+      }
+    }
+
+    // CRUD: DELETE /api/produk/:id
+    async function eksekusiHapus() {
+      if (!hapusTargetId) return;
+      const btn = document.getElementById('btnConfirmHapus');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menghapus...';
+
+      try {
+        const res = await fetch(`/api/produk/${hapusTargetId}`, {
+          method: 'DELETE',
+        });
+        const result = await res.json();
+        if (res.ok && result.sukses) {
+          showToast('Paket layanan berhasil dihapus dari database!');
+          tutupModalHapus();
+          setTimeout(() => location.reload(), 450);
+        } else {
+          showToast(result.pesan || 'Gagal menghapus data', 'error');
+        }
+      } catch (err) {
+        showToast('Kesalahan jaringan: ' + err.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Hapus Data';
+      }
+    }
+
+    // Live Filters (Search, Category, Status)
+    const searchInput = document.getElementById('searchInput');
+    const kategoriFilter = document.getElementById('kategoriFilter');
+    const statusFilter = document.getElementById('statusFilter');
+
+    function applyFilter() {
+      const q = searchInput.value.toLowerCase().trim();
+      const kat = kategoriFilter.value.toLowerCase();
+      const stat = statusFilter.value.toLowerCase();
+      const rows = document.querySelectorAll('#tableBody tr[data-id]');
+      let visible = 0;
+
+      rows.forEach(row => {
+        const nama = row.getAttribute('data-nama');
+        const rkat = row.getAttribute('data-kategori');
+        const desk = row.getAttribute('data-deskripsi');
+        const id = row.getAttribute('data-id').toLowerCase();
+        const rstat = row.getAttribute('data-status');
+
+        const matchSearch = !q || nama.includes(q) || rkat.includes(q) || desk.includes(q) || id.includes(q);
+        const matchKategori = (kat === 'all') || (rkat === kat);
+        const matchStatus = (stat === 'all') || (rstat === stat);
+
+        if (matchSearch && matchKategori && matchStatus) {
+          row.style.display = '';
+          visible++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      const countEl = document.getElementById('visibleCount');
+      if (countEl) countEl.textContent = visible;
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', applyFilter);
+      window.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          searchInput.focus();
+        }
+      });
+    }
+    if (kategoriFilter) kategoriFilter.addEventListener('change', applyFilter);
+    if (statusFilter) statusFilter.addEventListener('change', applyFilter);
+
+    function refreshData() {
+      location.reload();
+    }
+  </script>
+
+<%- include('partials/footer', { tahun, appName }) %>
