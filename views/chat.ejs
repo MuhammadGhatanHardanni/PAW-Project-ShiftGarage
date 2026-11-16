@@ -1,0 +1,470 @@
+<%- include('partials/head', { judul }) %>
+
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-sans text-sm selection:bg-gold-400 selection:text-navy-950">
+
+  <!-- ═══ NAVBAR (STYLE AUTOMOTIVE DEEP NAVY & GOLD) ═══ -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-2.5 group transition">
+          <div class="w-10 h-10 rounded-xl bg-gold-400 text-navy-950 flex items-center justify-center font-black text-base shadow-gold-sm group-hover:scale-105 transition">
+            <i class="fa-solid fa-motorcycle"></i>
+          </div>
+          <div class="leading-none">
+            <span class="text-xl font-black tracking-tight text-navy-900 block">
+              ShiftGarage<span class="text-gold-500">.com</span>
+            </span>
+            <span class="text-[9px] tracking-widest text-slate-400 font-bold uppercase block mt-1">AI ASSISTANT &bull; GEMINI LLM</span>
+          </div>
+        </a>
+
+        <!-- Nav Links -->
+        <nav class="hidden lg:flex items-center gap-6 text-xs font-bold text-slate-600">
+          <a href="/" class="hover:text-navy-900 transition">Beranda</a>
+          <a href="/admin" class="hover:text-navy-900 transition">Portal Admin</a>
+          <a href="/chat" class="text-navy-950 font-black transition flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gold-100 text-gold-800 border border-gold-300">
+            <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
+            <span>AI Assistant</span>
+          </a>
+          <a href="/#our-services" class="hover:text-navy-900 transition">Katalog Layanan</a>
+        </nav>
+
+        <!-- Right Action Buttons -->
+        <div class="flex items-center gap-4 shrink-0">
+          <a href="/admin/login" class="text-xs font-bold text-slate-600 hover:text-navy-900 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-lock text-[11px] text-slate-400"></i>
+            <span>Masuk Staf</span>
+          </a>
+          <a href="/"
+            class="px-5 py-2.5 rounded-full bg-navy-900 hover:bg-navy-850 text-white text-xs font-black transition flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-arrow-left text-[10px]"></i>
+            <span>Ke Beranda</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ MAIN CHAT CONTAINER ═══ -->
+  <main class="flex-1 py-8 sm:py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+    
+    <!-- Top Header & Context Badges -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-navy-900 text-gold-400 text-xs font-bold mb-3 shadow-2xs">
+          <i class="fa-solid fa-robot"></i>
+          <span>Generative AI Assistant Powered by Google Gemini</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-black text-navy-900 tracking-tight">
+          Konsultasi &amp; Tanya Layanan Bengkel
+        </h1>
+        <p class="text-slate-500 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
+          Tanyakan estimasi tarif, durasi pengerjaan di pit, keluhan motor, atau rekomendasi servis. Respons divalidasi langsung dari database PostgreSQL Shift Garage.
+        </p>
+      </div>
+
+      <!-- Quick Metrics -->
+      <div class="flex items-center gap-3">
+        <div class="bg-white px-4 py-2.5 rounded-2xl border border-slate-200 shadow-xs text-xs font-medium text-slate-600 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Context DB: <strong><%= (typeof layanan !== 'undefined' && layanan) ? layanan.length : 0 %> Layanan</strong></span>
+        </div>
+        <div class="bg-white px-4 py-2.5 rounded-2xl border border-slate-200 shadow-xs text-xs font-mono font-bold text-navy-900">
+          Model: <%= typeof modelName !== 'undefined' ? modelName : 'gemini-2.5-flash' %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Workspace Grid: Sidebar + Messenger -->
+    <div class="grid lg:grid-cols-12 gap-8 items-start">
+
+      <!-- ── Left Column: Guidelines, Context & Quick Prompts (4 cols) ── -->
+      <div class="lg:col-span-4 space-y-6">
+        
+        <!-- Shift AI Profile Card -->
+        <div class="bg-white p-6 rounded-3xl border border-slate-200/90 shadow-card">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-14 h-14 rounded-2xl bg-gold-400 text-navy-950 flex items-center justify-center text-2xl font-black shadow-gold-sm">
+              <i class="fa-solid fa-robot"></i>
+            </div>
+            <div>
+              <h2 class="font-black text-navy-900 text-base">Shift AI Assistant</h2>
+              <span class="inline-flex items-center gap-1.5 text-xs text-emerald-600 font-bold">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Sistem Aktif &amp; Terhubung
+              </span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            Asisten cerdas <strong>Shift Garage</strong> yang dirancang dengan sistem instruksi kontekstual, AI Guardrail ketat, dan integrasi backend Express.js MVC.
+          </p>
+
+          <div class="mt-4 pt-4 border-t border-slate-100 space-y-2 text-xs">
+            <div class="flex items-center justify-between text-slate-600">
+              <span class="text-slate-400">Jam Buka:</span>
+              <span class="font-bold text-slate-800">Senin - Sabtu: 08.00 - 17.00</span>
+            </div>
+            <div class="flex items-center justify-between text-slate-600">
+              <span class="text-slate-400">Mekanik Utama:</span>
+              <span class="font-bold text-slate-800">Pak Vinsen (Sertifikasi)</span>
+            </div>
+            <div class="flex items-center justify-between text-slate-600">
+              <span class="text-slate-400">Garansi Servis:</span>
+              <span class="font-bold text-emerald-600">7 Hari Garansi Pengerjaan</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Prompt Chips -->
+        <div class="bg-white p-6 rounded-3xl border border-slate-200/90 shadow-card">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-lightbulb text-gold-500"></i>
+            <span>Saran Pertanyaan Cepat</span>
+          </h3>
+          <p class="text-xs text-slate-500 mb-4">
+            Klik salah satu pertanyaan di bawah untuk langsung mengirimkan prompt ke AI Assistant:
+          </p>
+
+          <div class="space-y-2.5">
+            <button onclick="fillAndSend('Layanan servis apa saja yang tersedia di Shift Garage saat ini?')"
+              class="w-full text-left p-3 rounded-2xl bg-slate-50 hover:bg-gold-50 border border-slate-200 hover:border-gold-400 text-xs font-medium text-slate-700 hover:text-navy-950 transition flex items-center justify-between group">
+              <span>🏍️ Katalog semua layanan servis</span>
+              <i class="fa-solid fa-arrow-right text-[10px] text-slate-400 group-hover:text-gold-600 group-hover:translate-x-0.5 transition-transform"></i>
+            </button>
+
+            <button onclick="fillAndSend('Berapa estimasi biaya dan durasi waktu untuk Tune-Up Injeksi Komplit?')"
+              class="w-full text-left p-3 rounded-2xl bg-slate-50 hover:bg-gold-50 border border-slate-200 hover:border-gold-400 text-xs font-medium text-slate-700 hover:text-navy-950 transition flex items-center justify-between group">
+              <span>💰 Tarif &amp; waktu Tune-Up Injeksi</span>
+              <i class="fa-solid fa-arrow-right text-[10px] text-slate-400 group-hover:text-gold-600 group-hover:translate-x-0.5 transition-transform"></i>
+            </button>
+
+            <button onclick="fillAndSend('Motor matic saya terasa bergetar dan gredek saat tarikan awal. Apa solusinya di bengkel ini?')"
+              class="w-full text-left p-3 rounded-2xl bg-slate-50 hover:bg-gold-50 border border-slate-200 hover:border-gold-400 text-xs font-medium text-slate-700 hover:text-navy-950 transition flex items-center justify-between group">
+              <span>🔧 Solusi motor matic gredek (CVT)</span>
+              <i class="fa-solid fa-arrow-right text-[10px] text-slate-400 group-hover:text-gold-600 group-hover:translate-x-0.5 transition-transform"></i>
+            </button>
+
+            <button onclick="fillAndSend('Buatkan saya kode program untuk membuat game.')"
+              class="w-full text-left p-3 rounded-2xl bg-rose-50/70 hover:bg-rose-100/70 border border-rose-200 text-xs font-medium text-rose-800 transition flex items-center justify-between group">
+              <span>🛡️ Uji Guardrail (Pertanyaan di luar topik)</span>
+              <i class="fa-solid fa-shield text-[10px] text-rose-500"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- AI Guardrails Rules Box -->
+        <div class="bg-navy-900 text-white p-6 rounded-3xl shadow-card border border-navy-800">
+          <h3 class="text-xs font-black uppercase tracking-wider text-gold-400 mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-shield-halved text-gold-400"></i>
+            <span>AI Guardrail &amp; Batasan Sistem</span>
+          </h3>
+          <ul class="space-y-2.5 text-xs text-slate-300">
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-emerald-400 mt-0.5 text-[10px]"></i>
+              <span><strong>Context-Based:</strong> Jawaban dibatasi hanya pada topik layanan, harga, dan operasional Shift Garage.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-emerald-400 mt-0.5 text-[10px]"></i>
+              <span><strong>Penolakan Sopan:</strong> Permintaan di luar bengkel (coding game, politik, resep) ditolak dan diarahkan kembali.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-emerald-400 mt-0.5 text-[10px]"></i>
+              <span><strong>Anti-Hallucination:</strong> Data bersumber langsung dari database PostgreSQL.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-emerald-400 mt-0.5 text-[10px]"></i>
+              <span><strong>Validasi Backend:</strong> Middleware memeriksa panjang pesan (2-500 karakter).</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ── Right Column: Interactive Chat Canvas (8 cols) ── -->
+      <div class="lg:col-span-8">
+        <div class="bg-white rounded-3xl border border-slate-200/90 shadow-card flex flex-col h-[700px] overflow-hidden">
+          
+          <!-- Top Bar -->
+          <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50/70">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-navy-900 text-gold-400 flex items-center justify-center text-sm shadow-xs font-black">
+                <i class="fa-solid fa-comments"></i>
+              </div>
+              <div>
+                <h3 class="font-black text-sm text-navy-900">Ruang Percakapan Asisten</h3>
+                <p class="text-[11px] text-slate-500 font-mono">Endpoint: POST /api/chat &bull; Status: 200 OK</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button onclick="clearChatScreen()"
+                class="px-4 py-2 rounded-full border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 text-xs font-bold transition flex items-center gap-1.5 shadow-2xs">
+                <i class="fa-solid fa-trash-can text-slate-400"></i>
+                <span>Reset Chat</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Messages Stream -->
+          <div id="fullChatMessages" class="flex-1 min-h-0 p-6 overflow-y-auto space-y-4 bg-gradient-to-b from-slate-50/40 to-white">
+            
+            <!-- Bot Initial Greeting -->
+            <div class="flex items-start gap-3.5">
+              <div class="w-9 h-9 rounded-2xl bg-gold-400 text-navy-950 font-black flex items-center justify-center text-sm shrink-0 shadow-gold-sm mt-0.5">
+                <i class="fa-solid fa-robot"></i>
+              </div>
+              <div class="max-w-[85%] bg-white p-5 rounded-3xl rounded-tl-sm border border-slate-200/80 text-slate-800 text-xs sm:text-sm shadow-card space-y-3 leading-relaxed">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                  <span class="font-bold text-navy-900">Shift AI Assistant</span>
+                  <span class="text-[10px] text-slate-400 font-mono">Terkoneksi</span>
+                </div>
+                <p>
+                  Halo! Saya <strong>Shift AI Assistant</strong>, asisten virtual resmi untuk <strong>Shift Garage</strong>. 🏍️💨
+                </p>
+                <p class="text-slate-600">
+                  Saya memiliki akses langsung ke database layanan kami dan siap membantu Anda menjawab:
+                </p>
+                <ul class="list-disc pl-5 space-y-1 text-slate-600 text-xs">
+                  <li>Daftar lengkap paket servis motor dan kategorinya</li>
+                  <li>Tarif biaya dasar mulai dari (Rp) dan durasi menit pengerjaan pit</li>
+                  <li>Konsultasi keluhan motor ringan (seperti motor gredek, brebet, rem aus)</li>
+                  <li>Jam operasional, lokasi cabang, dan fasilitas bengkel</li>
+                </ul>
+                <p class="text-[11px] text-navy-900 bg-gold-50 p-3 rounded-xl border border-gold-200 font-medium">
+                  💡 <em>Silakan ketik pertanyaan Anda di form bawah atau klik contoh pertanyaan cepat di sisi kiri!</em>
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Typing Indicator -->
+          <div id="fullChatLoading" class="hidden px-6 py-2.5 bg-slate-50 border-t border-slate-100 flex items-center gap-3">
+            <div class="w-6 h-6 rounded-xl bg-gold-100 text-navy-950 flex items-center justify-center text-xs">
+              <i class="fa-solid fa-spinner fa-spin"></i>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-600">Shift AI sedang memproses context database dan merespons...</span>
+              <div class="flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-bounce"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-bounce" style="animation-delay: 0.15s"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-bounce" style="animation-delay: 0.3s"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Error Alert Banner -->
+          <div id="fullChatError" class="hidden px-6 py-2.5 bg-rose-50 border-t border-rose-200 text-rose-700 text-xs flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-circle-exclamation text-rose-500"></i>
+              <span id="fullChatErrorText">Terjadi kesalahan pada request.</span>
+            </div>
+            <button onclick="document.getElementById('fullChatError').classList.add('hidden')" class="text-rose-400 hover:text-rose-700">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <!-- Input Footer Area -->
+          <form id="fullChatForm" onsubmit="submitFullChat(event)" class="p-4 sm:p-5 bg-white border-t border-slate-200 shrink-0">
+            <div class="flex items-end gap-3 bg-slate-50 rounded-2xl p-2 border border-slate-200 focus-within:border-gold-400 focus-within:bg-white focus-within:ring-2 focus-within:ring-gold-100 transition">
+              <textarea id="fullChatInput" rows="2" maxlength="500"
+                placeholder="Tanyakan paket servis, tarif, keluhan motor, atau estimasi durasi..."
+                class="flex-1 bg-transparent px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 resize-none outline-none max-h-32 scrollbar-none"></textarea>
+
+              <button type="submit" id="fullChatSendBtn"
+                class="px-6 py-3 rounded-xl bg-gold-400 hover:bg-gold-300 text-navy-950 font-black text-xs sm:text-sm flex items-center gap-2 shrink-0 shadow-gold-sm transition disabled:opacity-40 disabled:cursor-not-allowed active:scale-95">
+                <span>Kirim</span>
+                <i class="fa-solid fa-paper-plane text-xs"></i>
+              </button>
+            </div>
+
+            <div class="flex items-center justify-between mt-2.5 px-2 text-[11px] text-slate-400">
+              <span class="flex items-center gap-1.5">
+                <i class="fa-solid fa-keyboard text-slate-300"></i>
+                <span>Tekan <kbd class="px-1.5 py-0.5 rounded bg-slate-100 font-mono text-[10px] text-slate-600 border border-slate-200">Enter</kbd> untuk mengirim, <kbd class="px-1.5 py-0.5 rounded bg-slate-100 font-mono text-[10px] text-slate-600 border border-slate-200">Shift+Enter</kbd> untuk baris baru</span>
+              </span>
+              <span id="fullChatCharCount" class="font-mono text-xs">0 / 500</span>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Full Page Chat Script -->
+  <script>
+    let fullChatLoading = false;
+
+    const fullInput = document.getElementById('fullChatInput');
+    const fullForm = document.getElementById('fullChatForm');
+    const fullMessages = document.getElementById('fullChatMessages');
+    const fullLoading = document.getElementById('fullChatLoading');
+    const fullError = document.getElementById('fullChatError');
+    const fullErrorText = document.getElementById('fullChatErrorText');
+    const fullCharCount = document.getElementById('fullChatCharCount');
+    const fullSendBtn = document.getElementById('fullChatSendBtn');
+
+    fullInput.addEventListener('input', function() {
+      fullCharCount.textContent = `${this.value.length} / 500`;
+    });
+
+    fullInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        fullForm.dispatchEvent(new Event('submit', { cancelable: true }));
+      }
+    });
+
+    function fillAndSend(promptText) {
+      if (fullChatLoading) return;
+      fullInput.value = promptText;
+      fullCharCount.textContent = `${promptText.length} / 500`;
+      fullForm.dispatchEvent(new Event('submit', { cancelable: true }));
+    }
+
+    function appendMessageFull(sender, text) {
+      const row = document.createElement('div');
+      row.className = sender === 'user' ? 'flex items-start justify-end gap-3.5' : 'flex items-start gap-3.5';
+
+      if (sender === 'user') {
+        row.innerHTML = `
+          <div class="max-w-[80%] bg-navy-900 text-white p-4 rounded-3xl rounded-tr-sm text-xs sm:text-sm shadow-sm leading-relaxed whitespace-pre-wrap">
+            ${escapeHtml(text)}
+          </div>
+          <div class="w-9 h-9 rounded-2xl bg-gold-400 text-navy-950 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold shadow-xs">
+            <i class="fa-solid fa-user"></i>
+          </div>
+        `;
+      } else {
+        const formatted = formatAiMarkdown(text);
+        row.innerHTML = `
+          <div class="w-9 h-9 rounded-2xl bg-gold-400 text-navy-950 font-black flex items-center justify-center text-sm shrink-0 shadow-gold-sm mt-0.5">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <div class="max-w-[85%] bg-white p-5 rounded-3xl rounded-tl-sm border border-slate-200/80 text-slate-800 text-xs sm:text-sm shadow-card space-y-2 leading-relaxed">
+            <div class="prose prose-xs sm:prose-sm text-slate-800">${formatted}</div>
+            <div class="pt-2 border-t border-slate-100 text-[10px] text-slate-400 font-mono flex items-center justify-between">
+              <span>Shift AI Assistant &bull; Google Gemini</span>
+              <button onclick="navigator.clipboard.writeText('${escapeJsString(text)}')" class="hover:text-gold-600 transition flex items-center gap-1 font-sans text-xs">
+                <i class="fa-regular fa-copy"></i>
+                <span>Salin</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      fullMessages.appendChild(row);
+      fullMessages.scrollTop = fullMessages.scrollHeight;
+    }
+
+    async function submitFullChat(e) {
+      e.preventDefault();
+      if (fullChatLoading) return;
+
+      const message = fullInput.value.trim();
+      fullError.classList.add('hidden');
+
+      if (!message) {
+        showFullError('Pesan tidak boleh kosong.');
+        return;
+      }
+
+      if (message.length < 2) {
+        showFullError('Pesan terlalu pendek, minimal 2 karakter.');
+        return;
+      }
+
+      // Add user message to UI
+      appendMessageFull('user', message);
+      fullInput.value = '';
+      fullCharCount.textContent = '0 / 500';
+
+      // Set loading
+      fullChatLoading = true;
+      fullSendBtn.disabled = true;
+      fullLoading.classList.remove('hidden');
+      fullMessages.scrollTop = fullMessages.scrollHeight;
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.pesan || data.error || `HTTP error ${res.status}`);
+        }
+
+        if (data.success && data.data && data.data.reply) {
+          appendMessageFull('ai', data.data.reply);
+        } else {
+          throw new Error('Respons backend tidak memiliki format yang valid.');
+        }
+      } catch (err) {
+        console.error('Chat error:', err);
+        showFullError(err.message || 'Gagal terhubung ke server.');
+        appendMessageFull('ai', 'Maaf, terjadi kesalahan: ' + err.message);
+      } finally {
+        fullChatLoading = false;
+        fullSendBtn.disabled = false;
+        fullLoading.classList.add('hidden');
+      }
+    }
+
+    function showFullError(msg) {
+      fullErrorText.textContent = msg;
+      fullError.classList.remove('hidden');
+    }
+
+    function clearChatScreen() {
+      fullMessages.innerHTML = `
+        <div class="flex items-start gap-4">
+          <div class="w-9 h-9 rounded-2xl bg-gold-400 text-navy-950 font-black flex items-center justify-center text-sm shrink-0 shadow-gold-sm mt-0.5">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <div class="max-w-[85%] bg-white p-5 rounded-3xl rounded-tl-sm border border-slate-200/80 text-slate-800 text-xs sm:text-sm shadow-card space-y-2 leading-relaxed">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+              <span class="font-bold text-navy-900">Percakapan Direset 🔄</span>
+              <span class="text-[10px] text-slate-400 font-mono">Siap Sedia</span>
+            </div>
+            <p>
+              Riwayat percakapan telah dibersihkan. Silakan tanyakan hal lain seputar layanan dan operasional Shift Garage!
+            </p>
+          </div>
+        </div>
+      `;
+      fullError.classList.add('hidden');
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function escapeJsString(str) {
+      return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n');
+    }
+
+    function formatAiMarkdown(text) {
+      let clean = escapeHtml(text);
+      clean = clean.replace(/\*\*(.*?)\*\*/g, '<strong class="font-extrabold text-navy-900">$1</strong>');
+      clean = clean.replace(/^[•\-\*]\s+(.*)$/gm, '<li class="ml-4 list-disc">$1</li>');
+      clean = clean.replace(/^(\d+)\.\s+(.*)$/gm, '<li class="ml-4 list-decimal font-medium">$2</li>');
+      clean = clean.replace(/`([^`]+)`/g, '<code class="bg-slate-100 text-navy-900 font-mono px-1 py-0.5 rounded text-[11px]">$1</code>');
+      clean = clean.replace(/\n\n/g, '<div class="h-1.5"></div>');
+      clean = clean.replace(/\n/g, '<br/>');
+      return clean;
+    }
+  </script>
+
+<%- include('partials/footer', { tahun, appName }) %>
