@@ -1,46 +1,49 @@
 <%- include('partials/head', { judul }) %>
 
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans text-sm antialiased selection:bg-pro-600 selection:text-white">
-  <div class="h-1 bg-gradient-to-r from-pro-700 via-pro-600 to-cyan-500"></div>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans text-sm antialiased selection:bg-gold-400 selection:text-navy-950">
 
-  <header class="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
+  <header class="sticky top-0 z-40 bg-white border-b border-slate-100 shadow-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <a href="/" class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-pro-700 to-blue-500 text-white flex items-center justify-center font-black text-sm shadow-pro-sm">
-            BP
+      <div class="flex items-center justify-between h-20">
+        <a href="/" class="flex items-center gap-2.5 group">
+          <div class="w-10 h-10 rounded-xl bg-gold-400 text-navy-950 flex items-center justify-center font-black text-base shadow-gold-sm group-hover:scale-105 transition">
+            <i class="fa-solid fa-motorcycle"></i>
           </div>
           <div>
-            <span class="text-base font-extrabold tracking-tight text-slate-900"><%= appName %></span>
-            <p class="text-[10px] text-slate-500 font-semibold">BengkelPro Workshop OS</p>
+            <span class="text-xl font-black tracking-tight text-navy-900 block">
+              ShiftGarage<span class="text-gold-500">.com</span>
+            </span>
+            <span class="text-[9px] tracking-widest text-slate-400 font-bold uppercase block">BENGKEL MOTOR MANDIRI MODERN</span>
           </div>
         </a>
-        <nav class="flex items-center gap-2 text-xs font-bold text-slate-700">
-          <a href="/" class="px-3 py-2 rounded-xl hover:text-pro-600 hover:bg-slate-100 transition">Beranda</a>
-          <a href="/layanan" class="px-3 py-2 rounded-xl text-white bg-pro-600 shadow-pro-sm transition">Katalog CRUD</a>
+        <nav class="flex items-center gap-3 text-xs font-bold text-slate-700">
+          <a href="/" class="px-4 py-2 rounded-full hover:text-navy-900 hover:bg-slate-100 transition">Beranda</a>
+          <a href="/admin/login" class="px-5 py-2.5 rounded-full text-navy-950 bg-gold-400 hover:bg-gold-300 font-black shadow-gold-sm transition">
+            Masuk Staf
+          </a>
         </nav>
       </div>
     </div>
   </header>
 
   <main class="flex-1 flex items-center justify-center px-4 py-20 text-center">
-    <div class="max-w-md bg-white p-8 sm:p-10 rounded-3xl shadow-sm border border-slate-200">
-      <div class="w-16 h-16 rounded-2xl bg-pro-50 text-pro-600 mx-auto flex items-center justify-center text-2xl font-black mb-5 border-2 border-pro-100">
+    <div class="max-w-md bg-white p-8 sm:p-10 rounded-3xl shadow-sm border border-slate-200/90 space-y-4">
+      <div class="w-16 h-16 rounded-2xl bg-navy-900 text-gold-400 mx-auto flex items-center justify-center text-2xl font-black shadow-navy">
         404
       </div>
-      <h1 class="text-xl font-extrabold text-slate-900 mb-2">Halaman Tidak Ditemukan</h1>
-      <p class="text-slate-500 mb-6 text-xs leading-relaxed">
-        Endpoint atau halaman sistem bengkel yang Anda tuju tidak tersedia atau telah dipindahkan.
+      <h1 class="text-2xl font-black text-navy-900 tracking-tight">Halaman Tidak Ditemukan</h1>
+      <p class="text-slate-500 text-xs leading-relaxed">
+        Halaman atau rute yang Anda tuju tidak tersedia atau telah dipindahkan. Silakan kembali ke beranda Shift Garage.
       </p>
-      <div class="flex justify-center gap-3">
-        <a href="/" class="px-5 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition shadow-sm">
+      <div class="pt-2 flex justify-center gap-3">
+        <a href="/" class="px-6 py-3 rounded-full bg-navy-900 text-white text-xs font-black hover:bg-navy-800 transition shadow-sm">
           Kembali ke Beranda
         </a>
-        <a href="/layanan" class="px-5 py-2.5 rounded-xl bg-pro-600 text-white text-xs font-bold hover:bg-pro-700 transition shadow-pro-sm">
-          Buka Katalog CRUD
+        <a href="/#booking" class="px-6 py-3 rounded-full bg-gold-400 text-navy-950 text-xs font-black hover:bg-gold-300 transition shadow-gold-sm">
+          Booking Servis
         </a>
       </div>
     </div>
   </main>
 
-  <%- include('partials/footer', { tahun, appName }) %>
+  <%- include('partials/footer', { tahun: new Date().getFullYear(), appName: 'Shift Garage' }) %>
