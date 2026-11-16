@@ -8,6 +8,8 @@ module.exports = {
   logFile: 'access.log',
   version: '2.0.0 / Pertemuan 7 (Database & CRUD)',
   author: 'Muhammad Ghatan Hardanni - 202140182',
+  bengkelWa: process.env.BENGKEL_WA || '6289620012811',
+  bengkelWaDisplay: '+62 896-2001-2811',
   db: {
     host: process.env.DB_HOST || 'localhost',
     port: parseInt(process.env.DB_PORT, 10) || 5432,
