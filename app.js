@@ -69,6 +69,8 @@ async function startServer() {
     console.log('\x1b[36m╠═══════════════════════════════════════════════════════════╣\x1b[0m');
     console.log(`\x1b[36m║\x1b[0m  🌐 Beranda      : \x1b[32mhttp://localhost:${config.port}\x1b[0m                       \x1b[36m║\x1b[0m`);
     console.log(`\x1b[36m║\x1b[0m  📋 Kelola CRUD  : \x1b[32mhttp://localhost:${config.port}/layanan\x1b[0m                \x1b[36m║\x1b[0m`);
+    console.log(`\x1b[36m║\x1b[0m  💬 AI Assistant : \x1b[32mhttp://localhost:${config.port}/chat\x1b[0m                   \x1b[36m║\x1b[0m`);
+    console.log(`\x1b[36m║\x1b[0m  🤖 Chat API     : \x1b[32mhttp://localhost:${config.port}/api/chat\x1b[0m               \x1b[36m║\x1b[0m`);
     console.log(`\x1b[36m║\x1b[0m  ⚡ REST API     : \x1b[32mhttp://localhost:${config.port}/api/produk\x1b[0m             \x1b[36m║\x1b[0m`);
     console.log(`\x1b[36m║\x1b[0m  🔍 Status Server: \x1b[32mhttp://localhost:${config.port}/api/status\x1b[0m             \x1b[36m║\x1b[0m`);
     console.log(`\x1b[36m║\x1b[0m  🐘 Database     : PostgreSQL (${config.db.host}:${config.db.port}/${config.db.database})       \x1b[36m║\x1b[0m`);
