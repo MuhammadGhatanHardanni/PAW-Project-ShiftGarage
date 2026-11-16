@@ -24,16 +24,41 @@
             mono: ['"JetBrains Mono"', 'monospace'],
           },
           colors: {
-            // Palette terinspirasi dari referensi SaaS Bengkel Modern (Royal Blue + Slate)
-            buku: {
-              50: '#eff6ff',
-              100: '#dbeafe',
-              200: '#bfdbfe',
-              500: '#3b82f6',
-              600: '#2563eb', // Core Primary Blue
-              700: '#1d4ed8',
-              800: '#1e40af',
-              900: '#1e3a8a',
+            // Palette Automotive Deep Navy & Radiant Gold (Persis Mockup CarWash / Shift Garage)
+            navy: {
+              700: '#1D3B5C',
+              800: '#13283E',
+              850: '#0F2236',
+              900: '#0B1B2B', // Deep automotive navy dari referensi
+              950: '#07121E',
+            },
+            gold: {
+              300: '#FDE047',
+              400: '#FACC15', // Vibrant yellow accent tombol & badge
+              500: '#EAB308',
+              600: '#CA8A04',
+            },
+            // Palette Racing Red & Carbon Slate (Kompatibilitas Admin)
+            brand: {
+              50: '#fef2f2',
+              100: '#fee2e2',
+              200: '#fecaca',
+              300: '#fca5a5',
+              400: '#f87171',
+              500: '#ef4444',
+              600: '#dc2626',
+              700: '#b91c1c',
+              800: '#991b1b',
+              900: '#7f1d1d',
+              950: '#450a0a',
+            },
+            // Aksen Amber & Orange untuk status antrean dan badge
+            accent: {
+              50: '#fffbeb',
+              100: '#fef3c7',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
             },
             slateDark: {
               800: '#1e293b',
@@ -42,8 +67,11 @@
             }
           },
           boxShadow: {
-            'buku': '0 10px 25px -5px rgba(37, 99, 235, 0.25), 0 8px 10px -6px rgba(37, 99, 235, 0.15)',
-            'buku-sm': '0 4px 14px -2px rgba(37, 99, 235, 0.2)',
+            'gold': '0 10px 25px -5px rgba(250, 204, 21, 0.35), 0 8px 10px -6px rgba(250, 204, 21, 0.2)',
+            'gold-sm': '0 4px 14px -2px rgba(250, 204, 21, 0.25)',
+            'navy': '0 20px 30px -10px rgba(11, 27, 43, 0.4)',
+            'brand': '0 10px 25px -5px rgba(220, 38, 38, 0.28), 0 8px 10px -6px rgba(220, 38, 38, 0.18)',
+            'brand-sm': '0 4px 14px -2px rgba(220, 38, 38, 0.22)',
             'card': '0 2px 10px -2px rgba(15, 23, 42, 0.06), 0 1px 3px -1px rgba(15, 23, 42, 0.04)',
             'card-hover': '0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04)',
             'dropdown': '0 20px 40px -15px rgba(15, 23, 42, 0.18)',
@@ -60,7 +88,7 @@
     html {
       scroll-behavior: smooth;
     }
-    /* Minimalist Blue Scrollbar */
+    /* Minimalist Scrollbar */
     ::-webkit-scrollbar {
       width: 7px;
       height: 7px;
@@ -73,12 +101,39 @@
       border-radius: 9999px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #2563eb;
+      background: #EAB308;
     }
     .modal-backdrop-blur {
-      background-color: rgba(15, 23, 42, 0.6);
+      background-color: rgba(15, 23, 42, 0.65);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
+    }
+    /* Cetak Nota Print Optimization */
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+      #receiptModal, #receiptModal * {
+        visibility: visible !important;
+      }
+      #receiptModal {
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      #receiptModal > div {
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+        margin: 20px auto !important;
+      }
+      #receiptModal button, #receiptModal a {
+        display: none !important;
+      }
     }
   </style>
 </head>
