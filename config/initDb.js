@@ -124,9 +124,40 @@ async function initializeDatabase() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );
+
+      CREATE TABLE IF NOT EXISTS pesanan_booking (
+        id VARCHAR(20) PRIMARY KEY,
+        nama_pelanggan VARCHAR(150) NOT NULL,
+        no_whatsapp VARCHAR(50) NOT NULL,
+        tipe_motor VARCHAR(150) NOT NULL,
+        no_polisi VARCHAR(30) NOT NULL,
+        layanan_id VARCHAR(20),
+        layanan_nama VARCHAR(150),
+        tanggal_booking VARCHAR(30),
+        jam_booking VARCHAR(30),
+        keluhan TEXT,
+        status VARCHAR(50) DEFAULT 'menunggu_konfirmasi',
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+
+      CREATE TABLE IF NOT EXISTS antrean_pit (
+        id VARCHAR(20) PRIMARY KEY,
+        nama_pelanggan VARCHAR(150) NOT NULL,
+        no_whatsapp VARCHAR(50) NOT NULL,
+        tipe_motor VARCHAR(150) NOT NULL,
+        no_polisi VARCHAR(30) NOT NULL,
+        layanan_nama VARCHAR(150),
+        biaya INT DEFAULT 75000,
+        pit_nomor VARCHAR(20) DEFAULT 'Pit 1',
+        mekanik VARCHAR(50) DEFAULT 'Pak Vinsen',
+        status VARCHAR(30) DEFAULT 'menunggu',
+        catatan_servis TEXT,
+        waktu_masuk TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        waktu_selesai TIMESTAMP WITH TIME ZONE
+      );
     `;
     await pool.query(createTableQuery);
-    console.log('\x1b[32m[DB Init]\x1b[0m Tabel "layanan" siap.');
+    console.log('\x1b[32m[DB Init]\x1b[0m Tabel "layanan", "pesanan_booking", & "antrean_pit" siap.');
 
     // 3. Cek apakah ada data awal (seeding)
     const countRes = await pool.query('SELECT COUNT(*) FROM layanan');
