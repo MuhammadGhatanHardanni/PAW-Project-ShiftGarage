@@ -66,6 +66,7 @@ const fallbackLayanan = [
 const LayananModel = {
   /**
    * Mengambil semua data layanan dari database
+   * Dilengkapi sanitasi otomatis: menghapus entri rusak/promosi AI yang terlalu panjang
    */
   async getAll() {
     try {
@@ -73,12 +74,24 @@ const LayananModel = {
         'SELECT * FROM layanan ORDER BY id ASC'
       );
       if (result && result.rows && result.rows.length > 0) {
-        return result.rows.map(formatLayanan);
+        const cleanRows = [];
+        for (const row of result.rows) {
+          // Deteksi entri abnormal/sampah dari AI terdahulu
+          if (row.nama && (row.nama.length > 80 || /caption|promosi|whatsapp.*promo/i.test(row.nama))) {
+            // Hapus otomatis di database PostgreSQL
+            db.query('DELETE FROM layanan WHERE id = $1', [row.id]).catch(() => {});
+          } else {
+            cleanRows.push(row);
+          }
+        }
+        return cleanRows.map(formatLayanan);
       }
     } catch (err) {
       // Fallback fallback data jika database sedang offline
     }
-    return fallbackLayanan.map(formatLayanan);
+    return fallbackLayanan
+      .filter(l => l.nama && l.nama.length <= 80 && !/caption|promosi|whatsapp.*promo/i.test(l.nama))
+      .map(formatLayanan);
   },
 
   /**
