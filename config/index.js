@@ -7,7 +7,7 @@ module.exports = {
   logDir: path.join(__dirname, '..', 'logs'),
   logFile: 'access.log',
   version: '2.0.0 / Pertemuan 7 (Database & CRUD)',
-  author: 'Muhammad Ghatan Hardanni - 202140182',
+  author: 'Muhammad Ghatan Hardanni - 20240140182',
   bengkelWa: process.env.BENGKEL_WA || '6289620012811',
   bengkelWaDisplay: '+62 896-2001-2811',
   db: {
