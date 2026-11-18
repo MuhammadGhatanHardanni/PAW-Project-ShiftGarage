@@ -100,8 +100,16 @@ function saveBookingsToFile() {
 }
 
 function generateBookingId() {
-  const nextNum = inMemoryBookings.length + 1;
-  return `BK-${String(nextNum).padStart(2, '0')}`;
+  // Cari nomor terbesar dari ID yang sudah ada, bukan dari .length (supaya tidak bentrok setelah delete)
+  let maxNum = 0;
+  for (const b of inMemoryBookings) {
+    const match = String(b.id).match(/BK-(\d+)/i);
+    if (match) {
+      const num = parseInt(match[1], 10);
+      if (num > maxNum) maxNum = num;
+    }
+  }
+  return `BK-${String(maxNum + 1).padStart(2, '0')}`;
 }
 
 const BookingModel = {
