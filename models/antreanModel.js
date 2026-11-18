@@ -87,8 +87,16 @@ function saveAntreanToFile() {
 }
 
 function generatePitId() {
-  const nextNum = inMemoryAntrean.length + 1;
-  return `PIT-${String(nextNum).padStart(2, '0')}`;
+  // Cari nomor terbesar dari ID yang sudah ada, bukan dari .length (supaya tidak bentrok setelah delete)
+  let maxNum = 0;
+  for (const a of inMemoryAntrean) {
+    const match = String(a.id).match(/PIT-(\d+)/i);
+    if (match) {
+      const num = parseInt(match[1], 10);
+      if (num > maxNum) maxNum = num;
+    }
+  }
+  return `PIT-${String(maxNum + 1).padStart(2, '0')}`;
 }
 
 const AntreanModel = {
