@@ -143,27 +143,62 @@ exports.formBooking = async (req, res) => {
       return res.redirect('/?notif=Format+nomor+plat+tidak+valid+(contoh:+AB+5928+VG)&tipe=error#booking');
     }
 
+    // 6. VALIDASI TANGGAL BOOKING (Tidak boleh tanggal yang sudah lewat)
+    const tanggalInput = tanggal || new Date().toISOString().split('T')[0];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const bookDate = new Date(tanggalInput + 'T00:00:00');
+    if (bookDate < today) {
+      return res.redirect('/?notif=Tanggal+booking+tidak+boleh+tanggal+yang+sudah+lewat.+Silakan+pilih+tanggal+hari+ini+atau+sesudahnya.&tipe=error#booking');
+    }
+
+    // 7. SLOT LIMIT PER JAM — Maksimal 2 booking per jam per tanggal (sesuai kapasitas 2 pit)
+    const MAX_SLOT_PER_JAM = 2;
+    const jamInput = jam || '10:00 WIB';
+    try {
+      const allBookings = await BookingModel.getAll();
+      const slotTerisi = allBookings.filter(b =>
+        b.tanggal_booking === tanggalInput &&
+        b.jam_booking === jamInput &&
+        b.status !== 'dibatalkan'
+      ).length;
+
+      if (slotTerisi >= MAX_SLOT_PER_JAM) {
+        return res.redirect('/?notif=Maaf,+slot+booking+jam+' + encodeURIComponent(jamInput) + '+tanggal+' + encodeURIComponent(tanggalInput) + '+sudah+penuh+(maks+' + MAX_SLOT_PER_JAM + '+per+jam).+Silakan+pilih+jam+atau+tanggal+lain.&tipe=error#booking');
+      }
+    } catch (_) {
+      // Lanjut jika gagal cek (toleransi error database)
+    }
+
+    // 7b. VALIDASI KHUSUS JIKA MEMILIH "PENGECEKAN & DIAGNOSIS KELUHAN (LAINNYA)"
+    const cleanKeluhan = keluhan ? String(keluhan).trim() : '';
+    if (layanan_id === 'LAINNYA' && cleanKeluhan.length < 3) {
+      return res.redirect('/?notif=Anda+memilih+opsi+Pengecekan+Diagnosis.+Mohon+tuliskan+gejala+kerusakan+motor+Anda+pada+kolom+catatan+keluhan!&tipe=error#booking');
+    }
+
     // Cari nama layanan yang dipilih
     let namaLayanan = 'Servis Umum';
-    if (layanan_id) {
+    if (layanan_id === 'LAINNYA') {
+      namaLayanan = 'Pengecekan & Diagnosis Keluhan';
+    } else if (layanan_id) {
       const l = await LayananModel.getById(layanan_id);
       if (l) namaLayanan = l.nama;
     }
 
-    // 6. SIMPAN SEBAGAI PESANAN MASUK (Status: menunggu_konfirmasi)
+    // 8. SIMPAN SEBAGAI PESANAN MASUK (Status: menunggu_konfirmasi)
     const newBooking = await BookingModel.create({
       nama_pelanggan : cleanNama,
       no_whatsapp    : formattedWa,
       tipe_motor     : cleanMotor,
       no_polisi      : cleanPlat,
-      layanan_id     : layanan_id || null,
+      layanan_id     : (layanan_id === 'LAINNYA') ? null : (layanan_id || null),
       layanan_nama   : namaLayanan,
-      tanggal_booking: tanggal || new Date().toISOString().split('T')[0],
-      jam_booking    : jam || '10:00 WIB',
-      keluhan        : keluhan ? String(keluhan).trim() : 'Pemeriksaan rutin berkala',
+      tanggal_booking: tanggalInput,
+      jam_booking    : jamInput,
+      keluhan        : cleanKeluhan || (layanan_id === 'LAINNYA' ? 'Diagnosis keluhan khusus di Pit' : 'Pemeriksaan rutin berkala'),
     });
 
-    // 7. REDIRECT KE MODAL TWO-WAY WHATSAPP CONFIRMATION
+    // 9. REDIRECT KE MODAL KONFIRMASI RINGKASAN BOOKING
     const q = new URLSearchParams({
       booking_success : '1',
       id              : newBooking.id,
