@@ -47,11 +47,11 @@
 
           <!-- Right Quick Actions -->
           <div class="flex items-center gap-2.5">
-            <!-- Tombol + Antrean Walk-in -->
+            <!-- Tombol Tambah Antrean Walk-in -->
             <button onclick="openWalkinModal()" type="button"
-              class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gold-400 hover:bg-gold-300 text-navy-950 font-black text-xs transition shadow-gold-sm">
+              class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gold-400 hover:bg-gold-300 text-navy-950 font-black text-xs transition shadow-gold-sm cursor-pointer">
               <i class="fa-solid fa-plus text-[10px]"></i>
-              <span>+ Antrean Walk-in</span>
+              <span>Antrean Walk-In</span>
             </button>
 
             <!-- Lihat Website Publik -->
@@ -129,27 +129,28 @@
 
                 <!-- Navigation Menu (Horizontal Scrollable on Mobile, Stacked on Desktop) -->
                 <nav
-                  class="flex md:flex-col gap-1.5 overflow-x-auto md:overflow-x-visible pb-1 md:pb-0 scrollbar-none text-xs font-bold">
+                  class="flex md:flex-col gap-1.5 overflow-x-auto md:overflow-x-visible pb-1 md:pb-0 scrollbar-none text-xs">
 
                   <!-- Menu 1: Kasir & POS Servis -->
                   <button type="button" onclick="switchAdminTab('pos')" id="sidebarBtn-pos"
-                    class="shrink-0 md:shrink w-auto md:w-full flex items-center justify-between gap-2.5 px-3.5 py-2.5 rounded-xl transition <%= activeTab === 'pos' ? 'bg-navy-900 text-gold-400 font-black shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-navy-900' %>">
-                    <div class="flex items-center gap-2">
-                      <i class="fa-solid fa-cash-register text-sm"></i>
-                      <span class="whitespace-nowrap">Kasir &amp; POS</span>
+                    class="w-full flex items-center justify-between gap-2.5 px-3.5 py-2.5 rounded-xl transition text-left cursor-pointer <%= activeTab === 'pos' ? 'bg-navy-900 text-white font-bold shadow-sm' : 'text-slate-600 hover:bg-slate-100 font-semibold' %>">
+                    <div class="flex items-center gap-2.5 shrink-0">
+                      <i class="fa-solid fa-cash-register text-sm text-gold-400"></i>
+                      <span class="whitespace-nowrap">Kasir Suku Cadang</span>
                     </div>
                     <span
-                      class="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded bg-navy-800 text-gold-400 hidden sm:inline">POS</span>
+                      class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded <%= activeTab === 'pos' ? 'bg-gold-400 text-navy-950 font-black' : 'bg-slate-200 text-slate-700' %> hidden sm:inline">RETAIL</span>
                   </button>
 
                   <!-- Menu 2: Antrean Pit (Kanban Board) -->
                   <button type="button" onclick="switchAdminTab('kanban')" id="sidebarBtn-kanban"
-                    class="shrink-0 md:shrink w-auto md:w-full flex items-center justify-between gap-2.5 px-3.5 py-2.5 rounded-xl transition <%= activeTab === 'kanban' ? 'bg-navy-900 text-gold-400 font-black shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-navy-900' %>">
-                    <div class="flex items-center gap-2">
-                      <i class="fa-solid fa-table-columns text-sm"></i>
+                    class="w-full flex items-center justify-between gap-2.5 px-3.5 py-2.5 rounded-xl transition text-left cursor-pointer <%= activeTab === 'kanban' ? 'bg-navy-900 text-white font-bold shadow-sm' : 'text-slate-600 hover:bg-slate-100 font-semibold' %>">
+                    <div class="flex items-center gap-2.5 shrink-0">
+                      <i class="fa-solid fa-table-columns text-sm text-gold-400"></i>
                       <span class="whitespace-nowrap">Antrean Pit</span>
                     </div>
-                    <span class="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded bg-slate-100 text-slate-700">
+                    <span
+                      class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full <%= activeTab === 'kanban' ? 'bg-gold-400 text-navy-950 font-black' : 'bg-slate-200 text-slate-700' %>">
                       <%= antrean ? antrean.length : 0 %>
                     </span>
                   </button>
@@ -158,9 +159,9 @@
                   <% const bookingBaruCount=bookings ? bookings.filter(b=> b.status === 'menunggu_konfirmasi').length :
                     0; %>
                     <button type="button" onclick="switchAdminTab('pesanan')" id="sidebarBtn-pesanan"
-                      class="shrink-0 md:shrink w-auto md:w-full flex items-center justify-between gap-2.5 px-3.5 py-2.5 rounded-xl transition <%= activeTab === 'pesanan' ? 'bg-navy-900 text-gold-400 font-black shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-navy-900' %>">
-                      <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-inbox text-sm"></i>
+                      class="w-full flex items-center justify-between gap-2.5 px-3.5 py-2.5 rounded-xl transition text-left cursor-pointer <%= activeTab === 'pesanan' ? 'bg-navy-900 text-white font-bold shadow-sm' : 'text-slate-600 hover:bg-slate-100 font-semibold' %>">
+                      <div class="flex items-center gap-2.5 shrink-0">
+                        <i class="fa-solid fa-inbox text-sm text-gold-400"></i>
                         <span class="whitespace-nowrap">Pesanan Masuk</span>
                       </div>
                       <% if (bookingBaruCount> 0) { %>
@@ -173,25 +174,26 @@
 
                     <!-- Menu 4: Katalog Layanan (PostgreSQL CRUD) -->
                     <button type="button" onclick="switchAdminTab('katalog')" id="sidebarBtn-katalog"
-                      class="shrink-0 md:shrink w-auto md:w-full flex items-center justify-between gap-2.5 px-3.5 py-2.5 rounded-xl transition <%= activeTab === 'katalog' ? 'bg-navy-900 text-gold-400 font-black shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-navy-900' %>">
-                      <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-database text-sm"></i>
+                      class="w-full flex items-center justify-between gap-2.5 px-3.5 py-2.5 rounded-xl transition text-left cursor-pointer <%= activeTab === 'katalog' ? 'bg-navy-900 text-white font-bold shadow-sm' : 'text-slate-600 hover:bg-slate-100 font-semibold' %>">
+                      <div class="flex items-center gap-2.5 shrink-0">
+                        <i class="fa-solid fa-database text-sm text-gold-400"></i>
                         <span class="whitespace-nowrap">Katalog CRUD</span>
                       </div>
-                      <span class="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded bg-slate-100 text-slate-700">
+                      <span
+                        class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full <%= activeTab === 'katalog' ? 'bg-gold-400 text-navy-950 font-black' : 'bg-slate-200 text-slate-700' %>">
                         <%= layanan ? layanan.length : 0 %>
                       </span>
                     </button>
 
                     <!-- Menu 5: Asisten AI Pak Vinsen -->
                     <button type="button" onclick="switchAdminTab('ai-admin')" id="sidebarBtn-ai-admin"
-                      class="shrink-0 md:shrink w-auto md:w-full flex items-center justify-between gap-2.5 px-3.5 py-2.5 rounded-xl transition <%= activeTab === 'ai-admin' ? 'bg-navy-900 text-gold-400 font-black shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-navy-900' %>">
-                      <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-wand-magic-sparkles text-sm text-gold-500"></i>
+                      class="w-full flex items-center justify-between gap-2.5 px-3.5 py-2.5 rounded-xl transition text-left cursor-pointer <%= activeTab === 'ai-admin' ? 'bg-navy-900 text-white font-bold shadow-sm' : 'text-slate-600 hover:bg-slate-100 font-semibold' %>">
+                      <div class="flex items-center gap-2.5 shrink-0">
+                        <i class="fa-solid fa-wand-magic-sparkles text-sm text-gold-400"></i>
                         <span class="whitespace-nowrap">Asisten AI</span>
                       </div>
                       <span
-                        class="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-gold-100 text-gold-800 border border-gold-300">Gemini</span>
+                        class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-gold-400/20 text-gold-400 border border-gold-400/40">Gemini</span>
                     </button>
 
                 </nav>
@@ -215,9 +217,27 @@
             <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
 
               <!-- ═════════════════════════════════════════════════════════════ -->
-              <!-- VIEW 1: KASIR & POS SERVIS                                    -->
+              <!-- VIEW 1: KASIR & POS SUKU CADANG (RETAIL COUNTER)               -->
               <!-- ═════════════════════════════════════════════════════════════ -->
-              <div id="view-pos" class="<%= activeTab === 'pos' ? '' : 'hidden' %>">
+              <div id="view-pos" class="<%= activeTab === 'pos' ? '' : 'hidden' %> space-y-5">
+
+                <!-- Header Kasir Sparepart -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <h2 class="text-xl font-black text-navy-900 tracking-tight">Kasir Penjualan Suku Cadang &amp;
+                        Retail</h2>
+                      <span
+                        class="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-black uppercase tracking-wider border border-blue-200">Counter
+                        Langsung &bull; Non-Pit</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-0.5">Transaksi meja kasir untuk pembelian oli, ban, busi, aki,
+                      dan sparepart eceran tanpa perlu antre di pit pengerjaan.</p>
+                  </div>
+                  <div class="text-xs text-slate-400 font-medium">
+                    Mekanik &amp; Kasir: <strong class="text-navy-900">Pak Vinsen</strong>
+                  </div>
+                </div>
 
                 <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
 
@@ -227,50 +247,42 @@
                     <!-- 1. Card Data Pelanggan -->
                     <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-2xs">
                       <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-black text-sm text-navy-900">Data Pelanggan &amp; Motor</h3>
-                        <button type="button" onclick="openWalkinModal()"
-                          class="text-xs font-bold text-gold-600 hover:text-navy-900 flex items-center gap-1 transition">
-                          <i class="fa-solid fa-plus text-[10px]"></i>
-                          <span>+ Tambah Pelanggan Baru</span>
-                        </button>
+                        <h3 class="font-black text-sm text-navy-900">Tujuan Pembeli &amp; Kategori</h3>
+                        <span class="text-[11px] font-bold text-slate-400">Pembelian Counter</span>
                       </div>
 
-                      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Pelanggan Selector -->
+                      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <!-- Pilihan Sumber Pembeli -->
                         <div>
                           <label
-                            class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Pelanggan</label>
+                            class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Tujuan / Sumber Pembeli</label>
                           <select id="posCustomerSelect" onchange="handleCustomerSelect(this)"
-                            class="w-full bg-slate-50 px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-800 font-semibold focus:outline-none focus:border-navy-900 focus:bg-white transition">
-                            <option value="Suhartono Anwar|+62 858 9102 7782|Honda Vario 160|AB 5928 VG">Suhartono Anwar
-                              (+62 858 9102 7782)</option>
-                            <option value="Budi Santoso|081234567890|Honda Vario 160|AB 4521 XG">Budi Santoso
-                              (081234567890)</option>
-                            <option value="Siti Rahayu|085712349988|Yamaha NMAX 155|AB 2890 YT">Siti Rahayu
-                              (085712349988)</option>
-                            <option value="Dimas Saputra|087890123456|Honda Beat FI|AB 3112 QA">Dimas Saputra
-                              (087890123456)</option>
-                            <option value="Agus Hendrawan|081298765432|Yamaha Aerox 155|AB 1988 PL">Agus Hendrawan
-                              (081298765432)</option>
+                            class="w-full bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-800 font-semibold focus:outline-none focus:border-navy-900 focus:bg-white transition">
+                            <option value="walkin|||Non-Pit">🛒 Pembelian Kasir Walk-In (Langsung Kasir)</option>
+                            <% if (antrean && antrean.length > 0) { %>
+                              <optgroup label="-- Motor yang Sedang Diservis di Pit --">
+                                <% antrean.forEach(function(a) { %>
+                                  <option value="pit|<%= a.nama_pelanggan %>|<%= a.no_whatsapp || '' %>|<%= a.tipe_motor %> - <%= a.no_polisi %>">
+                                    🏍️ <%= a.nama_pelanggan %> (<%= a.no_polisi %>)
+                                  </option>
+                                <% }); %>
+                              </optgroup>
+                            <% } %>
                           </select>
                         </div>
 
-                        <!-- Motor & Plat -->
+                        <!-- Input Nama Pembeli -->
                         <div>
-                          <label
-                            class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Kendaraan
-                            &amp; Plat Nomor</label>
-                          <div class="flex items-center gap-2">
-                            <div
-                              class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 text-xs shrink-0 font-bold">
-                              <i class="fa-solid fa-motorcycle"></i>
-                            </div>
-                            <div
-                              class="flex-1 bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-800"
-                              id="posVehicleDisplay">
-                              Honda Vario 160 &bull; AB 5928 VG
-                            </div>
-                          </div>
+                          <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Nama Pembeli</label>
+                          <input type="text" id="posCustName" value="Pelanggan Walk-In" placeholder="Nama pembeli..."
+                            class="w-full bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-800 font-semibold focus:outline-none focus:border-navy-900 focus:bg-white transition" />
+                        </div>
+
+                        <!-- Input No. WhatsApp -->
+                        <div>
+                          <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">No. WhatsApp (Struk Digital)</label>
+                          <input type="text" id="posCustWa" placeholder="08xxxxxxxxxx"
+                            class="w-full bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-800 font-semibold focus:outline-none focus:border-navy-900 focus:bg-white transition" />
                         </div>
                       </div>
                     </div>
@@ -279,14 +291,27 @@
                     <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-2xs">
 
                       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                        <h3 class="font-black text-sm text-navy-900">Daftar Layanan &amp; Suku Cadang</h3>
+                        <div>
+                          <h3 class="font-black text-sm text-navy-900">Daftar Layanan &amp; Suku Cadang</h3>
+                          <p class="text-[11px] text-slate-400">Pilih dari katalog atau tambah item manual di kasir</p>
+                        </div>
 
-                        <!-- Search Box -->
-                        <div class="relative w-full sm:w-64">
-                          <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-                          <input type="text" id="posProductSearch" oninput="filterPosTable()"
-                            placeholder="Cari layanan atau part..."
-                            class="w-full pl-8 pr-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-navy-900 focus:bg-white transition" />
+                        <div class="flex items-center gap-2 w-full sm:w-auto">
+                          <!-- Search Box -->
+                          <div class="relative flex-1 sm:w-56">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                            <input type="text" id="posProductSearch" oninput="filterPosTable()"
+                              placeholder="Cari part atau layanan..."
+                              class="w-full pl-8 pr-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-navy-900 focus:bg-white transition" />
+                          </div>
+
+                          <!-- Tombol Tambah Sparepart Manual (Baut, Velg, dll) -->
+                          <button type="button" onclick="openCustomPartModal()"
+                            class="px-3 py-1.5 rounded-xl bg-navy-900 hover:bg-navy-800 text-gold-400 font-bold text-xs transition flex items-center gap-1.5 shrink-0 shadow-xs cursor-pointer active:scale-95"
+                            title="Input Suku Cadang Manual (Baut, Velg, Oli, Mur, dll)">
+                            <i class="fa-solid fa-plus text-[10px]"></i>
+                            <span>Part Manual</span>
+                          </button>
                         </div>
                       </div>
 
@@ -398,35 +423,52 @@
                       <!-- Rendered via JS -->
                     </div>
 
-                    <!-- Kilometer Saat Servis -->
+                    <!-- Metode Pembayaran Kasir -->
                     <div>
-                      <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Kilometer
-                        Saat Servis</label>
-                      <div class="relative">
-                        <input type="text" id="posKmInput" value="24580 KM"
-                          class="w-full bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 text-xs font-mono font-bold text-slate-800 focus:outline-none focus:border-navy-900 focus:bg-white transition" />
+                      <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Metode Pembayaran</label>
+                      <div class="grid grid-cols-3 gap-2 text-xs font-bold text-center">
+                        <label class="cursor-pointer">
+                          <input type="radio" name="posPayMethod" value="Tunai / Cash" checked class="peer sr-only">
+                          <div class="p-2 rounded-xl border border-slate-200 bg-slate-50 peer-checked:bg-navy-900 peer-checked:text-gold-400 peer-checked:border-navy-900 transition text-[11px]">
+                            <i class="fa-solid fa-money-bill-wave block mb-1 text-xs"></i>
+                            <span>Tunai</span>
+                          </div>
+                        </label>
+                        <label class="cursor-pointer">
+                          <input type="radio" name="posPayMethod" value="QRIS" class="peer sr-only">
+                          <div class="p-2 rounded-xl border border-slate-200 bg-slate-50 peer-checked:bg-navy-900 peer-checked:text-gold-400 peer-checked:border-navy-900 transition text-[11px]">
+                            <i class="fa-solid fa-qrcode block mb-1 text-xs"></i>
+                            <span>QRIS</span>
+                          </div>
+                        </label>
+                        <label class="cursor-pointer">
+                          <input type="radio" name="posPayMethod" value="Transfer Bank" class="peer sr-only">
+                          <div class="p-2 rounded-xl border border-slate-200 bg-slate-50 peer-checked:bg-navy-900 peer-checked:text-gold-400 peer-checked:border-navy-900 transition text-[11px]">
+                            <i class="fa-solid fa-building-columns block mb-1 text-xs"></i>
+                            <span>Transfer</span>
+                          </div>
+                        </label>
                       </div>
                     </div>
 
-                    <!-- Catatan Mekanik -->
+                    <!-- Catatan Kasir / Transaksi -->
                     <div>
-                      <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Catatan
-                        Pengerjaan</label>
-                      <textarea id="posNotesInput" rows="2" placeholder="Catatan keluhan & suku cadang yang diganti..."
-                        class="w-full bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-navy-900 focus:bg-white transition resize-none">Pembersihan throttle body & injector selesai. Cek kampas rem di servis berikutnya.</textarea>
+                      <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Catatan Pembelian (Opsional)</label>
+                      <input type="text" id="posNotesInput" placeholder="Contoh: Bawa pulang sendiri / nota fisik..."
+                        class="w-full bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-navy-900 focus:bg-white transition" />
                     </div>
 
                     <!-- Total Price Display -->
                     <div class="pt-3 border-t border-slate-200 flex items-baseline justify-between">
                       <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Pembayaran</span>
-                      <span class="text-2xl font-black text-navy-900 font-mono" id="orderTotalDisplay">Rp 150.000</span>
+                      <span class="text-2xl font-black text-navy-900 font-mono" id="orderTotalDisplay">Rp 0</span>
                     </div>
 
-                    <!-- Bayar Button (Radiant Gold Accent) -->
+                    <!-- Bayar Kasir Button -->
                     <button type="button" onclick="checkoutPosOrder()"
-                      class="w-full py-3.5 rounded-xl bg-gold-400 hover:bg-gold-300 text-navy-950 font-black text-sm transition shadow-gold-sm flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.99]">
+                      class="w-full py-3.5 rounded-xl bg-gold-400 hover:bg-gold-300 text-navy-950 font-black text-sm transition shadow-gold-sm flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.99] cursor-pointer">
                       <i class="fa-solid fa-receipt text-xs"></i>
-                      <span>Bayar &amp; Terbitkan Nota WA</span>
+                      <span>Bayar Kasir &amp; Terbitkan Struk WA</span>
                     </button>
 
                   </div>
@@ -440,184 +482,359 @@
               <!-- ═════════════════════════════════════════════════════════════ -->
               <div id="view-kanban" class="<%= activeTab === 'kanban' ? '' : 'hidden' %> space-y-6">
 
+                <!-- Header & Quick Walk-in Action -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
-                    <h2 class="text-lg font-black text-navy-900">Kanban Board Antrean Pit Servis</h2>
-                    <p class="text-xs text-slate-500">Pindahkan kartu status pengerjaan motor (Menunggu &rarr;
-                      Dikerjakan &rarr; Selesai).</p>
+                    <h2 class="text-xl font-black text-navy-900 tracking-tight">Kanban Antrean Pit Servis</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Kontrol status pengerjaan motor: Menunggu di Pit &rarr;
+                      Sedang Dikerjakan &rarr; Selesai Servis.</p>
                   </div>
 
                   <button onclick="openWalkinModal()" type="button"
-                    class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-navy-900 hover:bg-navy-850 text-gold-400 font-black text-xs transition self-start shadow-sm">
-                    <i class="fa-solid fa-plus text-gold-400"></i>
-                    <span>+ Tambah Antrean Walk-in</span>
+                    class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gold-400 hover:bg-gold-300 text-navy-950 font-black text-xs transition self-start shadow-gold-sm cursor-pointer active:scale-95">
+                    <i class="fa-solid fa-plus text-xs"></i>
+                    <span>Antrean Walk-In</span>
                   </button>
                 </div>
 
-                <!-- 3 Kanban Columns Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
-
-                  <!-- Kolom 1: Menunggu di Pit -->
-                  <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs">
-                    <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
-                      <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                        <h4 class="font-extrabold text-xs uppercase text-slate-900 tracking-wider">Menunggu di Pit</h4>
+                <!-- Pak Vinsen's Workshop Quick KPI Bar (4 Summary Cards) -->
+                <% const allAntreanList=antrean || []; const kpiMenunggu=allAntreanList.filter(a=> a.status ===
+                  'menunggu').length;
+                  const kpiDikerjakan = allAntreanList.filter(a => a.status === 'dikerjakan').length;
+                  const kpiSelesai = allAntreanList.filter(a => a.status === 'selesai').length;
+                  const kpiOmzet = allAntreanList.filter(a => a.status === 'selesai').reduce((acc, curr) => acc +
+                  (Number(curr.biaya) || 0), 0);
+                  %>
+                  <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                    <!-- KPI 1: Menunggu -->
+                    <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-2xs space-y-1">
+                      <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-bold text-slate-500">Menunggu Antre</span>
+                        <span class="w-2 h-2 rounded-full bg-amber-500"></span>
                       </div>
-                      <span
-                        class="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
-                        <%= antrean ? antrean.filter(a=> a.status === 'menunggu').length : 0 %>
-                      </span>
+                      <div class="flex items-baseline gap-1.5">
+                        <span class="text-2xl font-black font-mono text-navy-900">
+                          <%= kpiMenunggu %>
+                        </span>
+                        <span class="text-xs font-semibold text-slate-400">Unit</span>
+                      </div>
                     </div>
 
-                    <div class="space-y-3">
-                      <% const listMenunggu=antrean ? antrean.filter(a=> a.status === 'menunggu') : []; %>
-                        <% if (listMenunggu.length> 0) { %>
-                          <% listMenunggu.forEach(function(item) { %>
-                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/90 text-xs space-y-2">
-                              <div class="flex justify-between items-center text-[10px] text-slate-400 font-mono">
-                                <span>
-                                  <%= item.id %>
-                                </span>
-                                <span class="font-bold text-slate-600">
-                                  <%= item.pit_nomor || 'Pit 1' %>
-                                </span>
-                              </div>
-                              <div>
-                                <h5 class="font-bold text-navy-900">
-                                  <%= item.tipe_motor %> (<%= item.no_polisi %>)
-                                </h5>
-                                <p class="text-slate-600 text-[11px] mt-0.5">
-                                  <%= item.layanan_nama %>
-                                </p>
-                                <p class="text-[10px] text-slate-400 mt-1 italic">Pelanggan: <%= item.nama_pelanggan %>
-                                </p>
-                              </div>
-                              <form action="/admin/antrean/status/<%= item.id %>" method="POST"
-                                class="pt-2 border-t border-slate-200/80">
-                                <input type="hidden" name="status" value="dikerjakan" />
-                                <button type="submit"
-                                  class="w-full py-1.5 rounded-lg bg-navy-900 hover:bg-navy-850 text-gold-400 font-black text-[11px] transition flex items-center justify-center gap-1.5 shadow-xs">
-                                  <span>Mulai Kerjakan</span>
-                                  <i class="fa-solid fa-arrow-right text-[9px]"></i>
-                                </button>
-                              </form>
-                            </div>
-                            <% }); %>
-                              <% } else { %>
-                                <p class="text-xs text-slate-400 text-center py-6">Tidak ada motor antre.</p>
-                                <% } %>
+                    <!-- KPI 2: Sedang Dikerjakan -->
+                    <div class="bg-white rounded-2xl p-4 border border-blue-200/80 shadow-2xs space-y-1">
+                      <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-bold text-blue-700">Dikerjakan di Pit</span>
+                        <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                      </div>
+                      <div class="flex items-baseline gap-1.5">
+                        <span class="text-2xl font-black font-mono text-blue-600">
+                          <%= kpiDikerjakan %>
+                        </span>
+                        <span class="text-xs font-semibold text-blue-400">Unit Aktif</span>
+                      </div>
+                    </div>
+
+                    <!-- KPI 3: Selesai -->
+                    <div class="bg-white rounded-2xl p-4 border border-emerald-200/80 shadow-2xs space-y-1">
+                      <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-bold text-emerald-700">Selesai Hari Ini</span>
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                      </div>
+                      <div class="flex items-baseline gap-1.5">
+                        <span class="text-2xl font-black font-mono text-emerald-600">
+                          <%= kpiSelesai %>
+                        </span>
+                        <span class="text-xs font-semibold text-emerald-400">Unit</span>
+                      </div>
+                    </div>
+
+                    <!-- KPI 4: Estimasi Omzet Selesai -->
+                    <div class="bg-navy-900 rounded-2xl p-4 border border-navy-800 text-white shadow-navy space-y-1">
+                      <div class="flex items-center justify-between text-slate-400">
+                        <span class="text-[11px] font-bold">Omzet Servis Selesai</span>
+                        <i class="fa-solid fa-coins text-gold-400 text-xs"></i>
+                      </div>
+                      <div class="text-lg sm:text-xl font-black font-mono text-gold-400 tracking-tight">
+                        <%= formatRupiah(kpiOmzet) %>
+                      </div>
                     </div>
                   </div>
 
-                  <!-- Kolom 2: Sedang Dikerjakan -->
-                  <div class="bg-white rounded-2xl p-4 border border-blue-200 shadow-2xs">
-                    <div class="flex items-center justify-between pb-3 border-b border-blue-100 mb-3">
-                      <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span>
-                        <h4 class="font-extrabold text-xs uppercase text-slate-900 tracking-wider">Sedang Dikerjakan
-                        </h4>
+                  <!-- 3 Kanban Columns Grid -->
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-5 items-start">
+
+                    <!-- KOLOM 1: MENUNGGU DI PIT (AMBER) -->
+                    <div
+                      class="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs flex flex-col min-h-[400px]">
+                      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
+                        <div class="flex items-center gap-2">
+                          <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                          <h4 class="font-extrabold text-xs uppercase text-slate-900 tracking-wider">Menunggu di Pit
+                          </h4>
+                        </div>
+                        <span
+                          class="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
+                          <%= kpiMenunggu %>
+                        </span>
                       </div>
-                      <span
-                        class="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-800 border border-blue-200">
-                        <%= antrean ? antrean.filter(a=> a.status === 'dikerjakan').length : 0 %>
-                      </span>
-                    </div>
 
-                    <div class="space-y-3">
-                      <% const listDikerjakan=antrean ? antrean.filter(a=> a.status === 'dikerjakan') : []; %>
-                        <% if (listDikerjakan.length> 0) { %>
-                          <% listDikerjakan.forEach(function(item) { %>
-                            <div class="p-3.5 rounded-xl bg-blue-50/50 border border-blue-200 text-xs space-y-2">
-                              <div class="flex justify-between items-center text-[10px] text-blue-600 font-mono">
-                                <span>
-                                  <%= item.id %>
-                                </span>
-                                <span class="font-bold">
-                                  <%= item.pit_nomor || 'Pit 1' %> &bull; <%= item.mekanik || 'Pak Vinsen' %>
-                                </span>
-                              </div>
-                              <div>
-                                <h5 class="font-bold text-navy-900">
-                                  <%= item.tipe_motor %> (<%= item.no_polisi %>)
-                                </h5>
-                                <p class="text-slate-600 text-[11px] mt-0.5">
-                                  <%= item.layanan_nama %>
-                                </p>
-                              </div>
-                              <form action="/admin/antrean/status/<%= item.id %>" method="POST"
-                                class="pt-2 border-t border-blue-200">
-                                <input type="hidden" name="status" value="selesai" />
-                                <button type="submit"
-                                  class="w-full py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] transition flex items-center justify-center gap-1.5">
-                                  <i class="fa-solid fa-check text-[9px]"></i>
-                                  <span>Tandai Selesai</span>
-                                </button>
-                              </form>
-                            </div>
-                            <% }); %>
-                              <% } else { %>
-                                <p class="text-xs text-slate-400 text-center py-6">Pit sedang kosong.</p>
-                                <% } %>
-                    </div>
-                  </div>
+                      <div class="space-y-3 flex-1">
+                        <% const listMenunggu=allAntreanList.filter(a=> a.status === 'menunggu'); %>
+                          <% if (listMenunggu.length> 0) { %>
+                            <% listMenunggu.forEach(function(item) { %>
+                              <div
+                                class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/90 hover:border-slate-300 text-xs space-y-2.5 transition hover:shadow-xs group">
+                                <!-- Card Header -->
+                                <div class="flex justify-between items-center text-[10px] text-slate-400 font-mono">
+                                  <span class="font-bold text-slate-500">
+                                    <%= item.id %>
+                                  </span>
+                                  <div class="flex items-center gap-2">
+                                    <span class="px-1.5 py-0.5 rounded bg-slate-200/80 text-slate-700 font-semibold">
+                                      <%= item.pit_nomor || 'Pit 1' %>
+                                    </span>
+                                    <form action="/admin/antrean/hapus/<%= item.id %>" method="POST" class="inline"
+                                      onsubmit="return confirm('Hapus antrean <%= item.id %>?');">
+                                      <button type="submit"
+                                        class="text-slate-400 hover:text-rose-600 transition text-[11px]"
+                                        title="Hapus Antrean">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                      </button>
+                                    </form>
+                                  </div>
+                                </div>
 
-                  <!-- Kolom 3: Selesai Servis -->
-                  <div class="bg-white rounded-2xl p-4 border border-emerald-200 shadow-2xs">
-                    <div class="flex items-center justify-between pb-3 border-b border-emerald-100 mb-3">
-                      <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
-                        <h4 class="font-extrabold text-xs uppercase text-slate-900 tracking-wider">Selesai Servis</h4>
-                      </div>
-                      <span
-                        class="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
-                        <%= antrean ? antrean.filter(a=> a.status === 'selesai').length : 0 %>
-                      </span>
-                    </div>
-
-                    <div class="space-y-3">
-                      <% const listSelesai=antrean ? antrean.filter(a=> a.status === 'selesai') : []; %>
-                        <% if (listSelesai.length> 0) { %>
-                          <% listSelesai.forEach(function(item) { %>
-                            <div class="p-3.5 rounded-xl bg-emerald-50/50 border border-emerald-200 text-xs space-y-2">
-                              <div class="flex justify-between items-center text-[10px] text-emerald-700 font-mono">
-                                <span>
-                                  <%= item.id %>
-                                </span>
-                                <span class="font-bold"><i class="fa-solid fa-check"></i> Siap Diambil</span>
-                              </div>
-                              <div>
-                                <h5 class="font-bold text-navy-900">
-                                  <%= item.tipe_motor %> (<%= item.no_polisi %>)
-                                </h5>
-                                <div class="flex justify-between items-baseline mt-1">
-                                  <span class="text-slate-600 text-[11px]">
+                                <!-- Vehicle & Plate Hero -->
+                                <div class="space-y-1">
+                                  <div
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-navy-900 text-white font-mono font-black text-xs tracking-wider shadow-xs">
+                                    <i class="fa-solid fa-motorcycle text-[10px] text-gold-400"></i>
+                                    <span>
+                                      <%= item.no_polisi %>
+                                    </span>
+                                  </div>
+                                  <h5 class="font-bold text-navy-900 text-xs block pt-0.5">
+                                    <%= item.tipe_motor %>
+                                  </h5>
+                                  <p class="text-slate-600 text-[11px] font-medium">
                                     <%= item.layanan_nama %>
+                                  </p>
+                                </div>
+
+                                <!-- Customer & Keluhan -->
+                                <div
+                                  class="pt-1 text-[11px] text-slate-500 flex items-center justify-between border-t border-slate-200/60">
+                                  <span>
+                                    <%= item.nama_pelanggan %>
                                   </span>
-                                  <span class="font-bold text-navy-900 font-mono">
-                                    <%= formatRupiah(item.biaya || 75000) %>
+                                  <% if (item.no_whatsapp && item.no_whatsapp !=='-' ) { %>
+                                    <a href="https://wa.me/<%= String(item.no_whatsapp).replace(/[^0-9]/g, '') %>"
+                                      target="_blank"
+                                      class="text-emerald-600 hover:text-emerald-700 font-bold inline-flex items-center gap-1 text-[10px]">
+                                      <i class="fa-brands fa-whatsapp text-xs"></i>
+                                      <span>Chat</span>
+                                    </a>
+                                    <% } %>
+                                </div>
+
+                                <!-- Action: Mulai Kerjakan -->
+                                <form action="/admin/antrean/status/<%= item.id %>" method="POST" class="pt-1">
+                                  <input type="hidden" name="status" value="dikerjakan" />
+                                  <button type="submit"
+                                    class="w-full py-2 rounded-lg bg-navy-900 hover:bg-navy-850 text-gold-400 font-black text-xs transition flex items-center justify-center gap-2 shadow-xs cursor-pointer active:scale-98">
+                                    <span>Mulai Kerjakan di Pit</span>
+                                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                                  </button>
+                                </form>
+                              </div>
+                              <% }); %>
+                                <% } else { %>
+                                  <div
+                                    class="h-full flex flex-col items-center justify-center text-center py-12 text-slate-400 space-y-2">
+                                    <i class="fa-solid fa-mug-hot text-2xl text-slate-300"></i>
+                                    <p class="text-xs font-medium">Tidak ada motor antre.<br>Semua unit sudah diproses.
+                                    </p>
+                                  </div>
+                                  <% } %>
+                      </div>
+                    </div>
+
+                    <!-- KOLOM 2: SEDANG DIKERJAKAN (CYAN / SKY BLUE) -->
+                    <div class="bg-white rounded-2xl p-4 border border-blue-200 shadow-2xs flex flex-col min-h-[400px]">
+                      <div class="flex items-center justify-between pb-3 border-b border-blue-100 mb-3">
+                        <div class="flex items-center gap-2">
+                          <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
+                          <h4 class="font-extrabold text-xs uppercase text-slate-900 tracking-wider">Sedang Dikerjakan
+                          </h4>
+                        </div>
+                        <span
+                          class="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-800 border border-blue-200">
+                          <%= kpiDikerjakan %>
+                        </span>
+                      </div>
+
+                      <div class="space-y-3 flex-1">
+                        <% const listDikerjakan=allAntreanList.filter(a=> a.status === 'dikerjakan'); %>
+                          <% if (listDikerjakan.length> 0) { %>
+                            <% listDikerjakan.forEach(function(item) { %>
+                              <div
+                                class="p-3.5 rounded-xl bg-blue-50/50 border border-blue-200 hover:border-blue-300 text-xs space-y-2.5 transition hover:shadow-xs group">
+                                <!-- Card Header -->
+                                <div class="flex justify-between items-center text-[10px] text-blue-600 font-mono">
+                                  <span class="font-bold">
+                                    <%= item.id %>
                                   </span>
+                                  <div class="flex items-center gap-1.5">
+                                    <span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold">
+                                      <%= item.pit_nomor || 'Pit 1' %> &bull; <%= item.mekanik || 'Pak Vinsen' %>
+                                    </span>
+                                    <form action="/admin/antrean/hapus/<%= item.id %>" method="POST" class="inline"
+                                      onsubmit="return confirm('Hapus antrean <%= item.id %>?');">
+                                      <button type="submit"
+                                        class="text-blue-400 hover:text-rose-600 transition text-[11px]"
+                                        title="Hapus Antrean">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                      </button>
+                                    </form>
+                                  </div>
+                                </div>
+
+                                <!-- Vehicle & Plate Hero -->
+                                <div class="space-y-1">
+                                  <div
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-navy-900 text-white font-mono font-black text-xs tracking-wider shadow-xs">
+                                    <i class="fa-solid fa-wrench text-[10px] text-blue-400"></i>
+                                    <span>
+                                      <%= item.no_polisi %>
+                                    </span>
+                                  </div>
+                                  <h5 class="font-bold text-navy-900 text-xs block pt-0.5">
+                                    <%= item.tipe_motor %>
+                                  </h5>
+                                  <p class="text-slate-600 text-[11px] font-medium">
+                                    <%= item.layanan_nama %>
+                                  </p>
+                                </div>
+
+                                <!-- Catatan Servis -->
+                                <% if (item.catatan_servis) { %>
+                                  <p
+                                    class="text-[11px] text-slate-500 italic bg-white/80 p-2 rounded-lg border border-blue-100">
+                                    "<%= item.catatan_servis %>"
+                                  </p>
+                                  <% } %>
+
+                                    <!-- Action: Tandai Selesai -->
+                                    <form action="/admin/antrean/status/<%= item.id %>" method="POST" class="pt-1">
+                                      <input type="hidden" name="status" value="selesai" />
+                                      <button type="submit"
+                                        class="w-full py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition flex items-center justify-center gap-2 shadow-xs cursor-pointer active:scale-98">
+                                        <i class="fa-solid fa-check text-[10px]"></i>
+                                        <span>Tandai Selesai Servis</span>
+                                      </button>
+                                    </form>
+                              </div>
+                              <% }); %>
+                                <% } else { %>
+                                  <div
+                                    class="h-full flex flex-col items-center justify-center text-center py-12 text-slate-400 space-y-2">
+                                    <i class="fa-solid fa-screwdriver-wrench text-2xl text-slate-300"></i>
+                                    <p class="text-xs font-medium">Pit pengerjaan kosong.<br>Siap menerima motor antre.
+                                    </p>
+                                  </div>
+                                  <% } %>
+                      </div>
+                    </div>
+
+                    <!-- KOLOM 3: SELESAI SERVIS (EMERALD GREEN) -->
+                    <div
+                      class="bg-white rounded-2xl p-4 border border-emerald-200 shadow-2xs flex flex-col min-h-[400px]">
+                      <div class="flex items-center justify-between pb-3 border-b border-emerald-100 mb-3">
+                        <div class="flex items-center gap-2">
+                          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                          <h4 class="font-extrabold text-xs uppercase text-slate-900 tracking-wider">Selesai Servis</h4>
+                        </div>
+                        <span
+                          class="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+                          <%= kpiSelesai %>
+                        </span>
+                      </div>
+
+                      <div class="space-y-3 flex-1">
+                        <% const listSelesai=allAntreanList.filter(a=> a.status === 'selesai'); %>
+                          <% if (listSelesai.length> 0) { %>
+                            <% listSelesai.forEach(function(item) { %>
+                              <div
+                                class="p-3.5 rounded-xl bg-emerald-50/50 border border-emerald-200 hover:border-emerald-300 text-xs space-y-2.5 transition hover:shadow-xs group">
+                                <!-- Card Header -->
+                                <div class="flex justify-between items-center text-[10px] text-emerald-700 font-mono">
+                                  <span class="font-bold">
+                                    <%= item.id %>
+                                  </span>
+                                  <div class="flex items-center gap-1.5">
+                                    <span
+                                      class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold inline-flex items-center gap-1">
+                                      <i class="fa-solid fa-check text-[9px]"></i>
+                                      <span>Siap Diambil</span>
+                                    </span>
+                                    <form action="/admin/antrean/hapus/<%= item.id %>" method="POST" class="inline"
+                                      onsubmit="return confirm('Hapus data antrean <%= item.id %>?');">
+                                      <button type="submit"
+                                        class="text-emerald-400 hover:text-rose-600 transition text-[11px]"
+                                        title="Hapus Antrean">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                      </button>
+                                    </form>
+                                  </div>
+                                </div>
+
+                                <!-- Vehicle & Plate Hero -->
+                                <div class="space-y-1">
+                                  <div
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-navy-900 text-white font-mono font-black text-xs tracking-wider shadow-xs">
+                                    <i class="fa-solid fa-circle-check text-[10px] text-emerald-400"></i>
+                                    <span>
+                                      <%= item.no_polisi %>
+                                    </span>
+                                  </div>
+                                  <h5 class="font-bold text-navy-900 text-xs block pt-0.5">
+                                    <%= item.tipe_motor %>
+                                  </h5>
+                                  <div class="flex justify-between items-baseline pt-0.5">
+                                    <span class="text-slate-600 text-[11px]">
+                                      <%= item.layanan_nama %>
+                                    </span>
+                                    <span class="font-black text-navy-900 font-mono text-xs">
+                                      <%= formatRupiah(item.biaya || 75000) %>
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <!-- Action: Kirim Nota WhatsApp Digital -->
+                                <div class="pt-1">
+                                  <button type="button" data-id="<%= item.id %>" data-nama="<%= item.nama_pelanggan %>"
+                                    data-wa="<%= item.no_whatsapp %>" data-motor="<%= item.tipe_motor %>"
+                                    data-plat="<%= item.no_polisi %>" data-layanan="<%= item.layanan_nama %>"
+                                    data-biaya="<%= item.biaya || 75000 %>" onclick="handleOpenReceiptBtn(this)"
+                                    class="w-full py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer active:scale-98">
+                                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                                    <span>Kirim Nota &amp; Kabari Siap Ambil</span>
+                                  </button>
                                 </div>
                               </div>
-                              <div class="pt-2 border-t border-emerald-200">
-                                <button type="button" data-id="<%= item.id %>" data-nama="<%= item.nama_pelanggan %>"
-                                  data-wa="<%= item.no_whatsapp %>" data-motor="<%= item.tipe_motor %>"
-                                  data-plat="<%= item.no_polisi %>" data-layanan="<%= item.layanan_nama %>"
-                                  data-biaya="<%= item.biaya || 75000 %>" onclick="handleOpenReceiptBtn(this)"
-                                  class="w-full py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] transition flex items-center justify-center gap-1.5 shadow-2xs">
-                                  <i class="fa-brands fa-whatsapp text-xs"></i>
-                                  <span>Kirim Nota via WA</span>
-                                </button>
-                              </div>
-                            </div>
-                            <% }); %>
-                              <% } else { %>
-                                <p class="text-xs text-slate-400 text-center py-6">Belum ada servis selesai.</p>
-                                <% } %>
+                              <% }); %>
+                                <% } else { %>
+                                  <div
+                                    class="h-full flex flex-col items-center justify-center text-center py-12 text-slate-400 space-y-2">
+                                    <i class="fa-solid fa-clipboard-check text-2xl text-slate-300"></i>
+                                    <p class="text-xs font-medium">Belum ada servis selesai.<br>Semua unit masih dalam
+                                      progres.</p>
+                                  </div>
+                                  <% } %>
+                      </div>
                     </div>
-                  </div>
 
-                </div>
+                  </div>
 
               </div>
 
@@ -628,11 +845,13 @@
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
                     <h2 class="text-lg font-black text-navy-900">Pesanan Masuk (Incoming Bookings)</h2>
-                    <p class="text-xs text-slate-500">Daftar booking servis online dari pelanggan yang menunggu konfirmasi (US-01).</p>
+                    <p class="text-xs text-slate-500">Daftar booking servis online dari pelanggan yang menunggu
+                      konfirmasi (US-01).</p>
                   </div>
-                  <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-bold self-start sm:self-auto">
+                  <div
+                    class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-bold self-start sm:self-auto">
                     <i class="fa-solid fa-shield-halved text-emerald-600"></i>
-                    <span>Proteksi Anti-Spam &amp; Verifikasi Dua Arah Aktif</span>
+                    <span>Proteksi Anti-Spam &amp; Kuota Slot Terbatas Aktif</span>
                   </div>
                 </div>
 
@@ -655,118 +874,128 @@
                       <tbody class="divide-y divide-slate-100 font-medium">
                         <% if (bookings && bookings.length> 0) { %>
                           <% bookings.forEach(function(b) { %>
-                            <%
-                              let cleanWa = String(b.no_whatsapp || '').replace(/[^0-9]/g, '');
-                              if (cleanWa.startsWith('08')) {
-                                cleanWa = '628' + cleanWa.slice(2);
-                              } else if (!cleanWa.startsWith('62') && cleanWa.length > 8) {
-                                cleanWa = '62' + cleanWa;
+                            <% let cleanWa=String(b.no_whatsapp || '' ).replace(/[^0-9]/g, '' ); if
+                              (cleanWa.startsWith('08')) { cleanWa='628' + cleanWa.slice(2); } else if
+                              (!cleanWa.startsWith('62') && cleanWa.length> 8) {
+                              cleanWa = '62' + cleanWa;
                               }
-                              const waKonfirmasiMsg = encodeURIComponent(`Halo Mas/Mbak ${b.nama_pelanggan}, kami dari Bengkel Shift Garage ingin mengonfirmasi booking servis ${b.layanan_nama} untuk motor ${b.tipe_motor} (${b.no_polisi}) pada ${b.tanggal_booking} jam ${b.jam_booking}. Apakah jadwal sudah sesuai untuk kami siapkan di Pit? Terima kasih!`);
-                            %>
-                            <tr class="hover:bg-slate-50 transition">
-                              <td class="py-3 px-4 font-mono font-bold text-navy-900">
-                                <%= b.id %>
-                              </td>
-                              <td class="py-3 px-4">
-                                <span class="font-bold text-slate-900 block">
-                                  <%= b.nama_pelanggan %>
-                                </span>
-                                <div class="flex items-center gap-1.5 mt-0.5">
-                                  <span class="text-slate-500 font-mono text-[11px]">
-                                    <%= b.no_whatsapp %>
+                              const waKonfirmasiMsg = encodeURIComponent(`Halo Mas/Mbak ${b.nama_pelanggan}, kami dari
+                              Bengkel Shift Garage ingin mengonfirmasi booking servis ${b.layanan_nama} untuk motor
+                              ${b.tipe_motor} (${b.no_polisi}) pada ${b.tanggal_booking} jam ${b.jam_booking}. Apakah
+                              jadwal sudah sesuai untuk kami siapkan di Pit? Terima kasih!`);
+                              %>
+                              <tr class="hover:bg-slate-50 transition">
+                                <td class="py-3 px-4 font-mono font-bold text-navy-900">
+                                  <%= b.id %>
+                                </td>
+                                <td class="py-3 px-4">
+                                  <span class="font-bold text-slate-900 block">
+                                    <%= b.nama_pelanggan %>
                                   </span>
-                                  <% if (cleanWa) { %>
-                                    <a href="https://wa.me/<%= cleanWa %>?text=<%= waKonfirmasiMsg %>" target="_blank"
-                                      class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-[9px] font-bold transition"
-                                      title="Kirim Chat Konfirmasi WA">
-                                      <i class="fa-brands fa-whatsapp text-emerald-600"></i>
-                                      <span>Chat WA</span>
-                                    </a>
+                                  <div class="flex items-center gap-1.5 mt-0.5">
+                                    <span class="text-slate-500 font-mono text-[11px]">
+                                      <%= b.no_whatsapp %>
+                                    </span>
+                                    <% if (cleanWa) { %>
+                                      <a href="https://wa.me/<%= cleanWa %>?text=<%= waKonfirmasiMsg %>" target="_blank"
+                                        class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-[9px] font-bold transition"
+                                        title="Kirim Chat Konfirmasi WA">
+                                        <i class="fa-brands fa-whatsapp text-emerald-600"></i>
+                                        <span>Chat WA</span>
+                                      </a>
+                                      <% } %>
+                                  </div>
+                                </td>
+                                <td class="py-3 px-4">
+                                  <span class="font-bold text-slate-800 block">
+                                    <%= b.tipe_motor %>
+                                  </span>
+                                  <span class="text-slate-400 font-mono text-[11px]">
+                                    <%= b.no_polisi %>
+                                  </span>
+                                </td>
+                                <td class="py-3 px-4 font-semibold text-slate-700">
+                                  <%= b.layanan_nama %>
+                                </td>
+                                <td class="py-3 px-4 font-mono text-[11px]">
+                                  <span>
+                                    <%= b.tanggal_booking %>
+                                  </span>
+                                  <span class="text-slate-400 block">
+                                    <%= b.jam_booking %>
+                                  </span>
+                                </td>
+                                <td class="py-3 px-4 max-w-xs text-slate-600 truncate" title="<%= b.keluhan %>">
+                                  <%= b.keluhan %>
+                                </td>
+                                <td class="py-3 px-4">
+                                  <% if (b.status==='menunggu_konfirmasi' ) { %>
+                                    <span
+                                      class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">Menunggu</span>
+                                    <% } else if (b.status==='dibatalkan' ) { %>
+                                      <span
+                                        class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800">Dibatalkan</span>
+                                      <% } else { %>
+                                        <span
+                                          class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">Masuk
+                                          Pit</span>
+                                        <% } %>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                  <% if (b.status==='menunggu_konfirmasi' ) { %>
+                                    <div class="flex items-center justify-center gap-1.5 flex-wrap">
+                                      <form action="/admin/booking/terima/<%= b.id %>" method="POST" class="inline">
+                                        <button type="submit"
+                                          class="px-2.5 py-1.5 rounded-lg bg-gold-400 hover:bg-gold-300 text-navy-950 font-black text-xs transition flex items-center gap-1 shadow-gold-sm"
+                                          title="Terima & Masukkan ke Pit">
+                                          <i class="fa-solid fa-check text-[10px]"></i>
+                                          <span>Terima Masuk Pit</span>
+                                        </button>
+                                      </form>
+                                      <form action="/admin/booking/tolak/<%= b.id %>" method="POST" class="inline"
+                                        onsubmit="return confirm('Tolak pesanan <%= b.id %> ini?')">
+                                        <button type="submit"
+                                          class="px-2 py-1.5 rounded-lg bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-600 font-bold text-xs transition"
+                                          title="Tolak Pesanan">
+                                          <i class="fa-solid fa-xmark text-[10px]"></i>
+                                        </button>
+                                      </form>
+                                      <form action="/admin/booking/hapus/<%= b.id %>" method="POST" class="inline"
+                                        onsubmit="return confirm('Hapus permanen pesanan <%= b.id %> ini?')">
+                                        <button type="submit"
+                                          class="px-2 py-1.5 rounded-lg bg-slate-100 hover:bg-rose-600 hover:text-white text-slate-400 font-bold text-xs transition"
+                                          title="Hapus Permanen">
+                                          <i class="fa-solid fa-trash-can text-[10px]"></i>
+                                        </button>
+                                      </form>
+                                    </div>
+                                    <% } else if (b.status==='dibatalkan' ) { %>
+                                      <div class="flex items-center justify-center gap-2">
+                                        <span class="text-rose-500 text-xs font-semibold">Dibatalkan</span>
+                                        <form action="/admin/booking/hapus/<%= b.id %>" method="POST" class="inline"
+                                          onsubmit="return confirm('Hapus permanen pesanan <%= b.id %>?')">
+                                          <button type="submit"
+                                            class="text-slate-400 hover:text-rose-600 text-xs transition"
+                                            title="Hapus Permanen">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                          </button>
+                                        </form>
+                                      </div>
+                                      <% } else { %>
+                                        <span class="text-emerald-600 text-xs font-bold inline-flex items-center gap-1">
+                                          <i class="fa-solid fa-circle-check"></i>
+                                          <span>Aktif di Pit</span>
+                                        </span>
+                                        <% } %>
+                                </td>
+                              </tr>
+                              <% }); %>
+                                <% } else { %>
+                                  <tr>
+                                    <td colspan="8" class="py-8 text-center text-slate-400">Belum ada pesanan booking.
+                                    </td>
+                                  </tr>
                                   <% } %>
-                                </div>
-                              </td>
-                              <td class="py-3 px-4">
-                                <span class="font-bold text-slate-800 block">
-                                  <%= b.tipe_motor %>
-                                </span>
-                                <span class="text-slate-400 font-mono text-[11px]">
-                                  <%= b.no_polisi %>
-                                </span>
-                              </td>
-                              <td class="py-3 px-4 font-semibold text-slate-700">
-                                <%= b.layanan_nama %>
-                              </td>
-                              <td class="py-3 px-4 font-mono text-[11px]">
-                                <span>
-                                  <%= b.tanggal_booking %>
-                                </span>
-                                <span class="text-slate-400 block">
-                                  <%= b.jam_booking %>
-                                </span>
-                              </td>
-                              <td class="py-3 px-4 max-w-xs text-slate-600 truncate" title="<%= b.keluhan %>">
-                                <%= b.keluhan %>
-                              </td>
-                              <td class="py-3 px-4">
-                                <% if (b.status==='menunggu_konfirmasi' ) { %>
-                                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">Menunggu</span>
-                                <% } else if (b.status === 'dibatalkan') { %>
-                                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800">Dibatalkan</span>
-                                <% } else { %>
-                                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">Masuk Pit</span>
-                                <% } %>
-                              </td>
-                              <td class="py-3 px-4 text-center">
-                                <% if (b.status==='menunggu_konfirmasi' ) { %>
-                                  <div class="flex items-center justify-center gap-1.5 flex-wrap">
-                                    <form action="/admin/booking/terima/<%= b.id %>" method="POST" class="inline">
-                                      <button type="submit"
-                                        class="px-2.5 py-1.5 rounded-lg bg-gold-400 hover:bg-gold-300 text-navy-950 font-black text-xs transition flex items-center gap-1 shadow-gold-sm"
-                                        title="Terima & Masukkan ke Pit">
-                                        <i class="fa-solid fa-check text-[10px]"></i>
-                                        <span>Terima Masuk Pit</span>
-                                      </button>
-                                    </form>
-                                    <form action="/admin/booking/tolak/<%= b.id %>" method="POST" class="inline" onsubmit="return confirm('Tolak pesanan <%= b.id %> ini?')">
-                                      <button type="submit"
-                                        class="px-2 py-1.5 rounded-lg bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-600 font-bold text-xs transition"
-                                        title="Tolak Pesanan">
-                                        <i class="fa-solid fa-xmark text-[10px]"></i>
-                                      </button>
-                                    </form>
-                                    <form action="/admin/booking/hapus/<%= b.id %>" method="POST" class="inline" onsubmit="return confirm('Hapus permanen pesanan <%= b.id %> ini?')">
-                                      <button type="submit"
-                                        class="px-2 py-1.5 rounded-lg bg-slate-100 hover:bg-rose-600 hover:text-white text-slate-400 font-bold text-xs transition"
-                                        title="Hapus Permanen">
-                                        <i class="fa-solid fa-trash-can text-[10px]"></i>
-                                      </button>
-                                    </form>
-                                  </div>
-                                <% } else if (b.status === 'dibatalkan') { %>
-                                  <div class="flex items-center justify-center gap-2">
-                                    <span class="text-rose-500 text-xs font-semibold">Dibatalkan</span>
-                                    <form action="/admin/booking/hapus/<%= b.id %>" method="POST" class="inline" onsubmit="return confirm('Hapus permanen pesanan <%= b.id %>?')">
-                                      <button type="submit" class="text-slate-400 hover:text-rose-600 text-xs transition" title="Hapus Permanen">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                      </button>
-                                    </form>
-                                  </div>
-                                <% } else { %>
-                                  <span class="text-emerald-600 text-xs font-bold inline-flex items-center gap-1">
-                                    <i class="fa-solid fa-circle-check"></i>
-                                    <span>Aktif di Pit</span>
-                                  </span>
-                                <% } %>
-                              </td>
-                            </tr>
-                            <% }); %>
-                              <% } else { %>
-                                <tr>
-                                  <td colspan="8" class="py-8 text-center text-slate-400">Belum ada pesanan booking.
-                                  </td>
-                                </tr>
-                                <% } %>
                       </tbody>
                     </table>
                   </div>
@@ -877,10 +1106,14 @@
               <div id="view-ai-admin" class="<%= activeTab === 'ai-admin' ? '' : 'hidden' %> space-y-6">
                 <div>
                   <div class="flex items-center gap-2 mb-1">
-                    <h2 class="text-lg font-black text-navy-900">Asisten AI Bengkel &amp; Auto-CRUD (Ruang Kerja Pak Vinsen)</h2>
-                    <span class="px-2 py-0.5 rounded-full bg-gold-400 text-navy-950 text-[10px] font-black uppercase shadow-xs">AI Agent Active</span>
+                    <h2 class="text-lg font-black text-navy-900">Asisten AI Bengkel &amp; Auto-CRUD (Ruang Kerja Pak
+                      Vinsen)</h2>
+                    <span
+                      class="px-2 py-0.5 rounded-full bg-gold-400 text-navy-950 text-[10px] font-black uppercase shadow-xs">AI
+                      Agent Active</span>
                   </div>
-                  <p class="text-xs text-slate-500">Mendukung eksekusi perintah CRUD database langsung via chat (Tambah Layanan, Ubah Tarif, Geser Antrean Pit), serta konsultasi teknis motor &amp; materi promosi WA.</p>
+                  <p class="text-xs text-slate-500">Mendukung eksekusi perintah CRUD database langsung via chat (Tambah
+                    Layanan, Ubah Tarif, Geser Antrean Pit), serta konsultasi teknis motor &amp; materi promosi WA.</p>
                 </div>
 
                 <!-- Action Prompt Chips Grid (4 Chips: 2 CRUD Actions, 2 Technical/Promo) -->
@@ -893,16 +1126,14 @@
                     </div>
                     <p class="text-[11px] text-slate-500 mt-1">"Tambah servis Karburator Rp 45.000"</p>
                   </div>
-                  <div
-                    onclick="sendAdminAiPrompt('Tolong ubah tarif layanan Servis Rutin menjadi Rp 80000.')"
+                  <div onclick="sendAdminAiPrompt('Tolong ubah tarif layanan Servis Rutin menjadi Rp 80000.')"
                     class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs hover:border-gold-400 cursor-pointer transition group">
                     <div class="flex items-center gap-1.5 text-navy-900 font-bold text-xs group-hover:text-gold-600">
                       <span>✏️ Ubah Tarif via AI</span>
                     </div>
                     <p class="text-[11px] text-slate-500 mt-1">"Ubah harga Servis Rutin jadi 80rb"</p>
                   </div>
-                  <div
-                    onclick="sendAdminAiPrompt('Tolong mulai kerjakan antrean motor AB 3112 QA di pit.')"
+                  <div onclick="sendAdminAiPrompt('Tolong mulai kerjakan antrean motor AB 3112 QA di pit.')"
                     class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs hover:border-gold-400 cursor-pointer transition group">
                     <div class="flex items-center gap-1.5 text-navy-900 font-bold text-xs group-hover:text-gold-600">
                       <span>🏎️ Update Pit via AI</span>
@@ -986,7 +1217,7 @@
                 <h3 class="text-base font-black text-navy-900 tracking-tight">ShiftGarage<span
                     class="text-gold-500">.com</span></h3>
                 <p class="text-[11px] text-slate-500">Jl. Kaliurang KM 9, Sleman, Yogyakarta</p>
-                <span
+                <span id="recBadge"
                   class="inline-block mt-2 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase">
                   Nota Digital Resmi (Lunas)
                 </span>
@@ -1002,11 +1233,11 @@
                   <span class="font-bold text-slate-900" id="recNama">-</span>
                 </div>
                 <div class="flex justify-between">
-                  <span class="text-slate-400">Kendaraan:</span>
+                  <span class="text-slate-400" id="recLabelMotor">Kendaraan:</span>
                   <span class="font-bold text-slate-900" id="recMotor">-</span>
                 </div>
                 <div class="flex justify-between">
-                  <span class="text-slate-400">Layanan:</span>
+                  <span class="text-slate-400" id="recLabelLayanan">Layanan:</span>
                   <span class="font-semibold text-slate-800" id="recLayanan">-</span>
                 </div>
               </div>
@@ -1228,6 +1459,56 @@
             </div>
           </div>
 
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <!-- MODAL: INPUT SUKU CADANG MANUAL (BAUT, VELG, OLI, DLL)        -->
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <div id="customPartModal"
+            class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop-blur">
+            <div class="bg-white rounded-3xl max-w-sm w-full p-6 border border-slate-200 shadow-2xl relative">
+              <button onclick="closeCustomPartModal()"
+                class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+
+              <div class="border-b border-slate-100 pb-3 mb-4">
+                <div class="flex items-center gap-2 mb-1">
+                  <div class="w-7 h-7 rounded-lg bg-blue-100 text-blue-800 flex items-center justify-center text-xs font-black">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                  </div>
+                  <h3 class="font-black text-sm text-navy-900">+ Input Suku Cadang Manual</h3>
+                </div>
+                <p class="text-[11px] text-slate-500">Untuk baut, velg, mur, oli, atau part eceran kasir</p>
+              </div>
+
+              <form onsubmit="handleCustomPartSubmit(event)" class="space-y-3">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Nama Suku Cadang / Barang</label>
+                  <input type="text" id="custPartName" required placeholder="Contoh: Set Baut Body L / Velg Racing 14"
+                    class="w-full bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-navy-900" />
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Harga Satuan (Rp)</label>
+                    <input type="number" id="custPartPrice" required step="1000" min="1000" placeholder="Contoh: 25000"
+                      class="w-full bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 text-xs font-mono font-bold text-slate-800 focus:outline-none focus:border-navy-900" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Jumlah (Qty)</label>
+                    <input type="number" id="custPartQty" required value="1" min="1" max="100"
+                      class="w-full bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 text-xs font-mono font-bold text-slate-800 focus:outline-none focus:border-navy-900 text-center" />
+                  </div>
+                </div>
+
+                <button type="submit"
+                  class="w-full py-3 rounded-xl bg-gold-400 hover:bg-gold-300 text-navy-950 font-black text-xs transition shadow-gold-sm flex items-center justify-center gap-1.5 cursor-pointer mt-2">
+                  <i class="fa-solid fa-cart-plus"></i>
+                  <span>Masukkan ke Keranjang Kasir</span>
+                </button>
+              </form>
+            </div>
+          </div>
+
           <!-- Floating AI Chatbot Widget -->
           <%- include('partials/chatWidget') %>
 
@@ -1250,29 +1531,31 @@
                   }
                   if (btn) {
                     if (t === tabId) {
-                      btn.classList.add('bg-navy-900', 'text-gold-400', 'font-black', 'shadow-sm');
-                      btn.classList.remove('text-slate-600', 'hover:bg-slate-100');
+                      btn.className = 'w-full flex items-center justify-between gap-2.5 px-3.5 py-2.5 rounded-xl transition text-left cursor-pointer bg-navy-900 text-white font-bold shadow-sm';
                     } else {
-                      btn.classList.remove('bg-navy-900', 'text-gold-400', 'font-black', 'shadow-sm');
-                      btn.classList.add('text-slate-600', 'hover:bg-slate-100');
+                      btn.className = 'w-full flex items-center justify-between gap-2.5 px-3.5 py-2.5 rounded-xl transition text-left cursor-pointer text-slate-600 hover:bg-slate-100 font-semibold';
                     }
                   }
                 });
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }
 
-              // Customer Selector in POS
+              // Customer Selector in POS (Retail Counter)
               function handleCustomerSelect(select) {
                 const parts = select.value.split('|');
-                if (parts.length >= 4) {
-                  document.getElementById('posVehicleDisplay').innerHTML = parts[2] + ' &bull; ' + parts[3];
+                const nameInput = document.getElementById('posCustName');
+                const waInput = document.getElementById('posCustWa');
+                if (parts[0] === 'walkin') {
+                  if (nameInput) nameInput.value = 'Pelanggan Walk-In';
+                  if (waInput) waInput.value = '';
+                } else if (parts[0] === 'pit') {
+                  if (nameInput) nameInput.value = parts[1] || '';
+                  if (waInput) waInput.value = parts[2] || '';
                 }
               }
 
-              // POS Cart State
-              let posCart = [
-                { id: 'L-02', nama: 'Tune-Up Injeksi Komplit', harga: 150000, qty: 1 }
-              ];
+              // POS Cart State (Mulai dari keranjang kosong)
+              let posCart = [];
 
               function renderPosCart() {
                 const container = document.getElementById('orderItemsContainer');
@@ -1337,24 +1620,71 @@
                 renderPosCart();
               }
 
-              // Checkout from POS
+              // Checkout from POS (Direct Counter Suku Cadang)
               function checkoutPosOrder() {
                 if (posCart.length === 0) {
-                  alert('Silakan pilih minimal 1 layanan/suku cadang terlebih dahulu!');
+                  alert('Keranjang kasir masih kosong! Silakan pilih suku cadang dari daftar atau klik "+ Part Manual".');
                   return;
                 }
 
-                const custSelect = document.getElementById('posCustomerSelect');
-                const parts = custSelect.value.split('|');
-                const nama = parts[0] || 'Pelanggan';
-                const wa = parts[1] || '081234567890';
-                const motor = parts[2] || 'Motor';
-                const plat = parts[3] || 'AB 1234';
+                const custNameInput = document.getElementById('posCustName');
+                const custWaInput = document.getElementById('posCustWa');
+                const selectedMethod = document.querySelector('input[name="posPayMethod"]:checked')?.value || 'Tunai / Cash';
+                const notesInput = document.getElementById('posNotesInput');
+
+                const nama = (custNameInput && custNameInput.value.trim()) || 'Pelanggan Umum (Walk-In)';
+                const wa = (custWaInput && custWaInput.value.trim()) || '081234567890';
+                const motor = 'Pembelian Kasir (' + selectedMethod + ')';
+                const plat = 'Non-Pit';
 
                 const itemsText = posCart.map(i => `${i.nama} (${i.qty}x)`).join(', ');
                 const grandTotal = posCart.reduce((sum, i) => sum + (i.harga * i.qty), 0);
 
-                openReceiptModal('POS-' + Date.now().toString().slice(-4), nama, wa, motor, plat, itemsText, grandTotal);
+                openReceiptModal('POS-' + Date.now().toString().slice(-4), nama, wa, motor, plat, itemsText, grandTotal, 'pos');
+              }
+
+              // Modal Input Suku Cadang Manual (Baut, Velg, dll)
+              function openCustomPartModal() {
+                const modal = document.getElementById('customPartModal');
+                if (modal) {
+                  modal.classList.remove('hidden');
+                  setTimeout(() => document.getElementById('custPartName')?.focus(), 50);
+                }
+              }
+
+              function closeCustomPartModal() {
+                const modal = document.getElementById('customPartModal');
+                if (modal) modal.classList.add('hidden');
+              }
+
+              function handleCustomPartSubmit(e) {
+                if (e) e.preventDefault();
+                const nameInput = document.getElementById('custPartName');
+                const priceInput = document.getElementById('custPartPrice');
+                const qtyInput = document.getElementById('custPartQty');
+
+                const name = nameInput ? nameInput.value.trim() : '';
+                const price = priceInput ? parseInt(priceInput.value, 10) : 0;
+                const qty = qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1;
+
+                if (!name || price <= 0) {
+                  alert('Mohon isi nama barang dan harga suku cadang dengan benar!');
+                  return;
+                }
+
+                posCart.push({
+                  id: 'PART-' + Date.now().toString().slice(-4),
+                  nama: name,
+                  harga: price,
+                  qty: qty
+                });
+
+                renderPosCart();
+                closeCustomPartModal();
+
+                if (nameInput) nameInput.value = '';
+                if (priceInput) priceInput.value = '';
+                if (qtyInput) qtyInput.value = '1';
               }
 
               // Product Filter & Search
@@ -1409,7 +1739,7 @@
                 document.getElementById('editLayananModal').classList.remove('hidden');
               }
 
-              // Receipt Modal Handler
+              // Receipt Modal Handler (Dual Mode: POS Sparepart vs Kanban Pit Servis)
               function handleOpenReceiptBtn(btn) {
                 openReceiptModal(
                   btn.dataset.id,
@@ -1418,14 +1748,38 @@
                   btn.dataset.motor,
                   btn.dataset.plat,
                   btn.dataset.layanan,
-                  btn.dataset.biaya
+                  btn.dataset.biaya,
+                  'servis'
                 );
               }
 
-              function openReceiptModal(id, nama, wa, motor, plat, layanan, biaya) {
-                document.getElementById('recInvoice').textContent = 'INV-SG-' + id;
+              function openReceiptModal(id, nama, wa, motor, plat, layanan, biaya, jenis = 'servis') {
+                const isPos = jenis === 'pos';
+                const modalBadge = document.getElementById('recBadge');
+                const labelMotor = document.getElementById('recLabelMotor');
+                const labelLayanan = document.getElementById('recLabelLayanan');
+
+                if (isPos) {
+                  document.getElementById('recInvoice').textContent = id.startsWith('POS') ? id : 'POS-' + id;
+                  if (modalBadge) {
+                    modalBadge.textContent = 'STRUK PEMBELIAN SUKU CADANG (LUNAS)';
+                    modalBadge.className = 'inline-block mt-2 px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-black uppercase tracking-wider border border-blue-200';
+                  }
+                  if (labelMotor) labelMotor.textContent = 'Tipe Transaksi:';
+                  if (labelLayanan) labelLayanan.textContent = 'Item Suku Cadang:';
+                  document.getElementById('recMotor').textContent = 'Pembelian Langsung di Meja Kasir (Non-Pit)';
+                } else {
+                  document.getElementById('recInvoice').textContent = 'INV-SG-' + id;
+                  if (modalBadge) {
+                    modalBadge.textContent = 'NOTA SERVIS RESMI — MOTOR SIAP DIAMBIL';
+                    modalBadge.className = 'inline-block mt-2 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase tracking-wider border border-emerald-200';
+                  }
+                  if (labelMotor) labelMotor.textContent = 'Kendaraan:';
+                  if (labelLayanan) labelLayanan.textContent = 'Paket Servis:';
+                  document.getElementById('recMotor').textContent = motor + ' (' + plat + ')';
+                }
+
                 document.getElementById('recNama').textContent = nama;
-                document.getElementById('recMotor').textContent = motor + ' (' + plat + ')';
                 document.getElementById('recLayanan').textContent = layanan;
 
                 const formattedBiaya = 'Rp ' + Number(biaya).toLocaleString('id-ID');
@@ -1434,9 +1788,24 @@
                 let cleanWa = String(wa).replace(/\D/g, '');
                 if (cleanWa.startsWith('0')) cleanWa = '62' + cleanWa.slice(1);
 
-                const pesanWa =
-                  `*NOTA DIGITAL RESMI — SHIFT GARAGE*
-Halo Kak *${nama}*, terima kasih telah mempercayakan motor Anda di Shift Garage!
+                let pesanWa = '';
+                if (isPos) {
+                  pesanWa =
+                    `*STRUK TRANSAKSI SUKU CADANG — SHIFT GARAGE*
+Halo Kak *${nama}*, terima kasih telah membeli suku cadang di Shift Garage!
+
+*Rincian Pembelian:*
+• No. Struk: ${id.startsWith('POS') ? id : 'POS-' + id}
+• Item Barang: ${layanan}
+• Total Bayar: *${formattedBiaya}*
+• Kasir: Pak Vinsen
+• Status: *LUNAS (Transaksi Kasir Meja Depan)*
+
+Simpan struk digital ini sebagai bukti transaksi resmi suku cadang. Semoga awet dan selamat berkendara! 🏍️`;
+                } else {
+                  pesanWa =
+                    `*PEMBERITAHUAN SERVIS SELESAI & NOTA RESMI — SHIFT GARAGE*
+Halo Kak *${nama}*, kabar gembira! Pengerjaan servis motor Anda di Pit Shift Garage telah *SELESAI* dan *SIAP DIAMBIL*. 🏍️✨
 
 *Rincian Servis:*
 • No. Nota: INV-SG-${id}
@@ -1444,9 +1813,10 @@ Halo Kak *${nama}*, terima kasih telah mempercayakan motor Anda di Shift Garage!
 • Layanan: ${layanan}
 • Mekanik: Pak Vinsen
 • Total Biaya: *${formattedBiaya}*
-• Status: *LUNAS & SELESAI*
+• Status: *LUNAS & SIAP DIAMBIL DI BENGKEL*
 
-Garansi pengerjaan berlaku 7 hari. Semoga motor semakin prima dan selamat berkendara! 🏍️`;
+Garansi servis pengerjaan berlaku 7 hari. Silakan datang ke bengkel untuk serah terima unit motor Anda. Terima kasih!`;
+                }
 
                 const waUrl = `https://wa.me/${cleanWa}?text=${encodeURIComponent(pesanWa)}`;
                 document.getElementById('btnSendWa').setAttribute('href', waUrl);
