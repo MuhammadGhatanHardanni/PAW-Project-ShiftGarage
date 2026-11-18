@@ -1,132 +1,149 @@
 <%- include('partials/head', { judul }) %>
 
-  <body
-    class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans selection:bg-gold-400 selection:text-navy-950">
+  <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between font-sans selection:bg-gold-400 selection:text-navy-950">
 
-    <!-- Header Nav Minimal -->
-    <header class="w-full bg-white border-b border-slate-100 shadow-xs">
-      <div class="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
-        <a href="/" class="flex items-center gap-2.5 group">
-          <div
-            class="w-10 h-10 rounded-xl bg-gold-400 text-navy-950 flex items-center justify-center font-black text-base shadow-gold-sm group-hover:scale-105 transition">
-            <i class="fa-solid fa-motorcycle"></i>
-          </div>
-          <div>
-            <span class="text-xl font-black tracking-tight text-navy-900 block">
-              ShiftGarage<span class="text-gold-500">.com</span>
-            </span>
-            <span class="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">PORTAL KHUSUS STAF &amp;
-              MEKANIK</span>
-          </div>
-        </a>
+    <!-- Top Minimal Header -->
+    <header class="w-full py-6 px-4 sm:px-8 flex items-center justify-between max-w-5xl mx-auto">
+      <a href="/" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-xl bg-gold-400 text-navy-950 flex items-center justify-center font-black text-sm shadow-sm group-hover:scale-105 transition">
+          <i class="fa-solid fa-motorcycle"></i>
+        </div>
+        <span class="text-lg font-black tracking-tight text-navy-900">
+          ShiftGarage<span class="text-gold-500">.com</span>
+        </span>
+      </a>
 
-        <a href="/"
-          class="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-navy-900 transition">
-          <i class="fa-solid fa-arrow-left"></i>
-          <span>Ke Website Pelanggan</span>
-        </a>
-      </div>
+      <a href="/" class="text-xs font-bold text-slate-500 hover:text-navy-900 flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-arrow-left text-[10px]"></i>
+        <span>Ke Beranda</span>
+      </a>
     </header>
 
-    <!-- Login Card Container -->
-    <main class="flex-1 flex items-center justify-center p-4 sm:p-6">
-      <div class="w-full max-w-md">
+    <!-- Main Login Card (Clean & Minimalist) -->
+    <main class="flex-1 flex items-center justify-center p-4">
+      <div class="w-full max-w-sm">
 
-        <!-- Notifikasi Alert -->
-        <% if (typeof notif !=='undefined' && notif) { %>
-          <div
-            class="mb-5 p-4 rounded-2xl flex items-center gap-3 <%= tipeNotif === 'error' ? 'bg-rose-50 border border-rose-200 text-rose-800' : (tipeNotif === 'warning' ? 'bg-amber-50 border border-amber-200 text-amber-800' : 'bg-emerald-50 border border-emerald-200 text-emerald-800') %> shadow-xs text-xs font-bold">
-            <i
-              class="fa-solid <%= tipeNotif === 'error' ? 'fa-circle-xmark text-rose-600' : (tipeNotif === 'warning' ? 'fa-triangle-exclamation text-amber-600' : 'fa-circle-check text-emerald-600') %> text-base shrink-0"></i>
-            <span>
-              <%= notif %>
-            </span>
+        <!-- Card Container -->
+        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-5">
+          
+          <!-- Card Header -->
+          <div class="text-center space-y-1">
+            <h1 class="text-xl font-black text-navy-900 tracking-tight">
+              Portal Staf Bengkel
+            </h1>
+            <p class="text-xs text-slate-500">
+              Masuk untuk mengelola operasional Shift Garage.
+            </p>
           </div>
+
+          <!-- Alert Pesan (Error / Peringatan / Sukses) -->
+          <% if (typeof notif !== 'undefined' && notif) { %>
+            <div class="p-3 rounded-xl flex items-center gap-2.5 <%= tipeNotif === 'error' ? 'bg-rose-50 border border-rose-200 text-rose-700' : (tipeNotif === 'warning' ? 'bg-amber-50 border border-amber-200 text-amber-700' : 'bg-emerald-50 border border-emerald-200 text-emerald-700') %> text-xs font-semibold">
+              <i class="fa-solid <%= tipeNotif === 'error' ? 'fa-circle-xmark text-rose-500' : (tipeNotif === 'warning' ? 'fa-triangle-exclamation text-amber-500' : 'fa-circle-check text-emerald-500') %> text-sm shrink-0"></i>
+              <span><%= notif %></span>
+            </div>
           <% } %>
 
-            <div class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-xl space-y-6">
+          <!-- Form Login -->
+          <form id="loginForm" action="/admin/login" method="POST" class="space-y-4">
 
-              <!-- Header Info -->
-              <div class="text-center space-y-2">
-                <div
-                  class="w-14 h-14 mx-auto rounded-2xl bg-navy-900 text-gold-400 flex items-center justify-center text-xl shadow-navy border-2 border-navy-800 font-black">
-                  <i class="fa-solid fa-shield-halved"></i>
-                </div>
-                <h1 class="text-2xl font-black text-navy-900 tracking-tight">Portal Khusus Staf</h1>
-                <p class="text-xs text-slate-500">
-                  Masuk untuk mengelola antrean pit, pesanan masuk, kasir POS, dan master katalog layanan.
-                </p>
+            <!-- Username Field -->
+            <div>
+              <label for="username" class="block text-xs font-bold text-slate-700 mb-1">
+                Username
+              </label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 pointer-events-none text-xs">
+                  <i class="fa-regular fa-user"></i>
+                </span>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  value="admin"
+                  required
+                  placeholder="admin"
+                  class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-navy-900 transition"
+                >
               </div>
-
-              <!-- Form Login -->
-              <form action="/admin/login" method="POST" class="space-y-4">
-
-                <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1.5">
-                    Username Staf / Mekanik
-                  </label>
-                  <div class="relative">
-                    <span
-                      class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 pointer-events-none text-xs">
-                      <i class="fa-solid fa-user"></i>
-                    </span>
-                    <input type="text" name="username" value="admin" required
-                      placeholder="Masukkan username (cth: admin)"
-                      class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-navy-900 focus:border-transparent transition">
-                  </div>
-                </div>
-
-                <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1.5">
-                    Kata Sandi / PIN
-                  </label>
-                  <div class="relative">
-                    <span
-                      class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 pointer-events-none text-xs">
-                      <i class="fa-solid fa-lock"></i>
-                    </span>
-                    <input type="password" name="password" value="bengkel123" required placeholder="Masukkan kata sandi"
-                      class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-navy-900 focus:border-transparent transition">
-                  </div>
-                </div>
-
-                <!-- Quick Fill Info Demo -->
-                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 space-y-1">
-                  <div class="font-bold text-navy-900 flex items-center gap-1.5">
-                    <i class="fa-solid fa-key text-gold-500"></i>
-                    <span>Kredensial Demo Staf (Pak Vinsen):</span>
-                  </div>
-                  <div class="flex items-center justify-between font-mono text-[10px] text-slate-500 pt-0.5">
-                    <span>Username: <strong class="text-navy-900">admin</strong></span>
-                    <span>Sandi: <strong class="text-navy-900">bengkel123</strong></span>
-                  </div>
-                </div>
-
-                <button type="submit"
-                  class="w-full py-3.5 px-4 rounded-xl bg-gold-400 hover:bg-gold-300 active:scale-[0.98] text-navy-950 font-black text-xs shadow-gold-sm transition flex items-center justify-center gap-2">
-                  <span>Masuk ke Dasbor Operasional</span>
-                  <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                </button>
-              </form>
-
-              <div class="pt-2 text-center border-t border-slate-100">
-                <p class="text-[11px] text-slate-400">
-                  Bukan staf bengkel? <a href="/" class="text-navy-900 hover:text-gold-600 font-bold transition">Kembali
-                    ke Beranda Pelanggan</a>
-                </p>
-              </div>
-
             </div>
 
-            <!-- Footer Info -->
-            <p class="text-center text-[11px] text-slate-400 mt-6">
-              &copy; <%= new Date().getFullYear() %> Shift Garage &bull; Dikembangkan oleh Muhammad Ghatan Hardanni
-                (20240140182)
-            </p>
+            <!-- Password Field -->
+            <div>
+              <label for="password" class="block text-xs font-bold text-slate-700 mb-1">
+                Kata Sandi
+              </label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 pointer-events-none text-xs">
+                  <i class="fa-solid fa-lock"></i>
+                </span>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value="bengkel123"
+                  required
+                  placeholder="••••••••"
+                  class="w-full pl-9 pr-9 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-navy-900 transition"
+                >
+                <button
+                  type="button"
+                  id="toggleEyeBtn"
+                  onclick="togglePassword()"
+                  aria-label="Tampilkan atau sembunyikan kata sandi"
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 text-xs transition"
+                >
+                  <i id="eyeIcon" class="fa-regular fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Simple Demo Note -->
+            <div class="p-2.5 rounded-lg bg-slate-100/80 text-[11px] text-slate-500 flex items-center justify-between">
+              <span>Akun Demo: <strong>admin</strong></span>
+              <span>Sandi: <strong>bengkel123</strong></span>
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              id="submitBtn"
+              class="w-full py-3 rounded-xl bg-gold-400 hover:bg-gold-300 text-navy-950 font-black text-xs shadow-sm transition hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>Masuk ke Dasbor</span>
+              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </button>
+
+          </form>
+
+        </div>
 
       </div>
     </main>
 
-  </body>
+    <!-- Bottom Minimal Footer -->
+    <footer class="py-6 text-center text-[11px] text-slate-400">
+      &copy; <%= new Date().getFullYear() %> Shift Garage &bull; Muhammad Ghatan Hardanni (20240140182)
+    </footer>
 
-  </html>
+    <!-- Script Show/Hide Password -->
+    <script>
+      function togglePassword() {
+        const pass = document.getElementById('password');
+        const icon = document.getElementById('eyeIcon');
+        if (!pass || !icon) return;
+
+        if (pass.type === 'password') {
+          pass.type = 'text';
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        } else {
+          pass.type = 'password';
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        }
+      }
+    </script>
+
+  </body>
+</html>
