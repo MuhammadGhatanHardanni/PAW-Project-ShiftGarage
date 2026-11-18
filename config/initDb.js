@@ -175,6 +175,17 @@ async function initializeDatabase() {
       console.log(`\x1b[32m[DB Init]\x1b[0m Berhasil menyisipkan ${dataAwal.length} data awal layanan bengkel.`);
     } else {
       console.log(`\x1b[32m[DB Init]\x1b[0m Data awal sudah ada (${totalData} baris).`);
+
+      // Cleanup: Hapus layanan duplikat/sampah dari AI (nama > 100 karakter)
+      try {
+        const cleanup = await pool.query(
+          `DELETE FROM layanan WHERE LENGTH(nama) > 100 RETURNING id, nama`
+        );
+        if (cleanup.rows.length > 0) {
+          console.log(`\x1b[33m[DB Cleanup]\x1b[0m Menghapus ${cleanup.rows.length} layanan sampah dari AI:`);
+          cleanup.rows.forEach(r => console.log(`  - [${r.id}] ${r.nama.substring(0, 60)}...`));
+        }
+      } catch (_) {}
     }
 
     return true;
