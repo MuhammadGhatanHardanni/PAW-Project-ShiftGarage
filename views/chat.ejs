@@ -326,15 +326,12 @@
 
     function appendMessageFull(sender, text) {
       const row = document.createElement('div');
-      row.className = sender === 'user' ? 'flex items-start justify-end gap-3.5' : 'flex items-start gap-3.5';
+      row.className = sender === 'user' ? 'flex justify-end' : 'flex items-start gap-3.5';
 
       if (sender === 'user') {
         row.innerHTML = `
-          <div class="max-w-[80%] bg-navy-900 text-white p-4 rounded-3xl rounded-tr-sm text-xs sm:text-sm shadow-sm leading-relaxed whitespace-pre-wrap">
+          <div class="max-w-[75%] bg-navy-900 text-white px-4 py-2.5 rounded-2xl rounded-tr-xs text-xs sm:text-sm font-medium shadow-xs leading-relaxed break-words whitespace-pre-wrap border border-navy-800">
             ${escapeHtml(text)}
-          </div>
-          <div class="w-9 h-9 rounded-2xl bg-gold-400 text-navy-950 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold shadow-xs">
-            <i class="fa-solid fa-user"></i>
           </div>
         `;
       } else {
@@ -455,15 +452,47 @@
       return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n');
     }
 
-    function formatAiMarkdown(text) {
-      let clean = escapeHtml(text);
-      clean = clean.replace(/\*\*(.*?)\*\*/g, '<strong class="font-extrabold text-navy-900">$1</strong>');
-      clean = clean.replace(/^[•\-\*]\s+(.*)$/gm, '<li class="ml-4 list-disc">$1</li>');
-      clean = clean.replace(/^(\d+)\.\s+(.*)$/gm, '<li class="ml-4 list-decimal font-medium">$2</li>');
-      clean = clean.replace(/`([^`]+)`/g, '<code class="bg-slate-100 text-navy-900 font-mono px-1 py-0.5 rounded text-[11px]">$1</code>');
-      clean = clean.replace(/\n\n/g, '<div class="h-1.5"></div>');
-      clean = clean.replace(/\n/g, '<br/>');
-      return clean;
+    function formatAiMarkdown(raw) {
+      if (!raw) return '';
+      const escaped = escapeHtml(raw);
+      const lines = escaped.split('\n');
+
+      const formattedLines = lines.map(line => {
+        let trimmed = line.trim();
+        if (!trimmed) return '<div class="h-1.5"></div>';
+
+        // Cek bullet list (*, -, •)
+        const isBullet = /^[•\-\*]\s+(.*)$/.test(trimmed);
+        // Cek numbered list (1., 2., dll)
+        const isNumbered = /^(\d+)\.\s+(.*)$/.test(trimmed);
+
+        let content = trimmed;
+        let bulletPrefix = '';
+
+        if (isBullet) {
+          content = trimmed.replace(/^[•\-\*]\s+/, '');
+          bulletPrefix = '<span class="text-gold-500 font-black text-xs shrink-0 mt-0.5">&bull;</span>';
+        } else if (isNumbered) {
+          const match = trimmed.match(/^(\d+)\.\s+(.*)$/);
+          if (match) {
+            content = match[2];
+            bulletPrefix = `<span class="text-gold-500 font-bold text-xs shrink-0">${match[1]}.</span>`;
+          }
+        }
+
+        content = content.replace(/\*\*\*(.*?)\*\*\*/g, '<strong class="font-black text-navy-900 italic">$1</strong>');
+        content = content.replace(/\*\*(.*?)\*\*/g, '<strong class="font-extrabold text-navy-950">$1</strong>');
+        content = content.replace(/_([^_]+)_/g, '<em class="text-slate-600 italic">$1</em>');
+        content = content.replace(/`([^`]+)`/g, '<code class="bg-slate-100 text-navy-900 font-mono px-1 py-0.5 rounded text-[11px]">$1</code>');
+
+        if (bulletPrefix) {
+          return `<div class="flex items-start gap-2 ml-1 my-0.5">${bulletPrefix}<span class="flex-1">${content}</span></div>`;
+        }
+
+        return `<div>${content}</div>`;
+      });
+
+      return formattedLines.join('');
     }
   </script>
 
