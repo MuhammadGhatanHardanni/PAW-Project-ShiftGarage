@@ -1,161 +1,168 @@
 <!-- ═══════════════════════════════════════════════════════════════ -->
-<!-- FLOATING AI ASSISTANT CHATBOT WIDGET (SHIFT AI)               -->
-<!-- Tema Automotive Deep Navy & Radiant Gold                      -->
+<!-- FLOATING AI ASSISTANT CHATBOT WIDGET (SHIFT AI) — MODERN V2.0   -->
+<!-- Clean, Modern Automotive UX (Deep Navy & Electric Cyan Accent) -->
 <!-- ═══════════════════════════════════════════════════════════════ -->
 
 <div id="shiftAiWidgetContainer" class="fixed bottom-5 right-5 z-50 font-sans text-sm selection:bg-gold-400 selection:text-navy-950 pointer-events-none">
   
-  <!-- ── 1. Floating Action Button (FAB) Launcher (Sleek & Unobtrusive) ── -->
+  <!-- ── 1. Floating Action Button (FAB) Launcher ── -->
   <button id="shiftAiToggleBtn" onclick="toggleShiftAiWidget()" type="button"
-    class="pointer-events-auto group relative flex items-center gap-2.5 px-3.5 py-2.5 rounded-full bg-navy-900 hover:bg-navy-850 text-white shadow-navy border border-navy-700/80 hover:scale-105 active:scale-95 transition-all duration-200">
-    <div class="w-6 h-6 rounded-full bg-gold-400 text-navy-950 flex items-center justify-center font-black text-[11px] shadow-gold-sm">
+    class="pointer-events-auto group relative flex items-center gap-2.5 px-4 py-3 rounded-full bg-navy-900 hover:bg-navy-850 text-white shadow-xl hover:shadow-2xl border border-navy-700/80 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
+    <div class="relative w-7 h-7 rounded-full bg-gold-400 text-navy-950 flex items-center justify-center font-black text-xs shadow-gold-sm group-hover:rotate-12 transition duration-300">
       <i class="fa-solid fa-wand-magic-sparkles"></i>
+      <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-navy-900"></span>
     </div>
-    <div class="text-left hidden sm:block pr-1">
-      <span class="text-xs font-black tracking-tight block leading-tight text-white">Tanya AI</span>
-      <span class="text-[9px] text-slate-400 block font-normal">Shift Garage</span>
+    <div class="text-left pr-1">
+      <span class="text-xs font-black tracking-tight block leading-tight text-white group-hover:text-gold-300 transition">Tanya AI</span>
+      <span class="text-[10px] text-slate-300 block font-medium">Asisten Bengkel</span>
     </div>
   </button>
 
-  <!-- ── 2. Compact Chat Popup Window (Proporsional & Anti-Overflow) ── -->
+  <!-- ── 2. Modern Glassmorphic Chat Popup Window ── -->
   <div id="shiftAiWindow"
-    class="pointer-events-auto hidden fixed sm:fixed bottom-0 sm:bottom-5 right-0 sm:right-5 w-full sm:w-[380px] h-[85vh] sm:h-[510px] max-h-[calc(100vh-100px)] bg-white rounded-t-[28px] sm:rounded-[24px] shadow-2xl border border-slate-200/90 flex flex-col overflow-hidden transition-all duration-200 ease-out transform scale-95 opacity-0 z-50">
+    class="pointer-events-auto hidden fixed bottom-0 sm:bottom-5 right-0 sm:right-5 w-full sm:w-[390px] h-[90vh] sm:h-[550px] max-h-[calc(100vh-40px)] bg-white rounded-t-[28px] sm:rounded-3xl shadow-2xl border border-slate-200/90 flex flex-col overflow-hidden transition-all duration-200 ease-out transform scale-95 opacity-0 z-50">
     
-    <!-- Top Header -->
-    <div class="h-14 px-4 bg-navy-900 text-white flex items-center justify-between shrink-0 border-b border-navy-800 select-none">
-      <div class="flex items-center gap-2.5">
+    <!-- Header (Sleek Automotive Deep Navy) -->
+    <div class="px-4 py-3.5 bg-navy-900 text-white flex items-center justify-between shrink-0 border-b border-navy-800/90 select-none">
+      <div class="flex items-center gap-3">
         <div class="relative">
-          <div class="w-8 h-8 rounded-xl bg-gold-400 text-navy-950 flex items-center justify-center font-black shadow-gold-sm">
-            <i class="fa-solid fa-robot text-xs"></i>
+          <div class="w-9 h-9 rounded-2xl bg-gold-400 text-navy-950 flex items-center justify-center font-black shadow-gold-sm">
+            <i class="fa-solid fa-robot text-sm"></i>
           </div>
-          <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-navy-900 rounded-full"></span>
+          <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-navy-900 rounded-full"></span>
         </div>
         <div>
-          <div class="flex items-center gap-1.5">
-            <h3 class="font-black text-xs text-white tracking-tight">Shift AI Assistant</h3>
-            <span class="text-[8px] font-mono font-bold px-1.5 py-0.2 rounded bg-gold-400/20 text-gold-300 border border-gold-400/30">Gemini</span>
+          <div class="flex items-center gap-2">
+            <h3 class="font-black text-sm text-white tracking-tight">Shift AI Assistant</h3>
+            <span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-full bg-gold-400/20 text-gold-300 border border-gold-400/30">Gemini</span>
           </div>
-          <p class="text-[10px] text-slate-300 flex items-center gap-1">
+          <p class="text-[11px] text-slate-300 flex items-center gap-1.5 mt-0.5">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>Online &bull; Konteks DB Terhubung</span>
+            <span>Online &bull; Database Terhubung</span>
           </p>
         </div>
       </div>
 
-      <!-- Action Buttons -->
-      <div class="flex items-center gap-1">
+      <!-- Header Action Buttons -->
+      <div class="flex items-center gap-1.5">
         <!-- Reset Chat -->
-        <button onclick="resetShiftAiConversation()" title="Reset Percakapan"
-          class="w-7 h-7 rounded-lg bg-navy-800 hover:bg-navy-700 text-slate-300 hover:text-white flex items-center justify-center transition text-xs">
+        <button onclick="resetShiftAiConversation()" type="button" title="Bersihkan Percakapan"
+          class="w-8 h-8 rounded-xl bg-navy-800/80 hover:bg-navy-700 text-slate-300 hover:text-white flex items-center justify-center transition text-xs cursor-pointer">
           <i class="fa-solid fa-rotate-left"></i>
         </button>
-        <!-- Open Dedicated Full Page -->
-        <a href="/chat" title="Buka Halaman Penuh"
-          class="w-7 h-7 rounded-lg bg-navy-800 hover:bg-navy-700 text-slate-300 hover:text-white flex items-center justify-center transition text-xs">
-          <i class="fa-solid fa-up-right-from-square"></i>
-        </a>
         <!-- Close Window -->
-        <button onclick="toggleShiftAiWidget()" title="Tutup Widget"
-          class="w-7 h-7 rounded-lg bg-navy-800 hover:bg-rose-600 text-slate-300 hover:text-white flex items-center justify-center transition text-xs">
-          <i class="fa-solid fa-xmark text-sm"></i>
+        <button onclick="toggleShiftAiWidget()" type="button" title="Tutup Chat"
+          class="w-8 h-8 rounded-xl bg-navy-800/80 hover:bg-rose-600/90 text-slate-300 hover:text-white flex items-center justify-center transition text-sm cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
     </div>
 
-    <!-- Quick Suggestion Pills Bar (Clean, Non-Selectable, Uniform FontAwesome Icons) -->
-    <div class="px-3 py-2 bg-slate-50 border-b border-slate-200/80 overflow-x-auto whitespace-nowrap scrollbar-none flex items-center gap-1.5 shrink-0 select-none">
-      <span class="text-[9px] font-extrabold uppercase text-slate-400 shrink-0 pr-0.5">Tanya:</span>
-      <button onclick="sendQuickPrompt('Layanan servis apa saja yang tersedia di Shift Garage?')"
-        class="text-[10px] px-2.5 py-1 rounded-full bg-white border border-slate-200/90 text-slate-700 hover:border-gold-400 hover:text-navy-950 transition shrink-0 font-medium shadow-2xs inline-flex items-center gap-1">
-        <i class="fa-solid fa-motorcycle text-navy-900 text-[10px]"></i>
+    <style>
+      #shiftAiChipsBar::-webkit-scrollbar { display: none; }
+    </style>
+    <!-- Quick Suggestion Chips (Minimalist & Smooth Horizontal Scroll) -->
+    <div id="shiftAiChipsBar" class="px-3.5 py-2 bg-slate-50 border-b border-slate-100 overflow-x-auto whitespace-nowrap flex items-center gap-2 shrink-0 select-none" style="scrollbar-width: none; -ms-overflow-style: none;">
+      <button onclick="sendQuickPrompt('Layanan servis apa saja yang tersedia di Shift Garage?')" type="button"
+        class="text-[11px] px-3 py-1.5 rounded-full bg-white border border-slate-200/90 text-slate-700 hover:border-gold-500 hover:text-navy-900 hover:bg-slate-50 transition shrink-0 font-semibold shadow-2xs inline-flex items-center gap-1.5 cursor-pointer">
+        <i class="fa-solid fa-motorcycle text-gold-500 text-[11px]"></i>
         <span>Katalog Servis</span>
       </button>
-      <button onclick="sendQuickPrompt('Berapa tarif dan estimasi waktu untuk Ganti Oli?')"
-        class="text-[10px] px-2.5 py-1 rounded-full bg-white border border-slate-200/90 text-slate-700 hover:border-gold-400 hover:text-navy-950 transition shrink-0 font-medium shadow-2xs inline-flex items-center gap-1">
-        <i class="fa-solid fa-tag text-gold-500 text-[10px]"></i>
+      <button onclick="sendQuickPrompt('Berapa tarif dan estimasi waktu untuk Ganti Oli?')" type="button"
+        class="text-[11px] px-3 py-1.5 rounded-full bg-white border border-slate-200/90 text-slate-700 hover:border-gold-500 hover:text-navy-900 hover:bg-slate-50 transition shrink-0 font-semibold shadow-2xs inline-flex items-center gap-1.5 cursor-pointer">
+        <i class="fa-solid fa-tag text-gold-500 text-[11px]"></i>
         <span>Tarif Ganti Oli</span>
       </button>
-      <button onclick="sendQuickPrompt('Berapa lama estimasi waktu Tune-Up Injeksi Komplit?')"
-        class="text-[10px] px-2.5 py-1 rounded-full bg-white border border-slate-200/90 text-slate-700 hover:border-gold-400 hover:text-navy-950 transition shrink-0 font-medium shadow-2xs inline-flex items-center gap-1">
-        <i class="fa-solid fa-clock text-sky-500 text-[10px]"></i>
-        <span>Durasi Tune-Up</span>
-      </button>
-      <button onclick="sendQuickPrompt('Motor matic saya getar gredek saat tarikan awal, rekomendasi servis apa?')"
-        class="text-[10px] px-2.5 py-1 rounded-full bg-white border border-slate-200/90 text-slate-700 hover:border-gold-400 hover:text-navy-950 transition shrink-0 font-medium shadow-2xs inline-flex items-center gap-1">
-        <i class="fa-solid fa-wrench text-amber-500 text-[10px]"></i>
+      <button onclick="sendQuickPrompt('Motor matic saya getar gredek saat tarikan awal, rekomendasi servis apa?')" type="button"
+        class="text-[11px] px-3 py-1.5 rounded-full bg-white border border-slate-200/90 text-slate-700 hover:border-gold-500 hover:text-navy-900 hover:bg-slate-50 transition shrink-0 font-semibold shadow-2xs inline-flex items-center gap-1.5 cursor-pointer">
+        <i class="fa-solid fa-wrench text-gold-500 text-[11px]"></i>
         <span>CVT Gredek</span>
+      </button>
+      <button onclick="sendQuickPrompt('Berapa lama estimasi waktu Tune-Up Injeksi Komplit?')" type="button"
+        class="text-[11px] px-3 py-1.5 rounded-full bg-white border border-slate-200/90 text-slate-700 hover:border-gold-500 hover:text-navy-900 hover:bg-slate-50 transition shrink-0 font-semibold shadow-2xs inline-flex items-center gap-1.5 cursor-pointer">
+        <i class="fa-solid fa-clock text-gold-500 text-[11px]"></i>
+        <span>Durasi Tune-Up</span>
       </button>
     </div>
 
-    <!-- Conversation Messages Body (min-h-0 prevents flexbox overflow!) -->
-    <div id="shiftAiMessagesList" class="flex-1 min-h-0 p-3.5 overflow-y-auto space-y-3 bg-slate-50/60 scroll-smooth">
+    <!-- Messages Container -->
+    <div id="shiftAiMessagesList" class="flex-1 min-h-0 p-4 overflow-y-auto space-y-3.5 bg-slate-50/70 scroll-smooth">
       <!-- Welcome Message from AI -->
       <div class="flex items-start gap-2.5">
-        <div class="w-7 h-7 rounded-lg bg-gold-400 text-navy-950 font-black flex items-center justify-center text-[10px] shrink-0 shadow-gold-sm mt-0.5">
+        <div class="w-7 h-7 rounded-xl bg-gold-400 text-navy-950 font-black flex items-center justify-center text-[10px] shrink-0 shadow-gold-sm mt-0.5">
           <i class="fa-solid fa-robot"></i>
         </div>
-        <div class="max-w-[88%] bg-white p-3 rounded-2xl rounded-tl-xs border border-slate-200 text-slate-800 text-xs shadow-card space-y-1.5 leading-relaxed">
-          <p class="font-bold text-slate-900">
-            Halo! Saya Shift AI Assistant 👋
-          </p>
+        <div class="max-w-[85%] bg-white p-3.5 rounded-2xl rounded-tl-sm border border-slate-200/90 text-slate-800 text-xs shadow-2xs space-y-2 leading-relaxed">
+          <div class="flex items-center gap-1.5 text-navy-900 font-extrabold">
+            <span>Halo! Saya Shift AI Assistant</span>
+            <span>👋</span>
+          </div>
           <p class="text-slate-600">
-            Saya siap membantu Anda mengetahui paket servis motor, biaya mulai dari, estimasi waktu kerja di pit, dan konsultasi keluhan motor Anda.
+            Ada kendala pada motor Anda? Tanyakan paket servis, estimasi tarif resmi, waktu pengerjaan di Pit, atau konsultasikan gejala motor Anda di sini.
           </p>
-          <div class="pt-1.5 border-t border-slate-100 text-[10px] text-slate-400">
-            Ketik pertanyaan Anda di bawah atau klik salah satu rekomendasi cepat di atas!
+          <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
+            <span>Pilih topik di atas atau ketik langsung</span>
+            <span class="text-gold-600 font-bold">Shift Garage</span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Loading Indicator -->
-    <div id="shiftAiLoadingIndicator" class="hidden px-3.5 py-1.5 bg-slate-50 border-t border-slate-100 flex items-center gap-2 shrink-0">
-      <div class="w-4 h-4 rounded-md bg-gold-100 text-navy-950 flex items-center justify-center text-[9px]">
-        <i class="fa-solid fa-spinner fa-spin"></i>
+    <!-- Typing / Loading Indicator -->
+    <div id="shiftAiLoadingIndicator" class="hidden px-4 py-2 bg-slate-50 border-t border-slate-100 flex items-center gap-2.5 shrink-0">
+      <div class="w-5 h-5 rounded-lg bg-gold-400 text-navy-950 flex items-center justify-center text-[10px] shadow-xs">
+        <i class="fa-solid fa-robot"></i>
       </div>
-      <div class="flex items-center gap-1.5">
-        <span class="text-[11px] font-semibold text-slate-600">Shift AI sedang memproses...</span>
+      <div class="flex items-center gap-2 text-xs font-semibold text-slate-600">
+        <span>Menyusun diagnosa...</span>
         <div class="flex items-center gap-1">
-          <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-bounce"></span>
-          <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-bounce" style="animation-delay: 0.15s"></span>
-          <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-bounce" style="animation-delay: 0.3s"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-gold-500 animate-bounce"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-gold-500 animate-bounce" style="animation-delay: 0.15s"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-gold-500 animate-bounce" style="animation-delay: 0.3s"></span>
         </div>
       </div>
     </div>
 
     <!-- Error Alert Banner -->
-    <div id="shiftAiErrorBanner" class="hidden px-3.5 py-1.5 bg-rose-50 border-t border-rose-200 text-rose-700 text-[11px] flex items-center justify-between shrink-0">
-      <div class="flex items-center gap-1.5">
+    <div id="shiftAiErrorBanner" class="hidden px-4 py-2 bg-rose-50 border-t border-rose-200 text-rose-700 text-xs flex items-center justify-between shrink-0">
+      <div class="flex items-center gap-2">
         <i class="fa-solid fa-circle-exclamation text-rose-500 text-xs"></i>
         <span id="shiftAiErrorMessage">Gagal mengirim pesan.</span>
       </div>
-      <button onclick="hideShiftAiError()" class="text-rose-400 hover:text-rose-700">
+      <button onclick="hideShiftAiError()" type="button" class="text-rose-400 hover:text-rose-700 cursor-pointer">
         <i class="fa-solid fa-xmark text-xs"></i>
       </button>
     </div>
 
-    <!-- Input Form (Clean & Sleek) -->
-    <form id="shiftAiForm" onsubmit="handleShiftAiSubmit(event)" class="p-3 bg-white border-t border-slate-200/90 shrink-0">
-      <div class="flex items-center gap-2 bg-slate-100/80 rounded-2xl p-1.5 border border-slate-200 focus-within:border-gold-400 focus-within:bg-white focus-within:ring-2 focus-within:ring-gold-200 transition">
+    <!-- Input Footer (Clean, Minimalist, No Clutter) -->
+    <form id="shiftAiForm" onsubmit="handleShiftAiSubmit(event)" class="p-3 bg-white border-t border-slate-200/80 shrink-0">
+      <div class="flex items-center gap-2 bg-slate-50 rounded-2xl p-1.5 border border-slate-200/90 focus-within:border-gold-500 focus-within:bg-white focus-within:shadow-xs transition duration-200">
         <textarea id="shiftAiInput" rows="1" maxlength="500"
-          placeholder="Tanyakan servis, tarif, keluhan motor..."
-          class="flex-1 bg-transparent px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 resize-none outline-none max-h-16 scrollbar-none"
+          placeholder="Ketik keluhan motor atau tanya tarif servis..."
+          class="flex-1 bg-transparent px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 resize-none outline-none max-h-20 scrollbar-none font-medium leading-relaxed"
           oninput="handleShiftAiInputResize(this)"></textarea>
 
-        <button type="submit" id="shiftAiSendBtn"
-          class="w-8 h-8 rounded-xl bg-gold-400 hover:bg-gold-300 text-navy-950 font-black flex items-center justify-center shrink-0 shadow-gold-sm transition hover:scale-105 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed">
+        <button type="submit" id="shiftAiSendBtn" title="Kirim Pesan"
+          class="w-9 h-9 rounded-xl bg-gold-400 hover:bg-gold-300 text-navy-950 font-black flex items-center justify-center shrink-0 shadow-gold-sm transition hover:scale-105 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">
           <i class="fa-solid fa-paper-plane text-xs"></i>
         </button>
       </div>
 
-      <div class="flex items-center justify-between pt-2 px-1 text-[10px] text-slate-400 font-mono select-none">
-        <span>Tekan Enter untuk kirim</span>
-        <span id="shiftAiCharCount">0/500</span>
+      <!-- Subtle Footer Note -->
+      <div class="flex items-center justify-between pt-2 px-1.5 text-[10px] text-slate-400 select-none">
+        <span class="flex items-center gap-1">
+          <i class="fa-solid fa-keyboard text-[9px] text-slate-300"></i>
+          <span>Enter untuk kirim</span>
+        </span>
+        <span class="font-mono" id="shiftAiCharCount">0/500</span>
       </div>
     </form>
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- JAVASCRIPT: LOGIKA CHAT WIDGET & MARKDOWN PARSER                -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
 <script>
   let shiftAiIsOpen = false;
   let shiftAiIsLoading = false;
@@ -192,7 +199,7 @@
 
   function handleShiftAiInputResize(textarea) {
     textarea.style.height = 'auto';
-    textarea.style.height = Math.min(textarea.scrollHeight, 64) + 'px';
+    textarea.style.height = Math.min(textarea.scrollHeight, 72) + 'px';
     const counter = document.getElementById('shiftAiCharCount');
     if (counter) counter.textContent = `${textarea.value.length}/500`;
   }
@@ -223,29 +230,27 @@
     if (!list) return;
 
     const row = document.createElement('div');
-    row.className = sender === 'user' ? 'flex items-start justify-end gap-2.5' : 'flex items-start gap-2.5';
+    row.className = sender === 'user' ? 'flex justify-end' : 'flex items-start gap-2.5';
 
     if (sender === 'user') {
       row.innerHTML = `
-        <div class="max-w-[85%] bg-navy-900 text-white p-2.5 rounded-2xl rounded-tr-xs text-xs shadow-sm leading-relaxed whitespace-pre-wrap">
+        <div class="max-w-[80%] bg-navy-900 text-white px-3.5 py-2.5 rounded-2xl rounded-tr-xs text-xs font-medium shadow-xs leading-relaxed break-words whitespace-pre-wrap border border-navy-800">
           ${escapeHtml(text)}
-        </div>
-        <div class="w-6 h-6 rounded-lg bg-gold-400 text-navy-950 flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-bold">
-          <i class="fa-solid fa-user"></i>
         </div>
       `;
     } else {
       const formatted = formatAiMarkdown(text);
       row.innerHTML = `
-        <div class="w-6 h-6 rounded-lg bg-gold-400 text-navy-950 flex items-center justify-center text-[10px] shrink-0 shadow-xs mt-0.5 font-black">
+        <div class="w-7 h-7 rounded-xl bg-gold-400 text-navy-950 flex items-center justify-center text-[10px] shrink-0 shadow-gold-sm mt-0.5 font-black">
           <i class="fa-solid fa-robot"></i>
         </div>
-        <div class="max-w-[88%] bg-white p-3 rounded-2xl rounded-tl-xs border border-slate-200 text-slate-800 text-xs shadow-card leading-relaxed space-y-1.5">
-          <div class="prose prose-xs text-slate-800">${formatted}</div>
-          <div class="pt-1 text-[9px] text-slate-400 font-mono text-right flex items-center justify-end gap-2">
-            <span>Shift Garage AI</span>
-            <button onclick="navigator.clipboard.writeText('${escapeJsString(text)}')" class="hover:text-gold-600" title="Salin Jawaban">
-              <i class="fa-regular fa-copy"></i>
+        <div class="max-w-[85%] bg-white p-3.5 rounded-2xl rounded-tl-sm border border-slate-200/90 text-slate-800 text-xs shadow-2xs leading-relaxed space-y-1.5">
+          <div class="text-slate-800 space-y-1">${formatted}</div>
+          <div class="pt-2 border-t border-slate-100 text-[10px] text-slate-400 flex items-center justify-between">
+            <span class="font-bold text-gold-600">Shift AI</span>
+            <button type="button" onclick="navigator.clipboard.writeText('${escapeJsString(text)}'); alert('Teks disalin!')" class="text-slate-400 hover:text-navy-900 transition flex items-center gap-1 cursor-pointer" title="Salin Teks">
+              <i class="fa-regular fa-copy text-[10px]"></i>
+              <span>Salin</span>
             </button>
           </div>
         </div>
@@ -331,13 +336,13 @@
     if (!list) return;
     list.innerHTML = `
       <div class="flex items-start gap-2.5">
-        <div class="w-7 h-7 rounded-lg bg-gold-400 text-navy-950 font-black flex items-center justify-center text-[10px] shrink-0 shadow-gold-sm mt-0.5">
+        <div class="w-7 h-7 rounded-xl bg-gold-400 text-navy-950 font-black flex items-center justify-center text-[10px] shrink-0 shadow-gold-sm mt-0.5">
           <i class="fa-solid fa-robot"></i>
         </div>
-        <div class="max-w-[88%] bg-white p-3 rounded-2xl rounded-tl-xs border border-slate-200 text-slate-800 text-xs shadow-card space-y-1.5 leading-relaxed">
-          <p class="font-bold text-slate-900">Percakapan Direset 🔄</p>
+        <div class="max-w-[85%] bg-white p-3.5 rounded-2xl rounded-tl-sm border border-slate-200/90 text-slate-800 text-xs shadow-2xs space-y-1.5 leading-relaxed">
+          <p class="font-bold text-navy-900">Percakapan Direset 🔄</p>
           <p class="text-slate-600">
-            Ada yang bisa saya bantu terkait layanan servis motor, jam operasional, atau estimasi tarif Shift Garage?
+            Ada yang bisa saya bantu terkait paket servis motor, biaya, atau konsultasi keluhan kendaraan Anda?
           </p>
         </div>
       </div>
@@ -346,7 +351,7 @@
   }
 
   function escapeHtml(str) {
-    return str
+    return String(str || '')
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
@@ -355,17 +360,50 @@
   }
 
   function escapeJsString(str) {
-    return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n');
+    return String(str || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n');
   }
 
-  function formatAiMarkdown(text) {
-    let clean = escapeHtml(text);
-    clean = clean.replace(/\*\*(.*?)\*\*/g, '<strong class="font-extrabold text-slate-900">$1</strong>');
-    clean = clean.replace(/^[•\-\*]\s+(.*)$/gm, '<li class="ml-4 list-disc">$1</li>');
-    clean = clean.replace(/^(\d+)\.\s+(.*)$/gm, '<li class="ml-4 list-decimal font-medium">$2</li>');
-    clean = clean.replace(/`([^`]+)`/g, '<code class="bg-slate-100 text-navy-900 font-mono px-1 py-0.5 rounded text-[11px]">$1</code>');
-    clean = clean.replace(/\n\n/g, '<div class="h-1.5"></div>');
-    clean = clean.replace(/\n/g, '<br/>');
-    return clean;
+  function formatAiMarkdown(raw) {
+    if (!raw) return '';
+    const escaped = escapeHtml(raw);
+    const lines = escaped.split('\n');
+
+    const formattedLines = lines.map(line => {
+      let trimmed = line.trim();
+      if (!trimmed) return '<div class="h-1.5"></div>';
+
+      // Cek bullet list (*, -, •)
+      const isBullet = /^[•\-\*]\s+(.*)$/.test(trimmed);
+      // Cek numbered list (1., 2., dll)
+      const isNumbered = /^(\d+)\.\s+(.*)$/.test(trimmed);
+
+      let content = trimmed;
+      let bulletPrefix = '';
+
+      if (isBullet) {
+        content = trimmed.replace(/^[•\-\*]\s+/, '');
+        bulletPrefix = '<span class="text-gold-500 font-black text-xs shrink-0 mt-0.5">&bull;</span>';
+      } else if (isNumbered) {
+        const match = trimmed.match(/^(\d+)\.\s+(.*)$/);
+        if (match) {
+          content = match[2];
+          bulletPrefix = `<span class="text-gold-500 font-bold text-xs shrink-0">${match[1]}.</span>`;
+        }
+      }
+
+      // Format bold and code di dalam teks baris
+      content = content.replace(/\*\*\*(.*?)\*\*\*/g, '<strong class="font-black text-navy-900 italic">$1</strong>');
+      content = content.replace(/\*\*(.*?)\*\*/g, '<strong class="font-extrabold text-navy-950">$1</strong>');
+      content = content.replace(/_([^_]+)_/g, '<em class="text-slate-600 italic">$1</em>');
+      content = content.replace(/`([^`]+)`/g, '<code class="bg-slate-100 text-navy-900 font-mono px-1 py-0.5 rounded text-[11px]">$1</code>');
+
+      if (bulletPrefix) {
+        return `<div class="flex items-start gap-2 ml-1 my-0.5">${bulletPrefix}<span class="flex-1">${content}</span></div>`;
+      }
+
+      return `<div>${content}</div>`;
+    });
+
+    return formattedLines.join('');
   }
 </script>
