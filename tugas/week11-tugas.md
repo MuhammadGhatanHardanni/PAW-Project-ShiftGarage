@@ -48,7 +48,7 @@ Tugas_P7/
 
 Pengujian unit (*Unit Testing*) difokuskan untuk menguji unit fungsional terkecil dari aplikasi secara terisolasi tanpa bergantung pada database eksternal aktif dengan memanfaatkan teknik *mocking & stubbing* (`vi.spyOn`).
 
-![Screenshot 1 - Unit Testing](./screenshots/screenshot-1-unit-testing.svg)
+![Screenshot 1 - Unit Testing](./screenshots/screenshot-1-unit-testing.png)
 
 ### Output Terminal Unit Testing:
 ```bash
@@ -100,7 +100,7 @@ Pengujian unit (*Unit Testing*) difokuskan untuk menguji unit fungsional terkeci
 
 Pengujian integrasi (*Integration Testing*) memvalidasi interaksi nyata antara rute (*routes*), *middleware*, *controllers*, dan logika aplikasi menggunakan **Supertest**.
 
-![Screenshot 2 - Integration Testing](./screenshots/screenshot-2-integration-testing.svg)
+![Screenshot 2 - Integration Testing](./screenshots/screenshot-2-integration-testing.png)
 
 ### Output Terminal Integration Testing:
 ```bash
@@ -147,7 +147,7 @@ Pengujian integrasi (*Integration Testing*) memvalidasi interaksi nyata antara r
 
 Pengukuran persentase *Code Coverage* dilakukan dengan provider `@vitest/coverage-v8` untuk mengevaluasi seberapa mendalam kode aplikasi telah teruji.
 
-![Screenshot 3 - Code Coverage](./screenshots/screenshot-3-code-coverage.svg)
+![Screenshot 3 - Code Coverage](./screenshots/screenshot-3-code-coverage.png)
 
 ### Tabel Hasil Pengukuran Coverage:
 ```text
