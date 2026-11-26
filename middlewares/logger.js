@@ -44,24 +44,26 @@ module.exports = (req, res, next) => {
     const status    = res.statusCode;
     const ip        = req.ip || req.socket?.remoteAddress || '-';
 
-    // ── Cetak ke terminal ────────────────────────────────────────────────────
-    const warnaTeks = status >= 500 ? '\x1b[31m'   // merah — error server
-                    : status >= 400 ? '\x1b[33m'   // kuning — not found / bad request
-                    : status >= 300 ? '\x1b[36m'   // cyan  — redirect
-                    :                 '\x1b[32m';   // hijau  — sukses
-    const reset = '\x1b[0m';
+    // ── Cetak ke terminal (Hanya saat running server normal, bukan saat automated testing) ──
+    if (process.env.NODE_ENV !== 'test') {
+      const warnaTeks = status >= 500 ? '\x1b[31m'   // merah — error server
+                      : status >= 400 ? '\x1b[33m'   // kuning — not found / bad request
+                      : status >= 300 ? '\x1b[36m'   // cyan  — redirect
+                      :                 '\x1b[32m';   // hijau  — sukses
+      const reset = '\x1b[0m';
 
-    console.log(
-      `${warnaTeks}[${waktu}] ${method} ${url} → ${status} (${durasiMs} ms)${reset}`
-    );
+      console.log(
+        `${warnaTeks}[${waktu}] ${method} ${url} → ${status} (${durasiMs} ms)${reset}`
+      );
 
-    // ── Tulis ke file log ────────────────────────────────────────────────────
-    const baris =
-      `| ${waktu} | ${method} | ${aman(url)} | ${status} | ${durasiMs} ms | ${aman(ip)} |\n`;
+      // ── Tulis ke file log ────────────────────────────────────────────────────
+      const baris =
+        `| ${waktu} | ${method} | ${aman(url)} | ${status} | ${durasiMs} ms | ${aman(ip)} |\n`;
 
-    fs.appendFile(logPath, baris, (err) => {
-      if (err) console.error('\x1b[31mGagal menulis log:\x1b[0m', err.message);
-    });
+      fs.appendFile(logPath, baris, (err) => {
+        if (err) console.error('\x1b[31mGagal menulis log:\x1b[0m', err.message);
+      });
+    }
   });
 
   next();
