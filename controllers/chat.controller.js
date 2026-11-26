@@ -29,6 +29,7 @@ const ChatController = {
         success: true,
         data: {
           reply: reply,
+          timestamp: new Date().toISOString(),
         },
       });
     } catch (err) {
@@ -47,7 +48,13 @@ const ChatController = {
    */
   async handleAdminAiChat(req, res) {
     try {
-      const userMessage = req.body.message;
+      const userMessage = req.body.message || req.body.prompt;
+      if (!userMessage || !String(userMessage).trim()) {
+        return res.status(400).json({
+          success: false,
+          pesan: 'Pesan instruksi AI tidak boleh kosong',
+        });
+      }
       const result = await geminiService.processAdminAiAction(userMessage);
 
       return res.status(200).json({
