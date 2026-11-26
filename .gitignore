@@ -1,4 +1,7 @@
 node_modules/
 logs/*.log
 .env
+coverage/
+PAW-ANTARA-WEEK10-main/
+data/
 
